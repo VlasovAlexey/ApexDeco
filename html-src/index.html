@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ApexDeco - Dive Planner</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;utf8,<svg width='96pt' height='96pt' viewBox='0 0 96 96' version='1.1' xmlns='http://www.w3.org/2000/svg'> <g id='%232995dbff'> <path fill='%232995db' opacity='1.00' d=' M 0.00 0.00 L 96.00 0.00 L 96.00 96.00 L 0.00 96.00 L 0.00 0.00 M 28.50 17.46 C 25.04 21.49 23.39 26.65 22.18 31.74 C 18.14 35.01 14.76 39.61 14.67 45.01 C 14.28 49.12 16.10 52.91 18.02 56.40 C 14.35 56.79 10.64 57.21 7.15 58.46 C 11.22 60.92 16.15 60.84 20.46 62.67 C 17.99 64.13 15.46 65.48 13.05 67.04 C 17.55 70.79 23.73 70.29 29.07 71.85 C 26.82 72.88 24.46 73.64 22.07 74.24 C 21.70 74.72 20.95 75.67 20.58 76.15 C 27.32 77.48 34.29 75.85 40.96 77.65 C 37.05 78.77 32.87 78.96 29.26 81.00 C 33.79 83.55 39.06 83.54 44.09 83.93 C 43.76 85.19 43.41 86.44 43.05 87.69 C 43.25 88.21 43.64 89.24 43.83 89.76 C 48.34 89.26 52.47 87.21 56.74 85.78 C 55.46 85.08 54.18 84.39 52.89 83.70 C 57.44 83.23 62.67 83.69 66.13 80.09 C 63.17 79.26 60.14 78.68 57.20 77.77 C 62.83 75.99 68.86 77.80 74.49 75.90 C 73.13 73.63 70.54 72.86 68.33 71.70 C 71.93 70.75 75.66 70.22 79.13 68.82 C 79.15 65.54 74.35 65.49 72.12 63.87 C 72.42 63.52 73.00 62.80 73.30 62.45 C 77.78 62.07 82.19 60.90 86.05 58.54 C 83.34 57.45 80.49 56.85 77.60 56.50 C 79.47 52.92 81.44 49.11 81.06 44.94 C 80.90 39.49 77.37 34.96 73.37 31.59 C 71.91 22.55 66.36 13.86 57.60 10.44 C 47.74 6.35 35.29 9.07 28.50 17.46 Z' /> <path fill='%232995db' opacity='1.00' d=' M 28.39 35.46 C 30.55 34.94 32.81 35.14 35.01 35.12 C 44.69 35.35 54.37 35.03 64.05 35.11 C 69.14 34.88 74.38 38.73 74.92 43.94 C 75.57 48.59 73.56 54.13 68.88 55.87 C 64.53 57.46 58.60 57.59 55.54 53.53 C 53.34 50.90 52.08 46.50 47.97 46.46 C 42.89 46.03 42.06 52.27 38.88 54.87 C 33.35 58.52 23.92 57.32 21.53 50.43 C 18.94 44.56 21.96 37.03 28.39 35.46 Z' /> </g> <g id='%23ffffffff'> <path fill='%23ffffff' opacity='1.00' d=' M 28.50 17.46 C 35.29 9.07 47.74 6.35 57.60 10.44 C 66.36 13.86 71.91 22.55 73.37 31.59 C 77.37 34.96 80.90 39.49 81.06 44.94 C 81.44 49.11 79.47 52.92 77.60 56.50 C 80.49 56.85 83.34 57.45 86.05 58.54 C 82.19 60.90 77.78 62.07 73.30 62.45 C 73.00 62.80 72.42 63.52 72.12 63.87 C 74.35 65.49 79.15 65.54 79.13 68.82 C 75.66 70.22 71.93 70.75 68.33 71.70 C 70.54 72.86 73.13 73.63 74.49 75.90 C 68.86 77.80 62.83 75.99 57.20 77.77 C 60.14 78.68 63.17 79.26 66.13 80.09 C 62.67 83.69 57.44 83.23 52.89 83.70 C 54.18 84.39 55.46 85.08 56.74 85.78 C 52.47 87.21 48.34 89.26 43.83 89.76 C 43.64 89.24 43.25 88.21 43.05 87.69 C 43.41 86.44 43.76 85.19 44.09 83.93 C 39.06 83.54 33.79 83.55 29.26 81.00 C 32.87 78.96 37.05 78.77 40.96 77.65 C 34.29 75.85 27.32 77.48 20.58 76.15 C 20.95 75.67 21.70 74.72 22.07 74.24 C 24.46 73.64 26.82 72.88 29.07 71.85 C 23.73 70.29 17.55 70.79 13.05 67.04 C 15.46 65.48 17.99 64.13 20.46 62.67 C 16.15 60.84 11.22 60.92 7.15 58.46 C 10.64 57.21 14.35 56.79 18.02 56.40 C 16.10 52.91 14.28 49.12 14.67 45.01 C 14.76 39.61 18.14 35.01 22.18 31.74 C 23.39 26.65 25.04 21.49 28.50 17.46 M 36.37 13.09 C 36.40 18.37 36.40 23.66 36.38 28.94 C 44.13 28.96 51.87 28.97 59.62 28.96 C 59.61 23.66 59.61 18.36 59.61 13.06 C 51.87 13.17 44.12 13.01 36.37 13.09 M 28.39 35.46 C 21.96 37.03 18.94 44.56 21.53 50.43 C 23.92 57.32 33.35 58.52 38.88 54.87 C 42.06 52.27 42.89 46.03 47.97 46.46 C 52.08 46.50 53.34 50.90 55.54 53.53 C 58.60 57.59 64.53 57.46 68.88 55.87 C 73.56 54.13 75.57 48.59 74.92 43.94 C 74.38 38.73 69.14 34.88 64.05 35.11 C 54.37 35.03 44.69 35.35 35.01 35.12 C 32.81 35.14 30.55 34.94 28.39 35.46 Z' /> <path fill='%23ffffff' opacity='1.00' d=' M 38.45 17.07 C 38.46 16.26 38.46 15.45 38.47 14.65 C 39.85 14.65 41.24 14.65 42.63 14.65 C 47.65 18.25 52.68 21.84 57.72 25.41 C 57.73 25.95 57.75 27.02 57.76 27.56 C 56.25 27.57 54.75 27.57 53.25 27.58 C 48.33 24.05 43.37 20.59 38.45 17.07 Z' /> </g> <g id='%23fd0d17ff'> <path fill='%23fd0d17' opacity='1.00' d=' M 36.37 13.09 C 44.12 13.01 51.87 13.17 59.61 13.06 C 59.61 18.36 59.61 23.66 59.62 28.96 C 51.87 28.97 44.13 28.96 36.38 28.94 C 36.40 23.66 36.40 18.37 36.37 13.09 M 38.45 17.07 C 43.37 20.59 48.33 24.05 53.25 27.58 C 54.75 27.57 56.25 27.57 57.76 27.56 C 57.75 27.02 57.73 25.95 57.72 25.41 C 52.68 21.84 47.65 18.25 42.63 14.65 C 41.24 14.65 39.85 14.65 38.47 14.65 C 38.46 15.45 38.46 16.26 38.45 17.07 Z' /> </g> </svg>">
+    <link rel="stylesheet" href="styles.css?v=50">
+</head>
+<body>
+
+<!-- App Bar -->
+<div class="app-bar">
+    <h1>ApexDeco</h1>
+    <button class="app-bar-btn active" onclick="showScreen('main')">Plan</button>
+    <button class="app-bar-btn" onclick="showScreen('config')">Settings</button>
+    <button class="app-bar-btn" onclick="showScreen('tools')">Tools</button>
+    <button class="app-bar-btn" onclick="showScreen('about')">About</button>
+</div>
+
+<!-- ===== MAIN PLANNER SCREEN ===== -->
+<div id="screen-main" class="screen active">
+    <div class="planner-split">
+        <!-- Bottom Mix & Travel -->
+        <div class="card">
+            <div class="card-header">Bottom Mix & Travel</div>
+            <div class="card-body">
+                <div id="levels-list"></div>
+                <div class="btn-group">
+                    <button class="btn btn-primary btn-sm" onclick="addLevel()">+ Add Level</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteSelectedLevels()">Delete</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Deco Mixes -->
+        <div class="card">
+            <div class="card-header">Deco Mixes</div>
+            <div class="card-body">
+                <div id="decos-list"></div>
+                <div class="btn-group">
+                    <button class="btn btn-primary btn-sm" onclick="addDeco()">+ Add Deco</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteSelectedDecos()">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Calculate Button -->
+    <div class="footer-bar">
+        <button class="btn btn-accent" onclick="calculateDeco()" style="font-size:15px; padding:10px 32px;">Calculate</button>
+        <button id="btn-reset-tissues" class="btn btn-outline" style="display:none; margin-left:12px;" onclick="resetSurfaceTissues()">Reset surface tissues</button>
+    </div>
+
+</div>
+
+<!-- ===== RESULT SCREEN ===== -->
+<div id="screen-result" class="screen">
+    <div id="profile-chart-container" style="width:100%; min-height:400px; margin-bottom:16px;"></div>
+    <div class="card">
+        <div class="card-header" id="result-card-header">Dive #1 Plan Result</div>
+        <div class="card-body">
+            <div id="result-warnings"></div>
+            <table class="data-table" id="result-table">
+                <thead>
+                    <tr>
+                        <th>Action</th>
+                        <th>Depth</th>
+                        <th>Stop</th>
+                        <th>Run</th>
+                        <th>Mix</th>
+                        <th>pO2</th>
+                        <th>EAD</th>
+                    </tr>
+                </thead>
+                <tbody id="result-tbody"></tbody>
+            </table>
+            <pre id="result-summary" style="margin:12px 0 0; padding:10px; background:#ffffff; border-radius:4px; font-size:12px; color:#000000; line-height:1.6; white-space:pre;"></pre>
+        </div>
+    </div>
+    <div id="result-gas-usage"></div>
+    <div id="result-bailout"></div>
+    <div id="result-pp-chart"></div>
+    <div id="result-tissue-chart"></div>
+    <div id="result-grid-plan"></div>
+    <div style="height:72px;"></div>
+</div>
+<!-- Sticky bottom action bar (shown only on result screen) -->
+<div id="result-actionbar" class="result-actionbar">
+    <button class="btn btn-accent" onclick="nextDive()">NEXT DIVE</button>
+    <button class="btn btn-outline" onclick="showResultText()">Text Report</button>
+    <button class="btn btn-outline" onclick="copyDebugToClipboard()">DEBUG INFO TO DEVELOPER</button>
+</div>
+    <!-- Text report modal -->
+    <div id="report-modal" class="modal-overlay" onclick="if(event.target===this)this.classList.remove('active')">
+        <div class="modal">
+            <h3>Dive Plan Report</h3>
+            <pre class="copy-area" id="report-text"></pre>
+            <div class="btn-group" style="margin-top:12px; justify-content:center;">
+                <button class="btn btn-outline" onclick="copyReportText()">Copy</button>
+                <button class="btn btn-outline" onclick="document.getElementById('report-modal').classList.remove('active')">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Surface interval modal -->
+    <div id="si-modal" class="modal-overlay">
+        <div class="modal" style="min-width:280px; max-width:360px;">
+            <h3>Surface Interval</h3>
+            <p style="font-size:13px; color:var(--text-secondary); margin-bottom:16px;">
+                Set the time between dives. Tissues will off-gas during this interval.
+            </p>
+            <div class="si-spinners">
+                <div class="si-spinner-col">
+                    <button class="si-arrow" onclick="siStep('si-days',1)">▲</button>
+                    <input type="number" id="si-days" class="si-input" value="0" min="0" max="30" readonly>
+                    <button class="si-arrow" onclick="siStep('si-days',-1)">▼</button>
+                    <span class="si-label">days</span>
+                </div>
+                <div class="si-spinner-col">
+                    <button class="si-arrow" onclick="siStep('si-hours',1)">▲</button>
+                    <input type="number" id="si-hours" class="si-input" value="1" min="0" max="23" readonly>
+                    <button class="si-arrow" onclick="siStep('si-hours',-1)">▼</button>
+                    <span class="si-label">hours</span>
+                </div>
+                <div class="si-spinner-col">
+                    <button class="si-arrow" onclick="siStep('si-minutes',1)">▲</button>
+                    <input type="number" id="si-minutes" class="si-input" value="0" min="0" max="59" readonly>
+                    <button class="si-arrow" onclick="siStep('si-minutes',-1)">▼</button>
+                    <span class="si-label">min</span>
+                </div>
+            </div>
+            <div id="si-total-label" style="text-align:center; font-size:12px; color:var(--text-secondary); margin:12px 0 4px;"></div>
+            <div class="btn-group" style="margin-top:12px; justify-content:center;">
+                <button class="btn btn-accent" onclick="confirmNextDive()">Start Next Dive</button>
+                <button class="btn btn-outline" onclick="document.getElementById('si-modal').classList.remove('active')">Cancel</button>
+            </div>
+        </div>
+    </div>
+
+<!-- ===== CONFIG SCREEN ===== -->
+<div id="screen-config" class="screen">
+    <div class="card">
+        <div class="card-header">Model Settings</div>
+        <div class="card-body">
+            <div class="config-section">
+                <div class="form-row">
+                    <label>Circuit</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="circuit" value="OC" checked onchange="onCircuitChange()"> OC</label>
+                        <label><input type="radio" name="circuit" value="CCR" onchange="onCircuitChange()"> CCR</label>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <label>Deco Model</label>
+                    <select id="cfg-model" onchange="onModelChange()">
+                        <option value="ZHLC_GF" selected>ZH-L16C GF</option>
+                        <option value="ZHLB_GF">ZH-L16B GF</option>
+                        <option value="VPMA">VPM-A</option>
+                        <option value="VPMB">VPM-B</option>
+                        <option value="VPMBE">VPM-B/E</option>
+                        <option value="VPMB_GFS">VPM-B/GFS</option>
+                        <option value="VPMBFBO">VPM-B/FBO</option>
+                    </select>
+                </div>
+                <div class="form-row" id="cfg-conservatism-row">
+                    <label>Conservatism</label>
+                    <input type="number" id="cfg-conservatism" value="0" min="0" max="5" step="1">
+                    <span>(0-5)</span>
+                </div>
+                <div class="form-row gf-row">
+                    <label>GF Lo</label>
+                    <input type="number" id="cfg-gflo" value="30" min="5" max="100" step="5">
+                    <span>%</span>
+                </div>
+                <div class="form-row gf-row">
+                    <label>GF Hi</label>
+                    <input type="number" id="cfg-gfhi" value="85" min="5" max="100" step="5">
+                    <span>%</span>
+                </div>
+                <div class="form-row gfs-row" style="display:none">
+                    <label>GFS Hi</label>
+                    <input type="number" id="cfg-gfs" value="85" min="70" max="100" step="5">
+                    <span>%</span>
+                </div>
+                <div class="form-row">
+                    <label>O2 Narcotic</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="oxynarc" value="0" checked> No</label>
+                        <label><input type="radio" name="oxynarc" value="1"> Yes</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">Unit Settings</div>
+        <div class="card-body">
+            <div class="form-row">
+                <label>Depth Units</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="units" value="metric" checked> Meter</label>
+                    <label><input type="radio" name="units" value="imperial"> Feet</label>
+                </div>
+            </div>
+            <div class="form-row">
+                <label>Water Type</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="water" value="0" checked> Salt</label>
+                    <label><input type="radio" name="water" value="1"> Fresh</label>
+                </div>
+            </div>
+            <div class="form-row">
+                <label>Altitude (m)</label>
+                <input type="number" id="cfg-altitude" value="0" min="0" max="4000" step="100">
+            </div>
+            <div class="form-row">
+                <label>Acclimatized (m)</label>
+                <input type="number" id="cfg-acclim" value="0" min="0" max="4000" step="100">
+            </div>
+            <div class="form-row">
+                <label>Gas Volume</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="gasvol" value="ltr" checked> Liter</label>
+                    <label><input type="radio" name="gasvol" value="cuft"> CuFt</label>
+                </div>
+            </div>
+            <div class="form-row">
+                <label>Pressure Units</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="press-units" value="bar" checked> BAR</label>
+                    <label><input type="radio" name="press-units" value="psi"> PSI</label>
+                </div>
+            </div>
+            <div class="form-row">
+                <label>Gauge Type</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="gaugetype" value="0"> Simple</label>
+                    <label><input type="radio" name="gaugetype" value="1" checked> Digital</label>
+                </div>
+            </div>
+            <div class="form-row">
+                <label>Temperature</label>
+                <input type="number" id="cfg-temperature" value="20" min="0" max="35">
+                <span>°C</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">Descent / Ascent Rates</div>
+        <div class="card-body">
+            <div class="form-row">
+                <label>Descent Rate</label>
+                <input type="number" id="cfg-descent" value="22" min="1" max="99">
+                <span id="rate-unit">m/min</span>
+            </div>
+            <div class="form-row">
+                <label>Ascent Rate</label>
+                <input type="number" id="cfg-ascent" value="9" min="1" max="30">
+                <span id="rate-unit2">m/min</span>
+            </div>
+            <div class="form-row">
+                <label>Deco Ascent Rate</label>
+                <input type="number" id="cfg-deco-ascent" value="9" min="1" max="10">
+                <span id="rate-unit3">m/min</span>
+            </div>
+            <div class="form-row">
+                <label>Surface Ascent Rate</label>
+                <input type="number" id="cfg-surface-ascent" value="9" min="1" max="10">
+                <span id="rate-unit4">m/min</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">Deco Stop Settings</div>
+        <div class="card-body">
+            <div class="form-row">
+                <label>Step Size</label>
+                <select id="cfg-step">
+                    <option value="3" selected>3</option>
+                    <option value="6">6</option>
+                </select>
+                <span class="depth-unit">m</span>
+            </div>
+            <div class="form-row">
+                <label>Last Stop (OC)</label>
+                <select id="cfg-laststop">
+                    <option value="3" selected>3</option>
+                    <option value="6">6</option>
+                </select>
+                <span class="depth-unit">m</span>
+            </div>
+            <div class="form-row ccr-field" style="display:none">
+                <label>Last Stop (CCR)</label>
+                <select id="cfg-laststop-ccr">
+                    <option value="3" selected>3</option>
+                    <option value="6">6</option>
+                    <option value="9">9</option>
+                </select>
+                <span class="depth-unit">m</span>
+            </div>
+            <div class="form-row">
+                <label>Min Stop Time</label>
+                <select id="cfg-stoptime">
+                    <option value="1" selected>1 min</option>
+                    <option value="0.5">30 sec</option>
+                    <option value="0.16666667">10 sec</option>
+                    <option value="0.01666667">1 sec</option>
+                </select>
+            </div>
+            <div class="form-row">
+                <label>ppO2 Deco Swap</label>
+                <select id="cfg-ppo2">
+                    <option value="1.2">1.2</option>
+                    <option value="1.3">1.3</option>
+                    <option value="1.4">1.4</option>
+                    <option value="1.5">1.5</option>
+                    <option value="1.6" selected>1.6</option>
+                </select>
+                <span>bar</span>
+            </div>
+            <div class="form-row">
+                <label>ppO2 <=28% mix</label>
+                <select id="cfg-ppo2-low">
+                    <option value="1.2">1.2</option>
+                    <option value="1.3">1.3</option>
+                    <option value="1.4" selected>1.4</option>
+                    <option value="1.5">1.5</option>
+                    <option value="1.6">1.6</option>
+                </select>
+                <span>bar</span>
+            </div>
+            <div class="form-row">
+                <label>ppO2 28-45% mix</label>
+                <select id="cfg-ppo2-mid">
+                    <option value="1.2">1.2</option>
+                    <option value="1.3">1.3</option>
+                    <option value="1.4">1.4</option>
+                    <option value="1.5" selected>1.5</option>
+                    <option value="1.6">1.6</option>
+                </select>
+                <span>bar</span>
+            </div>
+            <div class="form-row">
+                <label>ppO2 45-99% mix</label>
+                <select id="cfg-ppo2-high">
+                    <option value="1.2">1.2</option>
+                    <option value="1.3">1.3</option>
+                    <option value="1.4">1.4</option>
+                    <option value="1.5">1.5</option>
+                    <option value="1.6" selected>1.6</option>
+                </select>
+                <span>bar</span>
+            </div>
+            <div class="form-row">
+                <label>ppO2 Bottom Max</label>
+                <select id="cfg-ppo2-bottom">
+                    <option value="1.2">1.2</option>
+                    <option value="1.3">1.3</option>
+                    <option value="1.4" selected>1.4</option>
+                    <option value="1.5">1.5</option>
+                    <option value="1.6">1.6</option>
+                </select>
+                <span>bar</span>
+            </div>
+            <div class="form-row">
+                <label>O2 100% Max Depth</label>
+                <input type="number" id="cfg-o2-maxdepth" value="6" min="3" max="9">
+                <span class="depth-unit">m</span>
+            </div>
+            <div class="form-row">
+                <label>First Stop 30sec</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="firststop30" value="0" checked> Off</label>
+                    <label><input type="radio" name="firststop30" value="1"> On</label>
+                </div>
+            </div>
+            <div class="form-row">
+                <label>First Stop Double Step</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="firststopdbl" value="0" checked> Off</label>
+                    <label><input type="radio" name="firststopdbl" value="1"> On</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card ccr-field" style="display:none">
+        <div class="card-header">CCR Settings</div>
+        <div class="card-body">
+            <div class="form-row">
+                <label>Default Setpoint</label>
+                <input type="number" id="cfg-ccr-default-sp" value="1.3" min="0.5" max="1.6" step="0.1">
+                <span>bar</span>
+            </div>
+            <div class="form-row">
+                <label>SP Units</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="spunits" value="bar" checked> BAR</label>
+                    <label><input type="radio" name="spunits" value="ata"> ATA</label>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">RMV / Gas Planning</div>
+        <div class="card-body">
+            <div class="form-row">
+                <label>Bottom RMV</label>
+                <input type="number" id="cfg-rmv-bottom" value="22" min="5" max="50">
+                <span id="rmv-unit">L/min</span>
+            </div>
+            <div class="form-row">
+                <label>Deco RMV</label>
+                <input type="number" id="cfg-rmv-deco" value="20" min="5" max="50">
+                <span id="rmv-unit2">L/min</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">Extended Stops</div>
+        <div class="card-body">
+            <div class="form-row">
+                <label>Extended Stops</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="extstops" value="0" checked onchange="onExtStopsChange()"> Off</label>
+                    <label><input type="radio" name="extstops" value="1" onchange="onExtStopsChange()"> On</label>
+                </div>
+            </div>
+            <div class="form-row ext-stop-field" style="display:none">
+                <label>Add time to stop</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="extadd" value="0" checked> Off</label>
+                    <label><input type="radio" name="extadd" value="1"> On</label>
+                </div>
+            </div>
+            <div class="form-row ext-stop-field" style="display:none">
+                <label>All mix changes</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="extallmix" value="0" checked> Off</label>
+                    <label><input type="radio" name="extallmix" value="1"> On</label>
+                </div>
+            </div>
+            <div class="form-row ext-stop-field" style="display:none">
+                <label>O2 window effect</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="exto2window" value="0" checked> Off</label>
+                    <label><input type="radio" name="exto2window" value="1"> On</label>
+                </div>
+            </div>
+            <div class="ext-stop-swap-block" style="display:none; margin-top:8px; padding-top:8px; border-top:1px solid var(--divider);">
+                <div style="font-size:12px; color:var(--text-secondary); margin-bottom:6px;">Include extended stops with deco mix swaps</div>
+                <div class="form-row">
+                    <label id="cfg-ext-shallow-label">7..30 m</label>
+                    <input type="number" id="cfg-ext-shallow" value="2" min="0" max="10">
+                    <span>min</span>
+                </div>
+                <div class="form-row">
+                    <label id="cfg-ext-deep-label">30 + m</label>
+                    <input type="number" id="cfg-ext-deep" value="1" min="0" max="5">
+                    <span>min</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">Warning Thresholds</div>
+        <div class="card-body">
+            <div class="form-row">
+                <label>ppO2 High</label>
+                <div class="radio-group" style="flex:0 0 auto; margin-right:8px">
+                    <label><input type="checkbox" id="cfg-warn-ppo2hi-on" checked></label>
+                </div>
+                <input type="number" id="cfg-warn-ppo2hi" value="1.6" min="1.0" max="2.0" step="0.1" style="width:60px">
+                <span>bar</span>
+            </div>
+            <div class="form-row">
+                <label>ppO2 Low</label>
+                <div class="radio-group" style="flex:0 0 auto; margin-right:8px">
+                    <label><input type="checkbox" id="cfg-warn-ppo2lo-on" checked></label>
+                </div>
+                <input type="number" id="cfg-warn-ppo2lo" value="0.16" min="0.1" max="0.5" step="0.01" style="width:60px">
+                <span>bar</span>
+            </div>
+            <div class="form-row">
+                <label>CNS % above</label>
+                <div class="radio-group" style="flex:0 0 auto; margin-right:8px">
+                    <label><input type="checkbox" id="cfg-warn-cns-on" checked></label>
+                </div>
+                <input type="number" id="cfg-cns" value="80" min="1" max="200" style="width:60px">
+                <span>%</span>
+            </div>
+            <div class="form-row">
+                <label>OTU's above</label>
+                <div class="radio-group" style="flex:0 0 auto; margin-right:8px">
+                    <label><input type="checkbox" id="cfg-warn-otu-on" checked></label>
+                </div>
+                <input type="number" id="cfg-otu" value="300" min="1" max="999" style="width:60px">
+            </div>
+            <div class="form-row">
+                <label>IBCD N2</label>
+                <div class="radio-group" style="flex:0 0 auto; margin-right:8px">
+                    <label><input type="checkbox" id="cfg-warn-ibcdn2-on" checked></label>
+                </div>
+                <input type="number" id="cfg-warn-ibcdn2" value="0.5" min="0.5" max="5.0" step="0.1" style="width:60px">
+                <span>bar</span>
+            </div>
+            <div class="form-row">
+                <label>IBCD He</label>
+                <div class="radio-group" style="flex:0 0 auto; margin-right:8px">
+                    <label><input type="checkbox" id="cfg-warn-ibcdhe-on" checked></label>
+                </div>
+                <input type="number" id="cfg-warn-ibcdhe" value="0.5" min="0.5" max="5.0" step="0.1" style="width:60px">
+                <span>bar</span>
+            </div>
+            <div class="form-row ccr-field" style="display:none">
+                <label>CCR diluent check</label>
+                <div class="radio-group" style="flex:0 0 auto; margin-right:8px">
+                    <label><input type="checkbox" id="cfg-warn-ccrdil-on" checked></label>
+                </div>
+                <span style="color:var(--text-secondary); font-size:12px">Check diluent ppO2 vs setpoint</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="card ccr-field" style="display:none">
+        <div class="card-header">Bailout Settings</div>
+        <div class="card-body">
+            <div class="form-row">
+                <label>Bailout Plan</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="bailout" value="0" checked onchange="onBailoutChange()"> Off</label>
+                    <label><input type="radio" name="bailout" value="1" onchange="onBailoutChange()"> On</label>
+                </div>
+            </div>
+            <div class="form-row bail-field" style="display:none">
+                <label>Bailout Model</label>
+                <select id="cfg-bail-model">
+                    <option value="VPMB">VPM-B</option>
+                    <option value="VPMBE">VPM-B/E</option>
+                    <option value="VPMBFBO">VPM-B/FBO</option>
+                    <option value="ZHLC_GF" selected>ZH-L16C GF</option>
+                </select>
+            </div>
+            <div class="form-row bail-field" style="display:none">
+                <label>Bailout GF Lo</label>
+                <input type="number" id="cfg-bail-gflo" value="30" min="5" max="100" step="5">
+                <span>%</span>
+            </div>
+            <div class="form-row bail-field" style="display:none">
+                <label>Bailout GF Hi</label>
+                <input type="number" id="cfg-bail-gfhi" value="85" min="5" max="100" step="5">
+                <span>%</span>
+            </div>
+            <div class="form-row bail-field" style="display:none">
+                <label>Bailout RMV</label>
+                <input type="number" id="cfg-bail-rmv" value="30" min="10" max="60">
+                <span id="bail-rmv-unit">L/min</span>
+            </div>
+            <div class="form-row bail-field" style="display:none">
+                <label>Extra Bottom Min</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="bailextra" value="0" checked> Off</label>
+                    <label><input type="radio" name="bailextra" value="1"> On</label>
+                </div>
+            </div>
+            <div class="form-row bail-field" style="display:none">
+                <label>Extra Time (min)</label>
+                <input type="number" id="cfg-bail-extra-time" value="1" min="1" max="10">
+            </div>
+            <div class="form-row bail-field" style="display:none">
+                <label>Bailout GFS Hi</label>
+                <input type="number" id="cfg-bail-gfs" value="85" min="70" max="100" step="5">
+                <span>%</span>
+            </div>
+            <div class="form-row bail-field" style="display:none">
+                <label>Bailout Dive #</label>
+                <input type="number" id="cfg-bail-divenum" value="1" min="1" max="10">
+            </div>
+            <div class="form-row bail-field" style="display:none">
+                <label>Cave Type Bail</label>
+                <div class="radio-group">
+                    <label><input type="radio" name="bailcave" value="0" checked onchange="onBailCaveChange()"> Off</label>
+                    <label><input type="radio" name="bailcave" value="1" onchange="onBailCaveChange()"> On</label>
+                </div>
+            </div>
+            <div class="form-row bail-cave-field" style="display:none">
+                <label>Return Portion</label>
+                <select id="cfg-bail-cave-portion">
+                    <option value="25">25%</option>
+                    <option value="33" selected>33%</option>
+                    <option value="50">50%</option>
+                    <option value="67">67%</option>
+                    <option value="75">75%</option>
+                    <option value="100">100%</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">Surface Interval / Multi-dive</div>
+        <div class="card-body">
+            <div class="form-row" style="display:none">
+                <label>Surface Interval</label>
+                <input type="number" id="cfg-si" value="0" min="0" max="1440">
+                <span>min (0 = off)</span>
+            </div>
+            <div class="form-row">
+                <label>2-Week OTU</label>
+                <input type="number" id="cfg-2week-otu" value="0" min="0" max="9999">
+                <span>cumulative</span>
+            </div>
+            <div class="form-row">
+                <label>Travel Gas O2%</label>
+                <input type="number" id="cfg-travel-o2" value="21" min="1" max="100">
+                <span>%</span>
+            </div>
+            <div class="form-row">
+                <label>Travel Gas He%</label>
+                <input type="number" id="cfg-travel-he" value="0" min="0" max="99">
+                <span>%</span>
+            </div>
+        </div>
+    </div>
+
+    <div style="display:flex; justify-content:center; margin:16px 0 8px;">
+        <button class="btn btn-primary" onclick="resetConfig()">Reset Configuration</button>
+    </div>
+
+</div>
+
+<!-- ===== TOOLS SCREEN ===== -->
+<div id="screen-tools" class="screen">
+
+    <!-- Best Mix -->
+    <div id="tool-bestmix" class="tool-panel">
+        <div class="card">
+            <div class="card-header">Best Mix Calculator</div>
+            <div class="card-body">
+                <div class="form-row">
+                    <label>Depth</label>
+                    <input type="number" id="bm-depth" value="30" min="1" max="300">
+                    <span class="depth-unit">m</span>
+                </div>
+                <div class="form-row">
+                    <label>ppO2 Limit</label>
+                    <select id="bm-ppo2">
+                        <option value="1.2">1.2</option>
+                        <option value="1.3">1.3</option>
+                        <option value="1.4" selected>1.4</option>
+                        <option value="1.5">1.5</option>
+                        <option value="1.6">1.6</option>
+                    </select>
+                    <span>bar</span>
+                </div>
+                <div class="form-row">
+                    <label>Trimix</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="bm-trimix" value="0" checked onchange="toggleBmTrimix()"> No</label>
+                        <label><input type="radio" name="bm-trimix" value="1" onchange="toggleBmTrimix()"> Yes</label>
+                    </div>
+                </div>
+                <div class="form-row" id="bm-ead-row" style="display:none">
+                    <label>EAD Depth</label>
+                    <input type="number" id="bm-ead" value="30" min="1" max="200">
+                    <span class="depth-unit">m</span>
+                </div>
+                <div class="tool-result" id="bm-result">
+                    <div class="result-summary">
+                        <div class="result-stat">
+                            <div class="stat-value" id="bm-result-value">--</div>
+                            <div class="stat-label">Best Mix</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- EAD/MOD -->
+    <div id="tool-eadmod" class="tool-panel">
+        <div class="card">
+            <div class="card-header">EAD / MOD / END Calculator</div>
+            <div class="card-body">
+                <div class="form-row">
+                    <label>O2</label>
+                    <input type="number" id="em-o2" value="21" min="1" max="100">
+                    <span>%</span>
+                </div>
+                <div class="form-row">
+                    <label>He</label>
+                    <input type="number" id="em-he" value="0" min="0" max="99">
+                    <span>%</span>
+                </div>
+                <div class="form-row">
+                    <label>Depth</label>
+                    <input type="number" id="em-depth" value="30" min="1" max="300">
+                    <span class="depth-unit">m</span>
+                </div>
+                <div class="form-row">
+                    <label>ppO2 for MOD</label>
+                    <select id="em-ppo2">
+                        <option value="1.2">1.2</option>
+                        <option value="1.3">1.3</option>
+                        <option value="1.4" selected>1.4</option>
+                        <option value="1.5">1.5</option>
+                        <option value="1.6">1.6</option>
+                    </select>
+                    <span>bar</span>
+                </div>
+                <div class="form-row">
+                    <label>Setpoint (CCR)</label>
+                    <input type="number" id="em-sp" value="0" min="0" max="1.6" step="0.1">
+                    <span>bar (0 = OC)</span>
+                </div>
+                <div id="em-results" class="tool-result" style="margin-top:12px;">
+                    <div class="result-summary">
+                        <div class="result-stat">
+                            <div class="stat-value" id="em-mod">--</div>
+                            <div class="stat-label">MOD</div>
+                        </div>
+                        <div class="result-stat">
+                            <div class="stat-value" id="em-ead">--</div>
+                            <div class="stat-label">EAD</div>
+                        </div>
+                        <div class="result-stat">
+                            <div class="stat-value" id="em-end">--</div>
+                            <div class="stat-label">END</div>
+                        </div>
+                        <div class="result-stat">
+                            <div class="stat-value" id="em-eadd">--</div>
+                            <div class="stat-label">EADD</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nitrox Mixer -->
+    <div id="tool-nitrox" class="tool-panel">
+        <div class="card">
+            <div class="card-header">Nitrox Mixer</div>
+            <div class="card-body">
+                <div class="form-row">
+                    <label>Start Pressure</label>
+                    <input type="number" id="nx-startP" value="50" min="0" max="5000">
+                    <span class="press-unit">bar</span>
+                </div>
+                <div class="form-row">
+                    <label>Start O2</label>
+                    <input type="number" id="nx-startO2" value="21" min="0" max="100">
+                    <span>%</span>
+                </div>
+                <div class="form-row">
+                    <label>End Pressure</label>
+                    <input type="number" id="nx-endP" value="200" min="0" max="5000">
+                    <span class="press-unit">bar</span>
+                </div>
+                <div class="form-row">
+                    <label>End O2</label>
+                    <input type="number" id="nx-endO2" value="32" min="1" max="100">
+                    <span>%</span>
+                </div>
+                <div id="nx-results" class="tool-result" style="margin-top:12px;">
+                    <div class="result-summary">
+                        <div class="result-stat">
+                            <div class="stat-value" id="nx-addO2">--</div>
+                            <div class="stat-label">Add O2</div>
+                        </div>
+                        <div class="result-stat">
+                            <div class="stat-value" id="nx-addAir">--</div>
+                            <div class="stat-label">Add Air</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Trimix Mixer -->
+    <div id="tool-trimix" class="tool-panel">
+        <div class="card">
+            <div class="card-header">Trimix Mixer</div>
+            <div class="card-body">
+                <div class="form-row">
+                    <label>Start Pressure</label>
+                    <input type="number" id="tx-startP" value="0" min="0" max="5000">
+                    <span class="press-unit">bar</span>
+                </div>
+                <div class="form-row">
+                    <label>Start O2</label>
+                    <input type="number" id="tx-startO2" value="21" min="0" max="100">
+                    <span>%</span>
+                </div>
+                <div class="form-row">
+                    <label>Start He</label>
+                    <input type="number" id="tx-startHe" value="0" min="0" max="100">
+                    <span>%</span>
+                </div>
+                <div class="form-row">
+                    <label>End Pressure</label>
+                    <input type="number" id="tx-endP" value="200" min="0" max="5000">
+                    <span class="press-unit">bar</span>
+                </div>
+                <div class="form-row">
+                    <label>End O2</label>
+                    <input type="number" id="tx-endO2" value="21" min="1" max="100">
+                    <span>%</span>
+                </div>
+                <div class="form-row">
+                    <label>End He</label>
+                    <input type="number" id="tx-endHe" value="35" min="0" max="100">
+                    <span>%</span>
+                </div>
+                <div class="form-row">
+                    <label>Fill Order</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="tx-order" value="he" checked> He first</label>
+                        <label><input type="radio" name="tx-order" value="o2"> O2 first</label>
+                    </div>
+                </div>
+                <div id="tx-results" class="tool-result" style="margin-top:12px;">
+                    <div class="result-summary">
+                        <div class="result-stat">
+                            <div class="stat-value" id="tx-addHe">--</div>
+                            <div class="stat-label">Add He</div>
+                        </div>
+                        <div class="result-stat">
+                            <div class="stat-value" id="tx-addO2">--</div>
+                            <div class="stat-label">Add O2</div>
+                        </div>
+                        <div class="result-stat">
+                            <div class="stat-value" id="tx-addAir">--</div>
+                            <div class="stat-label">Add Air</div>
+                        </div>
+                    </div>
+                    <div class="result-stat" style="margin-top:8px;">
+                        <div class="stat-value" id="tx-testO2">--</div>
+                        <div class="stat-label">Test O2 % (after He)</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Up -->
+    <div id="tool-topup" class="tool-panel">
+        <div class="card">
+            <div class="card-header">Top Up Calculator</div>
+            <div class="card-body">
+                <div class="form-row">
+                    <label>Current Pressure</label>
+                    <input type="number" id="tu-startP" value="100" min="0" max="5000">
+                    <span class="press-unit">bar</span>
+                </div>
+                <div class="form-row">
+                    <label>Current O2</label>
+                    <input type="number" id="tu-startO2" value="32" min="0" max="100">
+                    <span>%</span>
+                </div>
+                <div class="form-row">
+                    <label>Current He</label>
+                    <input type="number" id="tu-startHe" value="0" min="0" max="100">
+                    <span>%</span>
+                </div>
+                <div class="form-row">
+                    <label>Add Pressure</label>
+                    <input type="number" id="tu-addP" value="100" min="0" max="5000">
+                    <span class="press-unit">bar</span>
+                </div>
+                <div class="form-row">
+                    <label>Top Gas O2</label>
+                    <input type="number" id="tu-topO2" value="21" min="0" max="100">
+                    <span>%</span>
+                </div>
+                <div class="form-row">
+                    <label>Top Gas He</label>
+                    <input type="number" id="tu-topHe" value="0" min="0" max="100">
+                    <span>%</span>
+                </div>
+                <div id="tu-results" class="tool-result" style="margin-top:12px;">
+                    <div class="result-summary">
+                        <div class="result-stat">
+                            <div class="stat-value" id="tu-finalO2">--</div>
+                            <div class="stat-label">Final O2 %</div>
+                        </div>
+                        <div class="result-stat">
+                            <div class="stat-value" id="tu-finalHe">--</div>
+                            <div class="stat-label">Final He %</div>
+                        </div>
+                        <div class="result-stat">
+                            <div class="stat-value" id="tu-finalP">--</div>
+                            <div class="stat-label">Final Pressure, <span class="press-unit">bar</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Capacity -->
+    <div id="tool-capacity" class="tool-panel">
+        <div class="card">
+            <div class="card-header">Tank Capacity / Equalization</div>
+            <div class="card-body">
+                <h3 style="font-size:13px; color:var(--primary); margin-bottom:8px;">Supply Tank</h3>
+                <div class="form-row">
+                    <label>Water Capacity</label>
+                    <input type="number" id="cap-supplySize" value="50" min="1" max="500" step="0.1">
+                    <span class="vol-unit">liters</span>
+                </div>
+                <div class="form-row">
+                    <label>Pressure</label>
+                    <input type="number" id="cap-supplyP" value="200" min="0" max="5000">
+                    <span class="press-unit">bar</span>
+                </div>
+                <h3 style="font-size:13px; color:var(--primary); margin:12px 0 8px;">Receiving Tank</h3>
+                <div class="form-row">
+                    <label>Water Capacity</label>
+                    <input type="number" id="cap-recvSize" value="12" min="1" max="500" step="0.1">
+                    <span class="vol-unit">liters</span>
+                </div>
+                <div class="form-row">
+                    <label>Pressure</label>
+                    <input type="number" id="cap-recvP" value="50" min="0" max="5000">
+                    <span class="press-unit">bar</span>
+                </div>
+                <div id="cap-results" class="tool-result" style="margin-top:12px;">
+                    <div class="result-summary">
+                        <div class="result-stat">
+                            <div class="stat-value" id="cap-eqP">--</div>
+                            <div class="stat-label">Equalized Pressure, <span class="press-unit">bar</span></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Density -->
+    <div id="tool-density" class="tool-panel">
+        <div class="card">
+            <div class="card-header">Gas Density Calculator</div>
+            <div class="card-body">
+                <div class="form-row">
+                    <label>O2</label>
+                    <input type="number" id="dens-o2" value="21" min="1" max="100">
+                    <span>%</span>
+                </div>
+                <div class="form-row">
+                    <label>He</label>
+                    <input type="number" id="dens-he" value="0" min="0" max="100">
+                    <span>%</span>
+                </div>
+                <div class="form-row">
+                    <label>Depth</label>
+                    <input type="number" id="dens-depth" value="30" min="0" max="300">
+                    <span class="depth-unit">m</span>
+                </div>
+                <div class="form-row">
+                    <label>Setpoint (CCR)</label>
+                    <input type="number" id="dens-sp" value="0" min="0" max="1.6" step="0.1">
+                    <span>bar (0 = OC)</span>
+                </div>
+                <div id="dens-results" class="tool-result" style="margin-top:12px;">
+                    <div class="result-summary">
+                        <div class="result-stat">
+                            <div class="stat-value" id="dens-val">--</div>
+                            <div class="stat-label">g/L</div>
+                        </div>
+                        <div class="result-stat">
+                            <div class="stat-value" id="dens-ata">--</div>
+                            <div class="stat-label">ATA</div>
+                        </div>
+                    </div>
+                    <div id="dens-warning" class="warning" style="display:none"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== ABOUT SCREEN ===== -->
+<div id="screen-about" class="screen">
+    <div class="card">
+        <div class="card-body about-content">
+            <h2>ApexDeco</h2>
+            <p>Dive Decompression Planner</p>
+            <p style="margin-top:12px; font-size:12px; color:var(--text-secondary);">
+                <strong>Math verification tests.</strong> The engine is validated against the original
+                Android MultiDeco binary (<code>libmultideco.so</code>). Each gas-mixing tool (Best Mix,
+                EAD/MOD, Nitrox, Trimix, Top-up, Capacity, Density) and every decompression primitive
+                (ZH-L16C Schreiner loading, Gradient Factor ceiling, VPM-B boundary/critical volume,
+                CCR setpoint, extended stops, OTU/CNS, fresh/salt water SLP behavior) is covered by an
+                automated test with tolerance checks against Android-reference values. You can run the
+                full test suite in your browser:
+                <a href="tests.html" target="_blank" rel="noopener">open tests.html</a>.
+            </p>
+            <p style="margin-top:12px; font-size:12px; color:var(--text-secondary);">
+                Based on the Bühlmann ZH-L16C algorithm with Gradient Factors.<br>
+                Implements decompression planning for OC diving.<br>
+                Includes gas mixing tools: Best Mix, EAD/MOD, Nitrox, Trimix, Top-up, Capacity, Density.
+            </p>
+            <p style="margin-top:12px; font-size:12px; color:var(--text-secondary);">
+                Copyright &copy; Alexey Vlasov. Licensed under the
+                <a href="https://www.gnu.org/licenses/agpl-3.0.html" target="_blank" rel="noopener">GNU Affero General Public License v3.0 (AGPLv3)</a>.
+            </p>
+            <div class="warning" style="margin-top:16px; text-align:left;">
+                <strong>WARNING!</strong> THERE IS ALWAYS A RISK OF DECOMPRESSION SICKNESS (DCS) FOR ANY DIVE PROFILE EVEN IF YOU FOLLOW THE DIVE PLAN PRESCRIBED BY DIVE TABLES. NO PROCEDURE OR DIVE TABLE WILL PREVENT THE POSSIBILITY OF DCS OR OXYGEN TOXICITY! An individual's physiological make up can vary from day to day. You are strongly advised to remain well within the exposure limits provided by the planner to minimize the risk of DCS.
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Level Modal -->
+<div id="level-modal" class="modal-overlay" onclick="if(event.target===this)this.classList.remove('active')">
+    <div class="modal">
+        <h3 id="level-modal-title">Add Bottom Level</h3>
+        <div class="form-row">
+            <label>Depth</label>
+            <input type="number" id="lvl-depth" value="30" min="1" max="300">
+            <span class="depth-unit">m</span>
+        </div>
+        <div class="form-row">
+            <label>Time (min)</label>
+            <input type="number" id="lvl-time" value="20" min="1" max="999">
+        </div>
+        <div class="form-row">
+            <label>O2 %</label>
+            <input type="number" id="lvl-o2" value="21" min="1" max="100">
+        </div>
+        <div class="form-row">
+            <label>He %</label>
+            <input type="number" id="lvl-he" value="0" min="0" max="99">
+        </div>
+        <div class="form-row ccr-field" style="display:none">
+            <label>Setpoint</label>
+            <input type="number" id="lvl-sp" value="1.3" min="0.5" max="1.6" step="0.1">
+            <span>bar</span>
+        </div>
+        <div class="btn-group" style="margin-top:12px; justify-content:center;">
+            <button class="btn btn-outline" onclick="saveLevelModal()">Save</button>
+            <button class="btn btn-outline" onclick="document.getElementById('level-modal').classList.remove('active')">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- Add Deco Modal -->
+<div id="deco-modal" class="modal-overlay" onclick="if(event.target===this)this.classList.remove('active')">
+    <div class="modal">
+        <h3 id="deco-modal-title">Add Deco Mix</h3>
+        <div class="form-row">
+            <label>O2 %</label>
+            <input type="number" id="deco-o2" value="50" min="1" max="100">
+        </div>
+        <div class="form-row">
+            <label>He %</label>
+            <input type="number" id="deco-he" value="0" min="0" max="99">
+        </div>
+        <div class="btn-group" style="margin-top:12px; justify-content:center;">
+            <button class="btn btn-outline" onclick="saveDecoModal()">Save</button>
+            <button class="btn btn-outline" onclick="document.getElementById('deco-modal').classList.remove('active')">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<script src="highstock.js"></script>
+<script src="chart-theme.js?v=35"></script>
+<script src="profile-chart.js?v=49"></script>
+<script src="deco-engine.js?v=54"></script>
+<script src="vpm-engine.js?v=58"></script>
+<!-- Tools (split per calculator) -->
+<script src="tool-utils.js?v=35"></script>
+<script src="tool-bestmix.js?v=43"></script>
+<script src="tool-eadmod.js?v=35"></script>
+<script src="tool-nitrox.js?v=35"></script>
+<script src="tool-trimix.js?v=35"></script>
+<script src="tool-topup.js?v=35"></script>
+<script src="tool-capacity.js?v=35"></script>
+<script src="tool-density.js?v=35"></script>
+<!-- App (split by concern) -->
+<script src="app-modal.js?v=40"></script>
+<script src="app-state.js?v=35"></script>
+<script src="app-navigation.js?v=49"></script>
+<script src="app-levels.js?v=38"></script>
+<script src="app-debug.js?v=44"></script>
+<script src="app-result.js?v=51"></script>
+<script src="app-calculation.js?v=47"></script>
+<script src="app-config.js?v=42"></script>
+<script src="app-tools-ui.js?v=35"></script>
+<script src="app-init.js?v=35"></script>
+</body>
+</html>
