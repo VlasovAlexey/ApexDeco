@@ -1,0 +1,38 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.avlasov.apexdeco.app-mergeDebugResources-19:/values-v16/values-v16.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\a.vlasov\\.gradle\\caches\\8.13\\transforms\\ea7dbe05d7d5e2008bb37d510fc240b2\\transformed\\core-1.12.0\\res\\values-v16\\values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "65",
+                        "endOffsets": "116"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\a.vlasov\\.gradle\\caches\\8.13\\transforms\\8c6c9d43fd5c008c8459ff08f1a9e7c3\\transformed\\appcompat-1.6.1\\res\\values-v16\\values-v16.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "5",
+                        "endColumns": "12",
+                        "endOffsets": "223"
+                    },
+                    "to": {
+                        "startLines": "3",
+                        "startColumns": "4",
+                        "startOffsets": "121",
+                        "endLines": "6",
+                        "endColumns": "12",
+                        "endOffsets": "289"
+                    }
+                }
+            ]
+        }
+    ]
+}

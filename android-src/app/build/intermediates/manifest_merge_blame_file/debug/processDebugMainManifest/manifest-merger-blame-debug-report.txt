@@ -1,0 +1,108 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.avlasov.apexdeco"
+4    android:versionCode="1"
+5    android:versionName="1.0" >
+6
+7    <uses-sdk
+8        android:minSdkVersion="30"
+9        android:targetSdkVersion="35" />
+10
+11    <uses-permission android:name="android.permission.INTERNET" />
+11-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:4:5-67
+11-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:4:22-64
+12    <uses-permission android:name="android.permission.VIBRATE" />
+12-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:5:5-66
+12-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:5:22-63
+13
+14    <queries>
+14-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:7:5-12:15
+15        <intent>
+15-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:8:9-11:18
+16            <action android:name="android.intent.action.VIEW" />
+16-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:9:13-65
+16-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:9:21-62
+17
+18            <data android:scheme="https" />
+18-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:10:13-44
+18-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:10:19-41
+19        </intent>
+20    </queries>
+21
+22    <permission
+22-->[androidx.core:core:1.12.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\ea7dbe05d7d5e2008bb37d510fc240b2\transformed\core-1.12.0\AndroidManifest.xml:22:5-24:47
+23        android:name="com.avlasov.apexdeco.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+23-->[androidx.core:core:1.12.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\ea7dbe05d7d5e2008bb37d510fc240b2\transformed\core-1.12.0\AndroidManifest.xml:23:9-81
+24        android:protectionLevel="signature" />
+24-->[androidx.core:core:1.12.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\ea7dbe05d7d5e2008bb37d510fc240b2\transformed\core-1.12.0\AndroidManifest.xml:24:9-44
+25
+26    <uses-permission android:name="com.avlasov.apexdeco.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+26-->[androidx.core:core:1.12.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\ea7dbe05d7d5e2008bb37d510fc240b2\transformed\core-1.12.0\AndroidManifest.xml:26:5-97
+26-->[androidx.core:core:1.12.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\ea7dbe05d7d5e2008bb37d510fc240b2\transformed\core-1.12.0\AndroidManifest.xml:26:22-94
+27
+28    <application
+28-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:14:5-33:19
+29        android:allowBackup="true"
+29-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:15:9-35
+30        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+30-->[androidx.core:core:1.12.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\ea7dbe05d7d5e2008bb37d510fc240b2\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
+31        android:debuggable="true"
+32        android:extractNativeLibs="false"
+33        android:icon="@mipmap/ic_launcher"
+33-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:16:9-43
+34        android:label="@string/app_name"
+34-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:18:9-41
+35        android:roundIcon="@mipmap/ic_launcher_round"
+35-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:17:9-54
+36        android:supportsRtl="true"
+36-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:19:9-35
+37        android:theme="@style/Theme.ApexDeco" >
+37-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:20:9-46
+38        <activity
+38-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:22:9-32:20
+39            android:name="com.avlasov.apexdeco.MainActivity"
+39-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:23:13-41
+40            android:configChanges="orientation|screenSize|keyboardHidden"
+40-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:25:13-74
+41            android:exported="true"
+41-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:24:13-36
+42            android:screenOrientation="unspecified"
+42-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:26:13-52
+43            android:theme="@style/Theme.ApexDeco.Splash" >
+43-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:27:13-57
+44            <intent-filter>
+44-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:28:13-31:29
+45                <action android:name="android.intent.action.MAIN" />
+45-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:29:17-69
+45-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:29:25-66
+46
+47                <category android:name="android.intent.category.LAUNCHER" />
+47-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:30:17-77
+47-->E:\multideco\android-src\app\src\main\AndroidManifest.xml:30:27-74
+48            </intent-filter>
+49        </activity>
+50
+51        <provider
+51-->[androidx.emoji2:emoji2:1.2.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\714b52c967c491e9c76d623a4a8ea34f\transformed\emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+52            android:name="androidx.startup.InitializationProvider"
+52-->[androidx.emoji2:emoji2:1.2.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\714b52c967c491e9c76d623a4a8ea34f\transformed\emoji2-1.2.0\AndroidManifest.xml:25:13-67
+53            android:authorities="com.avlasov.apexdeco.androidx-startup"
+53-->[androidx.emoji2:emoji2:1.2.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\714b52c967c491e9c76d623a4a8ea34f\transformed\emoji2-1.2.0\AndroidManifest.xml:26:13-68
+54            android:exported="false" >
+54-->[androidx.emoji2:emoji2:1.2.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\714b52c967c491e9c76d623a4a8ea34f\transformed\emoji2-1.2.0\AndroidManifest.xml:27:13-37
+55            <meta-data
+55-->[androidx.emoji2:emoji2:1.2.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\714b52c967c491e9c76d623a4a8ea34f\transformed\emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+56                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+56-->[androidx.emoji2:emoji2:1.2.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\714b52c967c491e9c76d623a4a8ea34f\transformed\emoji2-1.2.0\AndroidManifest.xml:30:17-75
+57                android:value="androidx.startup" />
+57-->[androidx.emoji2:emoji2:1.2.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\714b52c967c491e9c76d623a4a8ea34f\transformed\emoji2-1.2.0\AndroidManifest.xml:31:17-49
+58            <meta-data
+58-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\040d0c8ab6d1b7d0789452b357a83a24\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:31:13-33:52
+59                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+59-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\040d0c8ab6d1b7d0789452b357a83a24\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:32:17-78
+60                android:value="androidx.startup" />
+60-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\040d0c8ab6d1b7d0789452b357a83a24\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:33:17-49
+61        </provider>
+62    </application>
+63
+64</manifest>
