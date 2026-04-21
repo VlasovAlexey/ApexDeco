@@ -1,9 +1,9 @@
 -- Merging decision tree log ---
 manifest
-ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:2:1-35:12
-INJECTED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:2:1-35:12
-INJECTED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:2:1-35:12
-INJECTED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:2:1-35:12
+ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:2:1-35:12
+INJECTED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:2:1-35:12
+INJECTED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:2:1-35:12
+INJECTED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:2:1-35:12
 MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\de376537ebdbfcd2b02999e92c4df33f\transformed\appcompat-resources-1.6.1\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.appcompat:appcompat:1.6.1] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\8c6c9d43fd5c008c8459ff08f1a9e7c3\transformed\appcompat-1.6.1\AndroidManifest.xml:17:1-22:12
 MERGED from [androidx.webkit:webkit:1.10.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\8bd8054dcefc24f7c682711c27d02e37\transformed\webkit-1.10.0\AndroidManifest.xml:2:1-7:12
@@ -34,36 +34,36 @@ MERGED from [androidx.lifecycle:lifecycle-livedata:2.0.0] C:\Users\a.vlasov\.gra
 MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.5.1] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\46cde9680a077990996e25adcc41747e\transformed\lifecycle-livedata-core-2.5.1\AndroidManifest.xml:17:1-24:12
 MERGED from [androidx.arch.core:core-runtime:2.1.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\bb97a5e1aeb8a257e6d71d4d4797f377\transformed\core-runtime-2.1.0\AndroidManifest.xml:17:1-24:12
 	package
-		INJECTED from E:\multideco\android-src\app\src\main\AndroidManifest.xml
+		INJECTED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml
 	android:versionName
-		INJECTED from E:\multideco\android-src\app\src\main\AndroidManifest.xml
+		INJECTED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml
 	android:versionCode
-		INJECTED from E:\multideco\android-src\app\src\main\AndroidManifest.xml
+		INJECTED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml
 	xmlns:android
-		ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:2:11-69
+		ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:2:11-69
 uses-permission#android.permission.INTERNET
-ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:4:5-67
+ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:4:5-67
 	android:name
-		ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:4:22-64
+		ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:4:22-64
 uses-permission#android.permission.VIBRATE
-ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:5:5-66
+ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:5:5-66
 	android:name
-		ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:5:22-63
+		ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:5:22-63
 queries
-ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:7:5-12:15
+ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:7:5-12:15
 intent#action:name:android.intent.action.VIEW+data:scheme:https
-ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:8:9-11:18
+ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:8:9-11:18
 action#android.intent.action.VIEW
-ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:9:13-65
+ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:9:13-65
 	android:name
-		ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:9:21-62
+		ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:9:21-62
 data
-ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:10:13-44
+ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:10:13-44
 	android:scheme
-		ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:10:19-41
+		ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:10:19-41
 application
-ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:14:5-33:19
-INJECTED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:14:5-33:19
+ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:14:5-33:19
+INJECTED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:14:5-33:19
 MERGED from [androidx.emoji2:emoji2:1.2.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\714b52c967c491e9c76d623a4a8ea34f\transformed\emoji2-1.2.0\AndroidManifest.xml:23:5-33:19
 MERGED from [androidx.emoji2:emoji2:1.2.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\714b52c967c491e9c76d623a4a8ea34f\transformed\emoji2-1.2.0\AndroidManifest.xml:23:5-33:19
 MERGED from [androidx.core:core:1.12.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\ea7dbe05d7d5e2008bb37d510fc240b2\transformed\core-1.12.0\AndroidManifest.xml:28:5-89
@@ -75,47 +75,47 @@ MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] C:\Users\a.
 MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\31b0b36432b8e749d3c4027bd6532c82\transformed\startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
 MERGED from [androidx.startup:startup-runtime:1.1.1] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\31b0b36432b8e749d3c4027bd6532c82\transformed\startup-runtime-1.1.1\AndroidManifest.xml:25:5-31:19
 	android:extractNativeLibs
-		INJECTED from E:\multideco\android-src\app\src\main\AndroidManifest.xml
+		INJECTED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml
 	android:appComponentFactory
 		ADDED from [androidx.core:core:1.12.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\ea7dbe05d7d5e2008bb37d510fc240b2\transformed\core-1.12.0\AndroidManifest.xml:28:18-86
 	android:supportsRtl
-		ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:19:9-35
+		ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:19:9-35
 	android:label
-		ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:18:9-41
+		ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:18:9-41
 	android:roundIcon
-		ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:17:9-54
+		ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:17:9-54
 	android:icon
-		ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:16:9-43
+		ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:16:9-43
 	android:allowBackup
-		ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:15:9-35
+		ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:15:9-35
 	android:theme
-		ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:20:9-46
+		ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:20:9-46
 activity#com.avlasov.apexdeco.MainActivity
-ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:22:9-32:20
+ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:22:9-32:20
 	android:screenOrientation
-		ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:26:13-52
+		ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:26:13-52
 	android:exported
-		ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:24:13-36
+		ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:24:13-36
 	android:configChanges
-		ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:25:13-74
+		ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:25:13-74
 	android:theme
-		ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:27:13-57
+		ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:27:13-57
 	android:name
-		ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:23:13-41
+		ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:23:13-41
 intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
-ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:28:13-31:29
+ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:28:13-31:29
 action#android.intent.action.MAIN
-ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:29:17-69
+ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:29:17-69
 	android:name
-		ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:29:25-66
+		ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:29:25-66
 category#android.intent.category.LAUNCHER
-ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:30:17-77
+ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:30:17-77
 	android:name
-		ADDED from E:\multideco\android-src\app\src\main\AndroidManifest.xml:30:27-74
+		ADDED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:30:27-74
 uses-sdk
-INJECTED from E:\multideco\android-src\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from E:\multideco\android-src\app\src\main\AndroidManifest.xml
-INJECTED from E:\multideco\android-src\app\src\main\AndroidManifest.xml
+INJECTED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml
+INJECTED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml
 MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\de376537ebdbfcd2b02999e92c4df33f\transformed\appcompat-resources-1.6.1\AndroidManifest.xml:20:5-44
 MERGED from [androidx.appcompat:appcompat-resources:1.6.1] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\de376537ebdbfcd2b02999e92c4df33f\transformed\appcompat-resources-1.6.1\AndroidManifest.xml:20:5-44
 MERGED from [androidx.appcompat:appcompat:1.6.1] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\8c6c9d43fd5c008c8459ff08f1a9e7c3\transformed\appcompat-1.6.1\AndroidManifest.xml:20:5-44
@@ -175,9 +175,9 @@ MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.5.1] C:\Users\a.vlasov
 MERGED from [androidx.arch.core:core-runtime:2.1.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\bb97a5e1aeb8a257e6d71d4d4797f377\transformed\core-runtime-2.1.0\AndroidManifest.xml:20:5-22:41
 MERGED from [androidx.arch.core:core-runtime:2.1.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\bb97a5e1aeb8a257e6d71d4d4797f377\transformed\core-runtime-2.1.0\AndroidManifest.xml:20:5-22:41
 	android:targetSdkVersion
-		INJECTED from E:\multideco\android-src\app\src\main\AndroidManifest.xml
+		INJECTED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from E:\multideco\android-src\app\src\main\AndroidManifest.xml
+		INJECTED from F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml
 provider#androidx.startup.InitializationProvider
 ADDED from [androidx.emoji2:emoji2:1.2.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\714b52c967c491e9c76d623a4a8ea34f\transformed\emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
 MERGED from [androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\040d0c8ab6d1b7d0789452b357a83a24\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:26:9-34:20

@@ -739,23 +739,6 @@
                     }
                 },
                 {
-                    "source": "E:\\multideco\\android-src\\app\\src\\main\\res\\values\\strings.xml",
-                    "from": {
-                        "startLines": "2",
-                        "startColumns": "4",
-                        "startOffsets": "55",
-                        "endColumns": "45",
-                        "endOffsets": "96"
-                    },
-                    "to": {
-                        "startLines": "300",
-                        "startColumns": "4",
-                        "startOffsets": "19496",
-                        "endColumns": "45",
-                        "endOffsets": "19537"
-                    }
-                },
-                {
                     "source": "C:\\Users\\a.vlasov\\.gradle\\caches\\8.13\\transforms\\d20413dc7c708d6b450c034ce0fe12fa\\transformed\\activity-1.6.0\\res\\values\\values.xml",
                     "from": {
                         "startLines": "2",
@@ -773,22 +756,20 @@
                     }
                 },
                 {
-                    "source": "E:\\multideco\\android-src\\app\\src\\main\\res\\values\\themes.xml",
+                    "source": "F:\\ApexDeco\\android-src\\app\\src\\main\\res\\values\\strings.xml",
                     "from": {
-                        "startLines": "2,9",
-                        "startColumns": "4,4",
-                        "startOffsets": "55,428",
-                        "endLines": "7,13",
-                        "endColumns": "12,12",
-                        "endOffsets": "422,752"
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "45",
+                        "endOffsets": "96"
                     },
                     "to": {
-                        "startLines": "1686,1692",
-                        "startColumns": "4,4",
-                        "startOffsets": "111689,112061",
-                        "endLines": "1691,1696",
-                        "endColumns": "12,12",
-                        "endOffsets": "112056,112385"
+                        "startLines": "300",
+                        "startColumns": "4",
+                        "startOffsets": "19496",
+                        "endColumns": "45",
+                        "endOffsets": "19537"
                     }
                 },
                 {
@@ -830,7 +811,26 @@
                     }
                 },
                 {
-                    "source": "E:\\multideco\\android-src\\app\\src\\main\\res\\values\\colors.xml",
+                    "source": "F:\\ApexDeco\\android-src\\app\\src\\main\\res\\values\\themes.xml",
+                    "from": {
+                        "startLines": "2,9",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,428",
+                        "endLines": "7,13",
+                        "endColumns": "12,12",
+                        "endOffsets": "422,752"
+                    },
+                    "to": {
+                        "startLines": "1686,1692",
+                        "startColumns": "4,4",
+                        "startOffsets": "111689,112061",
+                        "endLines": "1691,1696",
+                        "endColumns": "12,12",
+                        "endOffsets": "112056,112385"
+                    }
+                },
+                {
+                    "source": "F:\\ApexDeco\\android-src\\app\\src\\main\\res\\values\\colors.xml",
                     "from": {
                         "startLines": "2,3",
                         "startColumns": "4,4",
