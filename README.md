@@ -19,7 +19,7 @@
 ## About
 Try the online version first: https://vlasovalexey.github.io/ApexDeco/html-src/
 
-**ApexDeco** is an open, offline first technical diving decompression planner that runs entirely in your web browser. No server, no installation, no telemetry. It produces detailed ascent schedules for trimix, nitrox and air dives on open circuit or closed circuit rebreathers, using the two most widely trusted decompression models in technical diving: **Bühlmann ZH-L16C with Gradient Factors** and **VPM-B** (plus VPM-A, VPM-B/E, VPM-B/GFS variants).
+**ApexDeco** is an open technical diving decompression planner that runs entirely in your web browser. No server, no installation, no telemetry. It produces detailed ascent schedules for trimix, nitrox and air dives on open circuit or closed circuit rebreathers, using the two most widely trusted decompression models in technical diving: **Bühlmann ZH-L16C with Gradient Factors** and **VPM-B** (plus VPM-A, VPM-B/E, VPM-B/GFS variants).
 
 Every equation in this planner has been cross verified against a well known native reference implementation. The regression suite (`tests.html`) contains hundreds of numerical assertions that lock JS output to the native reference within one percent on reference profiles, including a full multi level trimix dive (80 m for 26 min, 30 m for 30 min, 70 m for 28 min) matching to the minute.
 
