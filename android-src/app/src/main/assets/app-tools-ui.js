@@ -23,7 +23,10 @@ function calcBestMix() {
 
     const result = DiveTools.bestMix(depth, ppO2, s.metric, s.waterType, trimix, eadDepth, s.oxyNarc);
 
-    let mixStr = result.he > 0 ? `${result.o2}/${result.he} (Trimix)` : `${result.o2}% O2 (Nitrox)`;
+    const _t = (k, d) => (window.t ? window.t(k) : d);
+    let mixStr = result.he > 0
+        ? `${result.o2}/${result.he} (${_t('GAS_TRIMIX', 'Trimix')})`
+        : `${result.o2}% O2 (${_t('GAS_NITROX', 'Nitrox')})`;
     document.getElementById('bm-result-value').textContent = mixStr;
 }
 
@@ -36,12 +39,13 @@ function calcEadMod() {
     const s = appState.settings;
 
     const result = DiveTools.eadMod(o2, he, depth, s.metric, s.waterType, ppO2, s.oxyNarc, sp);
-    const unit = s.metric ? 'm' : 'ft';
+    const _t = (k, d) => (window.t ? window.t(k) : d);
+    const unit = s.metric ? _t('UNIT_M', 'm') : ((window.getCurrentLanguage && window.getCurrentLanguage() === 'ru') ? 'ф' : _t('UNIT_FT', 'ft'));
 
-    document.getElementById('em-mod').textContent = result.mod + unit;
-    document.getElementById('em-ead').textContent = result.ead + unit;
-    document.getElementById('em-end').textContent = result.end + unit;
-    document.getElementById('em-eadd').textContent = result.eadd + unit;
+    document.getElementById('em-mod').textContent = result.mod + ' ' + unit;
+    document.getElementById('em-ead').textContent = result.ead + ' ' + unit;
+    document.getElementById('em-end').textContent = result.end + ' ' + unit;
+    document.getElementById('em-eadd').textContent = result.eadd + ' ' + unit;
 }
 
 function calcNitrox() {
@@ -54,13 +58,14 @@ function calcNitrox() {
     const tempC = s.temperature != null ? s.temperature : 20;
 
     const result = DiveTools.mixNitrox(startP, startO2, endP, endO2, isPSI, tempC);
-    const pressUnit = isPSI ? ' psi' : ' bar';
+    const _t = (k, d) => (window.t ? window.t(k) : d);
+    const pressUnit = ' ' + (isPSI ? _t('UNIT_PSI', 'psi') : _t('UNIT_BAR', 'bar'));
 
     document.getElementById('nx-addO2').textContent = result.addO2.toFixed(1) + pressUnit;
     document.getElementById('nx-addAir').textContent = result.addAir.toFixed(1) + pressUnit;
 
     if (!result.valid) {
-        document.getElementById('nx-results').innerHTML += '<div class="warning error">Invalid mix - check values.</div>';
+        document.getElementById('nx-results').innerHTML += '<div class="warning error">' + (window.t ? window.t('WARN_INVALID_MIX') : 'Invalid mix - check values.') + '</div>';
     }
 }
 
@@ -77,7 +82,8 @@ function calcTrimix() {
     const tempC = s.temperature != null ? s.temperature : 20;
 
     const result = DiveTools.mixTrimix(startP, startO2, startHe, endP, endO2, endHe, isPSI, heFirst, tempC);
-    const pressUnit = isPSI ? ' psi' : ' bar';
+    const _t = (k, d) => (window.t ? window.t(k) : d);
+    const pressUnit = ' ' + (isPSI ? _t('UNIT_PSI', 'psi') : _t('UNIT_BAR', 'bar'));
 
     document.getElementById('tx-addHe').textContent = result.addHe.toFixed(1) + pressUnit;
     document.getElementById('tx-addO2').textContent = result.addO2.toFixed(1) + pressUnit;
@@ -151,11 +157,11 @@ function calcDensity() {
     const warnEl = document.getElementById('dens-warning');
     if (result.gramsPerLiter > 6.2) {
         warnEl.style.display = 'block';
-        warnEl.textContent = 'Gas density exceeds 6.2 g/L - high risk of CO2 retention!';
+        warnEl.textContent = window.t ? window.t('WARN_DENSITY_HIGH') : 'Gas density exceeds 6.2 g/L - high risk of CO2 retention!';
         warnEl.className = 'warning error';
     } else if (result.gramsPerLiter > 5.2) {
         warnEl.style.display = 'block';
-        warnEl.textContent = 'Gas density above 5.2 g/L - increased work of breathing.';
+        warnEl.textContent = window.t ? window.t('WARN_DENSITY_MEDIUM') : 'Gas density above 5.2 g/L - increased work of breathing.';
         warnEl.className = 'warning';
     } else {
         warnEl.style.display = 'none';

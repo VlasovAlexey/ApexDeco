@@ -149,12 +149,28 @@ function loadConfigToUI() {
 }
 
 function resetConfig() {
-    showConfirm('Reset all settings to defaults?', () => {
+    showConfirm(window.t ? window.t('CONFIRM_RESET') : 'Reset all settings to defaults?', () => {
         appState.settings = DecoEngine.createDefaultSettings();
         loadConfigToUI();
         updateDepthUnits();
         recalcAllTools();
         saveStateToStorage();
+
+        // Reset theme to light
+        try {
+            localStorage.setItem('apexdeco_theme', 'light');
+            const themeSel = document.getElementById('cfg-theme');
+            if (themeSel) themeSel.value = 'light';
+            if (typeof onThemeChange === 'function') onThemeChange('light');
+        } catch (e) {}
+
+        // Reset language to English
+        try {
+            localStorage.setItem('apexdeco_language', 'en');
+            const langSel = document.getElementById('cfg-language');
+            if (langSel) langSel.value = 'en';
+            if (window.setLanguage) window.setLanguage('en');
+        } catch (e) {}
     });
 }
 
@@ -303,11 +319,12 @@ function convertUnits(wasMetric, isMetric) {
 
 function recalcAllTools() {
     const s = appState.settings;
+    const _t = (k, d) => (window.t ? window.t(k) : d);
     // Update pressure unit labels across all tools
-    const pressLabel = (s.pressureUnit === 'psi') ? 'psi' : 'bar';
+    const pressLabel = (s.pressureUnit === 'psi') ? _t('UNIT_PSI', 'psi') : _t('UNIT_BAR', 'bar');
     document.querySelectorAll('.press-unit').forEach(el => el.textContent = pressLabel);
     // Update volume unit labels in Capacity tool
-    const volLabel = (s.gasVolUnit === 'cuft') ? 'cu.ft' : 'liters';
+    const volLabel = (s.gasVolUnit === 'cuft') ? _t('UNIT_CUFT', 'cu.ft') : _t('UNIT_LITERS_WORD', 'liters');
     document.querySelectorAll('.vol-unit').forEach(el => el.textContent = volLabel);
     calcBestMix();
     calcEadMod();
@@ -319,12 +336,19 @@ function recalcAllTools() {
 }
 
 function updateDepthUnits() {
-    const unit = appState.settings.metric ? 'm' : 'ft';
+    const metric = appState.settings.metric;
+    const _t = (k, d) => (window.t ? window.t(k) : d);
+    const unit = metric ? _t('UNIT_M', 'm') : _t('UNIT_FT', 'ft');
     document.querySelectorAll('.depth-unit').forEach(el => el.textContent = unit);
-    const rateUnit = unit + '/min';
+    const rateUnit = metric ? _t('UNIT_M_MIN', 'm/min') : _t('UNIT_FT_MIN', 'ft/min');
     ['rate-unit', 'rate-unit2', 'rate-unit3', 'rate-unit4'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.textContent = rateUnit;
+    });
+    const lMin = _t('UNIT_L_MIN', 'L/min');
+    ['rmv-unit', 'rmv-unit2', 'bail-rmv-unit'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = lMin;
     });
     updateExtendedStopsLabels();
     updateStopSelectLabels();
@@ -355,8 +379,10 @@ function updateStopSelectLabels() {
 // Switch Extended Stops range labels between metric and imperial
 function updateExtendedStopsLabels() {
     const metric = appState.settings.metric;
+    const _t = (k, d) => (window.t ? window.t(k) : d);
+    const u = metric ? _t('UNIT_M', 'm') : _t('UNIT_FT', 'ft');
     const shallow = document.getElementById('cfg-ext-shallow-label');
     const deep = document.getElementById('cfg-ext-deep-label');
-    if (shallow) shallow.textContent = metric ? '7..30 m' : '21..100 ft';
-    if (deep) deep.textContent = metric ? '30 + m' : '100 + ft';
+    if (shallow) shallow.textContent = metric ? `7..30 ${u}` : `21..100 ${u}`;
+    if (deep) deep.textContent = metric ? `30 + ${u}` : `100 + ${u}`;
 }

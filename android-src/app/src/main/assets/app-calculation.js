@@ -10,7 +10,7 @@ function calculateDeco() {
     const decos = appState.decos.filter(d => d.selected !== false);
 
     if (levels.length === 0) {
-        showAlert('Add at least one bottom level before calculating.');
+        showAlert(window.t ? window.t('ERR_NO_LEVELS') : 'Add at least one bottom level before calculating.');
         return;
     }
 
@@ -36,7 +36,7 @@ function calculateDeco() {
     }
 
     if (result.error) {
-        showAlert('Calculation error: ' + result.error);
+        showAlert(window.t ? window.t('ERR_CALC', {error: result.error}) : ('Calculation error: ' + result.error));
         return;
     }
 
@@ -341,7 +341,7 @@ function calculateBailout(levels, decos, settings) {
 function nextDive() {
     const result = appState.lastResult;
     if (!result || !result.finalTissues) {
-        showAlert('No completed dive to continue from. Calculate a dive plan first.');
+        showAlert(window.t ? window.t('ERR_NO_RESULT') : 'No completed dive to continue from. Calculate a dive plan first.');
         return;
     }
     // Open surface interval modal
@@ -413,7 +413,7 @@ function resetSurfaceTissues() {
     if (siInput) siInput.value = 0;
     updateResetTissuesButton();
     saveStateToStorage();
-    showAlert('Surface tissues reset. Next dive will be planned as Dive #1.');
+    showAlert(window.t ? window.t('MSG_TISSUES_RESET') : 'Surface tissues reset. Next dive will be planned as Dive #1.');
 }
 
 function getModelName(model) {

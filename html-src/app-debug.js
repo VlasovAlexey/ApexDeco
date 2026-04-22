@@ -189,12 +189,12 @@ function logPlanToConsole(result, s) { /* console output removed */ }
 
 function copyDebugToClipboard() {
     if (!appState.lastResult) {
-        showAlert('No result available. Calculate a dive plan first.');
+        showAlert(window.t ? window.t('ERR_NO_RESULT') : 'No result available. Calculate a dive plan first.');
         return;
     }
     const text = buildSettingsDebugText(appState.settings) + '\n\n' + buildPlanDebugText(appState.lastResult, appState.settings);
-    const showOK = () => showAlert('Debug Info copied to clipboard.');
-    const showFail = () => showAlert('Failed to copy debug info to clipboard.');
+    const showOK = () => showAlert(window.t ? window.t('MSG_DEBUG_COPIED') : 'Debug Info copied to clipboard.');
+    const showFail = () => showAlert(window.t ? window.t('MSG_DEBUG_COPY_FAILED') : 'Failed to copy debug info to clipboard.');
 
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(showOK).catch(() => {

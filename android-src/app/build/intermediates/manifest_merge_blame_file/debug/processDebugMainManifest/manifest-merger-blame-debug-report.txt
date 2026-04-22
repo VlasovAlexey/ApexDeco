@@ -56,53 +56,54 @@
 35-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:17:9-54
 36        android:supportsRtl="true"
 36-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:19:9-35
-37        android:theme="@style/Theme.ApexDeco" >
-37-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:20:9-46
-38        <activity
-38-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:22:9-32:20
-39            android:name="com.avlasov.apexdeco.MainActivity"
-39-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:23:13-41
-40            android:configChanges="orientation|screenSize|keyboardHidden"
-40-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:25:13-74
-41            android:exported="true"
-41-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:24:13-36
-42            android:screenOrientation="unspecified"
-42-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:26:13-52
-43            android:theme="@style/Theme.ApexDeco.Splash" >
-43-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:27:13-57
-44            <intent-filter>
-44-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:28:13-31:29
-45                <action android:name="android.intent.action.MAIN" />
-45-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:29:17-69
-45-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:29:25-66
-46
-47                <category android:name="android.intent.category.LAUNCHER" />
-47-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:30:17-77
-47-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:30:27-74
-48            </intent-filter>
-49        </activity>
-50
-51        <provider
-51-->[androidx.emoji2:emoji2:1.2.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\714b52c967c491e9c76d623a4a8ea34f\transformed\emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
-52            android:name="androidx.startup.InitializationProvider"
-52-->[androidx.emoji2:emoji2:1.2.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\714b52c967c491e9c76d623a4a8ea34f\transformed\emoji2-1.2.0\AndroidManifest.xml:25:13-67
-53            android:authorities="com.avlasov.apexdeco.androidx-startup"
-53-->[androidx.emoji2:emoji2:1.2.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\714b52c967c491e9c76d623a4a8ea34f\transformed\emoji2-1.2.0\AndroidManifest.xml:26:13-68
-54            android:exported="false" >
-54-->[androidx.emoji2:emoji2:1.2.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\714b52c967c491e9c76d623a4a8ea34f\transformed\emoji2-1.2.0\AndroidManifest.xml:27:13-37
-55            <meta-data
-55-->[androidx.emoji2:emoji2:1.2.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\714b52c967c491e9c76d623a4a8ea34f\transformed\emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
-56                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-56-->[androidx.emoji2:emoji2:1.2.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\714b52c967c491e9c76d623a4a8ea34f\transformed\emoji2-1.2.0\AndroidManifest.xml:30:17-75
-57                android:value="androidx.startup" />
-57-->[androidx.emoji2:emoji2:1.2.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\714b52c967c491e9c76d623a4a8ea34f\transformed\emoji2-1.2.0\AndroidManifest.xml:31:17-49
-58            <meta-data
-58-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\040d0c8ab6d1b7d0789452b357a83a24\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:31:13-33:52
-59                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-59-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\040d0c8ab6d1b7d0789452b357a83a24\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:32:17-78
-60                android:value="androidx.startup" />
-60-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\040d0c8ab6d1b7d0789452b357a83a24\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:33:17-49
-61        </provider>
-62    </application>
-63
-64</manifest>
+37        android:testOnly="true"
+38        android:theme="@style/Theme.ApexDeco" >
+38-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:20:9-46
+39        <activity
+39-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:22:9-32:20
+40            android:name="com.avlasov.apexdeco.MainActivity"
+40-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:23:13-41
+41            android:configChanges="orientation|screenSize|keyboardHidden"
+41-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:25:13-74
+42            android:exported="true"
+42-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:24:13-36
+43            android:screenOrientation="unspecified"
+43-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:26:13-52
+44            android:theme="@style/Theme.ApexDeco.Splash" >
+44-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:27:13-57
+45            <intent-filter>
+45-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:28:13-31:29
+46                <action android:name="android.intent.action.MAIN" />
+46-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:29:17-69
+46-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:29:25-66
+47
+48                <category android:name="android.intent.category.LAUNCHER" />
+48-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:30:17-77
+48-->F:\ApexDeco\android-src\app\src\main\AndroidManifest.xml:30:27-74
+49            </intent-filter>
+50        </activity>
+51
+52        <provider
+52-->[androidx.emoji2:emoji2:1.2.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\714b52c967c491e9c76d623a4a8ea34f\transformed\emoji2-1.2.0\AndroidManifest.xml:24:9-32:20
+53            android:name="androidx.startup.InitializationProvider"
+53-->[androidx.emoji2:emoji2:1.2.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\714b52c967c491e9c76d623a4a8ea34f\transformed\emoji2-1.2.0\AndroidManifest.xml:25:13-67
+54            android:authorities="com.avlasov.apexdeco.androidx-startup"
+54-->[androidx.emoji2:emoji2:1.2.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\714b52c967c491e9c76d623a4a8ea34f\transformed\emoji2-1.2.0\AndroidManifest.xml:26:13-68
+55            android:exported="false" >
+55-->[androidx.emoji2:emoji2:1.2.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\714b52c967c491e9c76d623a4a8ea34f\transformed\emoji2-1.2.0\AndroidManifest.xml:27:13-37
+56            <meta-data
+56-->[androidx.emoji2:emoji2:1.2.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\714b52c967c491e9c76d623a4a8ea34f\transformed\emoji2-1.2.0\AndroidManifest.xml:29:13-31:52
+57                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+57-->[androidx.emoji2:emoji2:1.2.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\714b52c967c491e9c76d623a4a8ea34f\transformed\emoji2-1.2.0\AndroidManifest.xml:30:17-75
+58                android:value="androidx.startup" />
+58-->[androidx.emoji2:emoji2:1.2.0] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\714b52c967c491e9c76d623a4a8ea34f\transformed\emoji2-1.2.0\AndroidManifest.xml:31:17-49
+59            <meta-data
+59-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\040d0c8ab6d1b7d0789452b357a83a24\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:31:13-33:52
+60                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+60-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\040d0c8ab6d1b7d0789452b357a83a24\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:32:17-78
+61                android:value="androidx.startup" />
+61-->[androidx.lifecycle:lifecycle-process:2.4.1] C:\Users\a.vlasov\.gradle\caches\8.13\transforms\040d0c8ab6d1b7d0789452b357a83a24\transformed\lifecycle-process-2.4.1\AndroidManifest.xml:33:17-49
+62        </provider>
+63    </application>
+64
+65</manifest>

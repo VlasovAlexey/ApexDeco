@@ -33,6 +33,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Re-render dynamic lists and recalculate tools on language change
+    // (so that "No bottom levels...", modal titles, and tool unit labels update).
+    document.addEventListener('languagechange', () => {
+        if (typeof renderLevels === 'function') renderLevels();
+        if (typeof renderDecos === 'function') renderDecos();
+        if (typeof updateDepthUnits === 'function') updateDepthUnits();
+        if (typeof recalcAllTools === 'function') recalcAllTools();
+        if (appState && appState.lastResult && typeof renderResult === 'function') {
+            try { renderResult(appState.lastResult); } catch (e) {}
+        }
+    });
+
     // Fix EAD row visibility based on initial radio state
     toggleBmTrimix();
     // Trigger initial calculations for all tools (also updates unit labels)
@@ -68,31 +80,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 });
 
-// ====================================================================
-// Native bridge: haptic feedback on UI interactions (Android WebView)
-// ====================================================================
+// Haptic feedback bridge for Android WebView wrapper (no-op in browser).
 (function () {
     function fireHaptic() {
         try {
-            if (typeof Android !== 'undefined' && Android.haptic) {
-                Android.haptic();
-            } else if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.haptic) {
+            if (typeof Android !== 'undefined' && Android.haptic) { Android.haptic(); }
+            else if (window.webkit && window.webkit.messageHandlers && window.webkit.messageHandlers.haptic) {
                 window.webkit.messageHandlers.haptic.postMessage('');
-            } else if (navigator.vibrate) {
-                navigator.vibrate(20);
-            }
-        } catch (e) { /* ignore */ }
+            } else if (navigator.vibrate) { navigator.vibrate(20); }
+        } catch (e) {}
     }
-
-    // Trigger on every interaction with a clickable element (button, link,
-    // nav tab, checkbox/radio label, select dropdown, etc.)
     var selector = 'button, a, input[type="button"], input[type="submit"], ' +
         'input[type="checkbox"], input[type="radio"], select, ' +
         '.nav-btn, .tab, [role="button"], [data-action]';
-
     document.addEventListener('click', function (e) {
-        if (e.target && e.target.closest && e.target.closest(selector)) {
-            fireHaptic();
-        }
+        if (e.target && e.target.closest && e.target.closest(selector)) fireHaptic();
     }, true);
 })();

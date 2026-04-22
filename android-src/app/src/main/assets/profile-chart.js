@@ -10,8 +10,15 @@ function drawProfileChart(containerId, result) {
     // Apply light theme
     Highcharts.setOptions(ChartThemeLight());
 
+    const _pt = (k, d, p) => {
+        if (window.t) { try { return window.t(k, p); } catch (e) {} }
+        if (p) return Object.keys(p).reduce((s, kk) => s.replace('{' + kk + '}', p[kk]), d);
+        return d;
+    };
     const plan = result.plan;
-    const unit = result.depthUnit || 'm';
+    const s = (typeof appState !== 'undefined' && appState.settings) ? appState.settings : { metric: true };
+    const unit = _pt(s.metric ? 'UNIT_M' : 'UNIT_FT', result.depthUnit || 'm');
+    const minU = _pt('UNIT_MIN', 'min');
 
     // Build chart data from plan segments
     const chartLineArr = [];
@@ -177,7 +184,7 @@ function drawProfileChart(containerId, result) {
             enabled: false
         },
         title: {
-            text: 'Depth ' + maxDepth + unit
+            text: _pt('CHART_TITLE_DEPTH', 'Depth ' + maxDepth + unit, { d: maxDepth, u: unit })
         },
         subtitle: {
             text: 'ApexDeco'
@@ -185,17 +192,17 @@ function drawProfileChart(containerId, result) {
         xAxis: {
             allowDecimals: false,
             title: {
-                text: 'Time'
+                text: _pt('CHART_XAXIS_TIME', 'Time (' + minU + ')', { u: minU })
             },
             labels: {
                 formatter: function () {
-                    return this.value + ' min';
+                    return this.value + ' ' + minU;
                 }
             }
         },
         yAxis: {
             title: {
-                text: 'Depth'
+                text: _pt('CHART_YAXIS_DEPTH', 'Depth (' + unit + ')', { u: unit })
             },
             labels: {
                 formatter: function () {
@@ -205,8 +212,8 @@ function drawProfileChart(containerId, result) {
         },
         tooltip: {
             formatter: function () {
-                return '<span>Time: ' + parseInt(this.x) + ' min</span>' +
-                    '<br><b>Depth: ' + (-1 * this.y) + unit + '</b>';
+                return '<span>' + _pt('CHART_TOOLTIP_TIME','Time') + ': ' + parseInt(this.x) + ' ' + minU + '</span>' +
+                    '<br><b>' + _pt('CHART_TOOLTIP_DEPTH','Depth') + ': ' + (-1 * this.y) + unit + '</b>';
             },
             split: true,
             shared: true,
@@ -238,13 +245,13 @@ function drawProfileChart(containerId, result) {
         series: [{
             id: 'main_series',
             type: 'area',
-            name: 'Depth',
+            name: _pt('CHART_SERIES_DEPTH','Depth'),
             data: chartLineArr,
             zoneAxis: 'x',
             zones: chartZoneArr
         }, {
             type: 'flags',
-            name: 'Gas',
+            name: _pt('CHART_SERIES_GAS','Gas'),
             data: chartLabelArr,
             onSeries: 'main_series',
             shape: 'squarepin'

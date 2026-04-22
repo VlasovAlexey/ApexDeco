@@ -2,6 +2,16 @@
  * ApexDeco - Result Rendering, Export & Reporting
  */
 
+function _tr(key, def, params) {
+    if (window.t) {
+        try { return window.t(key, params); } catch (e) {}
+    }
+    if (params) {
+        return Object.keys(params).reduce((s, k) => s.replace('{' + k + '}', params[k]), def);
+    }
+    return def;
+}
+
 function formatStopTime(time) {
     if (time < 10) {
         const mins = Math.floor(time);
@@ -11,6 +21,19 @@ function formatStopTime(time) {
     return Math.round(time).toString();
 }
 
+function findLevelSetpoint(gas, depth) {
+    if (!appState || !appState.levels) return null;
+    const cands = appState.levels.filter(l => `${l.o2}/${l.he}` === gas);
+    if (cands.length === 0) return null;
+    let best = cands[0];
+    let bestDiff = Math.abs((cands[0].depth || 0) - depth);
+    for (const l of cands) {
+        const d = Math.abs((l.depth || 0) - depth);
+        if (d < bestDiff) { best = l; bestDiff = d; }
+    }
+    return best.setpoint;
+}
+
 function parseGas(gasStr) {
     if (!gasStr) return { o2: 21, he: 0 };
     const parts = gasStr.split('/');
@@ -18,7 +41,10 @@ function parseGas(gasStr) {
 }
 
 function buildSummaryText(result, s) {
-    const unit = result.depthUnit;
+    const depthUnit = _tr(s.metric ? 'UNIT_M' : 'UNIT_FT', result.depthUnit);
+    const minU = _tr('UNIT_MIN', 'min');
+    const gLU = _tr('UNIT_G_L', 'g/L');
+    const volU = (s.gasVolUnit === 'cuft') ? _tr('UNIT_CUFT', 'cu.ft') : _tr('UNIT_L', 'L');
     const modelLabel = result.modelName || getModelName(s.decoModel || 'ZHLC_GF');
     const isCCR = s.circuit === 'CCR';
     const isVPM = (s.decoModel || '').startsWith('VPM');
@@ -29,28 +55,28 @@ function buildSummaryText(result, s) {
     let modelLine = modelLabel;
     if (isCCR) modelLine += ' (CCR)';
     if (isVPM && s.decoModel !== 'VPMB_GFS') {
-        modelLine += `  Conservatism: ${s.conservatism || 0}`;
+        modelLine += `  ${_tr('LABEL_CONSERVATISM','Conservatism')}: ${s.conservatism || 0}`;
     } else if (!isVPM || s.decoModel === 'VPMB_GFS') {
-        modelLine += `  GF: ${s.gfLo}/${s.gfHi}`;
+        modelLine += `  ${_tr('SUMMARY_GF_LABEL','GF')}: ${s.gfLo}/${s.gfHi}`;
     }
     lines.push(modelLine);
 
     // Elevation
     if (s.altitude) {
-        lines.push(`Elevation: ${s.altitude}m`);
+        lines.push(`${_tr('SUMMARY_ELEVATION_LABEL','Elevation')}: ${s.altitude}${depthUnit}`);
     }
 
     // Runtime / Deco
     const decoTime = Math.ceil(result.stops.reduce((a, st) => a + st.time, 0));
-    lines.push(`Runtime: ${result.totalRuntime} min  Deco: ${decoTime} min  Stops: ${result.stops.length}`);
+    lines.push(`${_tr('SUMMARY_RUNTIME_LABEL','Runtime')}: ${result.totalRuntime} ${minU}  ${_tr('SUMMARY_DECO_LABEL','Deco')}: ${decoTime} ${minU}  ${_tr('SUMMARY_STOPS_LABEL','Stops')}: ${result.stops.length}`);
 
     // CNS / OTU
-    lines.push(`CNS: ${result.totalCNS.toFixed(0)}%  OTU: ${result.totalOTU}`);
+    lines.push(`${_tr('SUMMARY_CNS_LABEL','CNS')}: ${result.totalCNS.toFixed(0)}%  ${_tr('SUMMARY_OTU_LABEL','OTU')}: ${result.totalOTU}`);
 
     // Gas usage
     if (result.gasUsage && result.gasUsage.length > 0) {
         for (const g of result.gasUsage) {
-            lines.push(`Gas ${g.gas}: ${g.volume} ${g.volumeUnit}`);
+            lines.push(`${_tr('SUMMARY_GAS_PREFIX','Gas')} ${g.gas}: ${g.volume} ${volU}`);
         }
     }
 
@@ -62,29 +88,30 @@ function buildSummaryText(result, s) {
             const { o2, he } = parseGas(bottomSeg.gas);
             const depth = bottomSeg.depth || 0;
             const densResult = DiveTools.gasDensity(o2, he, depth, s.metric, s.waterType || 0, 20, 0);
-            lines.push(`Gas density: ${densResult.gramsPerLiter.toFixed(2)} g/L`);
+            lines.push(`${_tr('SUMMARY_GAS_DENSITY','Gas density')}: ${densResult.gramsPerLiter.toFixed(2)} ${gLU}`);
         }
     } catch (e) { /* ignore */ }
 
     // Deco zone start
     if (result.decoZoneStart > 0) {
-        lines.push(`Deco zone: ${result.decoZoneStart}${unit}`);
+        lines.push(`${_tr('SUMMARY_DECO_ZONE','Deco zone')}: ${result.decoZoneStart}${depthUnit}`);
     } else if (result.stops && result.stops.length > 0) {
-        lines.push(`Deco zone: ${result.stops[0].depth}${unit}`);
+        lines.push(`${_tr('SUMMARY_DECO_ZONE','Deco zone')}: ${result.stops[0].depth}${depthUnit}`);
     }
 
     return lines.join('\n');
 }
 
 function renderResult(result) {
-    const unit = result.depthUnit;
     const s = appState.settings;
+    const _lang = (window.getCurrentLanguage && window.getCurrentLanguage()) || 'en';
+    const unit = s.metric ? _tr('UNIT_M', 'm') : (_lang === 'ru' ? 'ф' : _tr('UNIT_FT', result.depthUnit || 'ft'));
     const slp = s.metric ? (s.waterType === 0 ? 10.078 : 10.337) : (s.waterType === 0 ? 33.066 : 33.914);
 
     // Update result title with current dive number
     const diveNum = appState.nextDiveNum || 1;
     const hdr = document.getElementById('result-card-header');
-    if (hdr) hdr.textContent = `Dive #${diveNum} Plan Result`;
+    if (hdr) hdr.textContent = _tr('RESULT_DIVE_HEADER', `Dive #${diveNum} Plan Result`, { n: diveNum });
 
     // Profile chart
     if (typeof drawProfileChart === 'function') {
@@ -110,7 +137,9 @@ function renderResult(result) {
         let pO2Str = '';
         let eadStr = '';
 
-        const showPpO2EAD = (seg.type === 'bottom' || seg.type === 'stop');
+        const isCCRMode = s.circuit === 'CCR';
+        const isTravelSeg = (seg.type === 'descent' || seg.type === 'ascent');
+        const showPpO2EAD = (seg.type === 'bottom' || seg.type === 'stop' || (isCCRMode && isTravelSeg));
         const depth = seg.depth !== undefined ? seg.depth : (seg.endDepth || 0);
 
         if (showPpO2EAD && seg.gas) {
@@ -119,7 +148,12 @@ function renderResult(result) {
             const fO2 = o2 / 100;
             const fHe = he / 100;
             const fN2 = 1 - fO2 - fHe;
-            pO2Str = (fO2 * pAmb).toFixed(2);
+            if (isCCRMode && (seg.type === 'bottom' || isTravelSeg)) {
+                const sp = findLevelSetpoint(seg.gas, depth);
+                pO2Str = sp ? sp.toFixed(2) : (fO2 * pAmb).toFixed(2);
+            } else {
+                pO2Str = (fO2 * pAmb).toFixed(2);
+            }
             const eadVal = Math.max(0, Math.round((fN2 / 0.7902) * (depth + 10) - 10));
             eadStr = eadVal.toString();
         }
@@ -127,29 +161,29 @@ function renderResult(result) {
         switch (seg.type) {
             case 'descent':
                 rowClass = 'descent-row';
-                action = 'Des';
+                action = _tr('ACTION_DES_SHORT', 'Des');
                 depthStr = `${seg.startDepth}→${seg.endDepth}${unit}`;
                 stopStr = formatStopTime(seg.time || 0);
                 break;
             case 'bottom':
-                action = 'Lvl';
+                action = _tr('ACTION_LVL_SHORT', 'Lvl');
                 depthStr = `${seg.depth}${unit}`;
                 stopStr = formatStopTime(seg.time || 0);
                 break;
             case 'ascent':
-                action = 'Asc';
+                action = _tr('ACTION_ASC_SHORT', 'Asc');
                 depthStr = `${seg.startDepth}→${seg.endDepth}${unit}`;
                 stopStr = formatStopTime(seg.time || 0);
                 break;
             case 'stop':
                 rowClass = 'stop-row';
-                action = 'Stp';
+                action = _tr('ACTION_STP_SHORT', 'Stp');
                 depthStr = `${seg.depth}${unit}`;
                 stopStr = formatStopTime(seg.time || 0);
                 break;
             case 'surface':
                 rowClass = 'surface-row';
-                action = 'Sfc';
+                action = _tr('ACTION_SFC_SHORT', 'Sfc');
                 depthStr = `0${unit}`;
                 stopStr = formatStopTime(seg.time || 0);
                 break;
@@ -184,16 +218,18 @@ function renderResult(result) {
 
         const isPsi = s.pressureUnit === 'psi';
         const pConv = isPsi ? 14.5038 : 1;
-        const pUnit = isPsi ? 'psi' : 'bar';
+        const pUnit = isPsi ? _tr('UNIT_PSI','psi') : _tr('UNIT_BAR','bar');
         const fmtP = (bar) => `${Math.round(bar * pConv)} ${pUnit}`;
 
-        let gasHTML = '<div class="card" style="margin-top:12px"><div class="card-header">Gas Usage</div><div class="card-body">';
-        gasHTML += '<table class="data-table"><thead><tr><th>Gas</th><th>Volume</th><th>11L</th><th>12L</th><th>15L</th><th>24L x2</th></tr></thead><tbody>';
+        const volU = (s.gasVolUnit === 'cuft') ? _tr('UNIT_CUFT','cu.ft') : _tr('UNIT_L','L');
+        const lU = _tr('UNIT_L','L');
+        let gasHTML = '<div class="card" style="margin-top:12px"><div class="card-header">' + _tr('RESULT_GAS_USAGE','Gas Usage') + '</div><div class="card-body">';
+        gasHTML += '<table class="data-table"><thead><tr><th>' + _tr('TH_GAS','Gas') + '</th><th>' + _tr('RESULT_TH_VOLUME','Volume') + '</th><th>11' + lU + '</th><th>12' + lU + '</th><th>15' + lU + '</th><th>24' + lU + ' x2</th></tr></thead><tbody>';
         for (const g of result.gasUsage) {
             if (isCCR && bottomGases.has(g.gas)) {
                 gasHTML += `<tr><td>${g.gas}</td><td>Dil</td><td>Dil</td><td>Dil</td><td>Dil</td><td>Dil</td></tr>`;
             } else {
-                gasHTML += `<tr><td>${g.gas}</td><td>${g.volume} ${g.volumeUnit}</td><td>${fmtP(g.bar11)}</td><td>${fmtP(g.bar12)}</td><td>${fmtP(g.bar15)}</td><td>${fmtP(g.bar24)}</td></tr>`;
+                gasHTML += `<tr><td>${g.gas}</td><td>${g.volume} ${volU}</td><td>${fmtP(g.bar11)}</td><td>${fmtP(g.bar12)}</td><td>${fmtP(g.bar15)}</td><td>${fmtP(g.bar24)}</td></tr>`;
             }
         }
         gasHTML += '</tbody></table></div></div>';
@@ -216,7 +252,7 @@ function renderResult(result) {
 function renderPPChart(result) {
     const container = document.getElementById('result-pp-chart');
     if (!container) return;
-    container.innerHTML = '<div class="card" style="margin-top:12px"><div class="card-header">Gas Partial Pressures</div><div class="card-body"><div id="pp-chart-container" style="height:320px; min-width:280px;"></div></div></div>';
+    container.innerHTML = '<div class="card" style="margin-top:12px"><div class="card-header">' + _tr('RESULT_PP_TITLE','Gas Partial Pressures') + '</div><div class="card-body"><div id="pp-chart-container" style="height:320px; min-width:280px;"></div></div></div>';
     if (typeof Highcharts === 'undefined' || !result.plan || result.plan.length === 0) return;
 
     const s = appState.settings;
@@ -258,9 +294,9 @@ function renderPPChart(result) {
     Highcharts.chart('pp-chart-container', {
         chart: { type: 'line', backgroundColor: '#ffffff' },
         title: { text: null },
-        xAxis: { title: { text: 'Runtime (min)' } },
+        xAxis: { title: { text: _tr('CHART_XAXIS_RUNTIME','Runtime (min)') } },
         yAxis: {
-            title: { text: 'Pressure (bar)' },
+            title: { text: _tr('CHART_YAXIS_PRESSURE','Pressure (bar)') },
             min: 0,
             plotLines: [
                 { value: 1.4, color: '#ff9800', width: 1, dashStyle: 'Dash', label: { text: 'pO2 = 1.4', style: { color: '#ff9800' } } },
@@ -268,7 +304,7 @@ function renderPPChart(result) {
             ]
         },
         legend: { enabled: true },
-        tooltip: { shared: true, valueDecimals: 2, valueSuffix: ' bar' },
+        tooltip: { shared: true, valueDecimals: 2, valueSuffix: ' ' + _tr('UNIT_BAR','bar') },
         credits: { enabled: false },
         series: [
             { name: 'pO2', data: pO2, color: '#e53935' },
@@ -283,7 +319,7 @@ function renderPPChart(result) {
 function renderTissueChart(result) {
     const container = document.getElementById('result-tissue-chart');
     if (!container) return;
-    container.innerHTML = '<div class="card" style="margin-top:12px"><div class="card-header">Gas Tension in Tissue Compartments</div><div class="card-body"><div id="tissue-chart-container" style="height:380px; min-width:280px;"></div></div></div>';
+    container.innerHTML = '<div class="card" style="margin-top:12px"><div class="card-header">' + _tr('RESULT_TISSUE_TITLE','Gas Tension in Tissue Compartments') + '</div><div class="card-body"><div id="tissue-chart-container" style="height:380px; min-width:280px;"></div></div></div>';
     if (typeof Highcharts === 'undefined' || !result.plan || result.plan.length === 0) return;
 
     const plan = result.plan;
@@ -301,7 +337,7 @@ function renderTissueChart(result) {
             data.push([seg.runtime || 0, (t.pN2 || 0) + (t.pHe || 0)]);
         }
         series.push({
-            name: `Comp ${i + 1}`,
+            name: _tr('CHART_COMP', `Comp ${i + 1}`, { n: i + 1 }),
             data: data,
             color: palette[i % palette.length],
             lineWidth: 1.2,
@@ -313,10 +349,10 @@ function renderTissueChart(result) {
     Highcharts.chart('tissue-chart-container', {
         chart: { type: 'line', backgroundColor: '#ffffff' },
         title: { text: null },
-        xAxis: { title: { text: 'Runtime (min)' } },
-        yAxis: { title: { text: 'Total tension pN2+pHe (bar)' }, min: 0 },
+        xAxis: { title: { text: _tr('CHART_XAXIS_RUNTIME','Runtime (min)') } },
+        yAxis: { title: { text: _tr('CHART_YAXIS_TENSION','Total tension pN2+pHe (bar)') }, min: 0 },
         legend: { enabled: true, itemStyle: { fontSize: '10px' } },
-        tooltip: { shared: false, valueDecimals: 3, valueSuffix: ' bar' },
+        tooltip: { shared: false, valueDecimals: 3, valueSuffix: ' ' + _tr('UNIT_BAR','bar') },
         credits: { enabled: false },
         series: series
     });
@@ -343,7 +379,8 @@ function renderGridPlan(result) {
     if (!result.plan || result.plan.length === 0) { container.innerHTML = ''; return; }
 
     const s = appState.settings;
-    const unit = result.depthUnit || 'm';
+    const _lang = (window.getCurrentLanguage && window.getCurrentLanguage()) || 'en';
+    const unit = s.metric ? _tr('UNIT_M', 'm') : (_lang === 'ru' ? 'ф' : _tr('UNIT_FT', result.depthUnit || 'ft'));
     const slp = s.metric ? (s.waterType === 0 ? 10.078 : 10.337) : (s.waterType === 0 ? 33.066 : 33.914);
     const isCCR = s.circuit === 'CCR';
 
@@ -356,23 +393,23 @@ function renderGridPlan(result) {
         seg._dispCNS = maxC;
     }
 
-    let html = '<div class="card" style="margin-top:12px"><div class="card-header">Grid Plan</div><div class="card-body" style="padding:0;">';
+    let html = '<div class="card" style="margin-top:12px"><div class="card-header">' + _tr('RESULT_GRID_PLAN','Grid Plan') + '</div><div class="card-body" style="padding:0;">';
     html += '<div style="overflow-x:auto; -webkit-overflow-scrolling:touch;">';
-    html += '<table class="data-table" style="font-family:Consolas,\'Courier New\',monospace; font-size:12px; background:#ffffff; color:#000000; white-space:nowrap; min-width:720px;">';
+    html += '<table class="data-table" style="font-family:Consolas,\'Courier New\',monospace; font-size:12px; white-space:nowrap; min-width:720px;">';
     html += '<thead><tr>'
-        + '<th>Action</th><th>Depth</th><th>Time</th><th>RunTime</th>'
-        + '<th>O2</th><th>He</th><th>Setpoint</th>'
-        + '<th>EAD</th><th>END</th><th>CNS</th><th>OTU\'s</th>'
+        + '<th>' + _tr('TH_ACTION','Action') + '</th><th>' + _tr('TH_DEPTH','Depth') + '</th><th>' + _tr('TH_TIME','Time') + '</th><th>' + _tr('TH_RUNTIME','RunTime') + '</th>'
+        + '<th>' + _tr('TH_O2','O2') + '</th><th>' + _tr('TH_HE','He') + '</th><th>' + _tr('TH_SETPOINT','Setpoint') + '</th>'
+        + '<th>' + _tr('TH_EAD','EAD') + '</th><th>' + _tr('TH_END','END') + '</th><th>' + _tr('TH_CNS','CNS') + '</th><th>' + _tr('TH_OTU',"OTU's") + '</th>'
         + '</tr></thead><tbody>';
 
     for (const seg of result.plan) {
         let action = '';
         switch (seg.type) {
-            case 'descent': action = 'Descent'; break;
-            case 'bottom':  action = 'Level';   break;
-            case 'ascent':  action = 'Ascent';  break;
-            case 'stop':    action = 'Stop';    break;
-            case 'surface': action = 'Surface'; break;
+            case 'descent': action = _tr('ACTION_DESCENT','Descent'); break;
+            case 'bottom':  action = _tr('ACTION_LEVEL','Level');   break;
+            case 'ascent':  action = _tr('ACTION_ASCENT','Ascent');  break;
+            case 'stop':    action = _tr('ACTION_STOP','Stop');    break;
+            case 'surface': action = _tr('ACTION_SURFACE','Surface'); break;
             default: action = seg.type || '';
         }
         const depth = (seg.depth !== undefined) ? seg.depth : (seg.endDepth !== undefined ? seg.endDepth : 0);
@@ -387,8 +424,12 @@ function renderGridPlan(result) {
         const pa = depth / slp + 1;
         let setpointStr;
         if (isCCR && seg.type !== 'stop' && seg.type !== 'surface') {
-            const sp = s.setpoint || 1.3;
-            setpointStr = Math.min(sp, pa).toFixed(2);
+            const sp = findLevelSetpoint(seg.gas, depth);
+            if (sp) {
+                setpointStr = Math.min(sp, pa).toFixed(2);
+            } else {
+                setpointStr = (fO2 * pa).toFixed(2);
+            }
         } else {
             setpointStr = (fO2 * pa).toFixed(2);
         }
@@ -425,19 +466,20 @@ function renderBailoutPlan(bailout, unit) {
     if (!container) return;
 
     const decoTime = bailout.stops ? bailout.stops.reduce((a, s) => a + s.time, 0) : 0;
+    const bailHeader = _tr('RESULT_BAILOUT_PLAN', `Bailout Plan — ${bailout.modelName || 'OC'}`, { model: bailout.modelName || 'OC' });
     let html = `<div class="card" style="margin-top:12px; border-left:3px solid #e53935;">
-        <div class="card-header" style="color:#e53935;">Bailout Plan — ${bailout.modelName || 'OC'}</div>
+        <div class="card-header" style="color:#e53935;">${bailHeader}</div>
         <div class="card-body">
             <div class="result-summary" style="margin-bottom:8px">
-                <div class="result-stat"><div class="stat-value">${bailout.totalRuntime}</div><div class="stat-label">Runtime</div></div>
-                <div class="result-stat"><div class="stat-value">${decoTime}</div><div class="stat-label">Deco Time</div></div>
-                <div class="result-stat"><div class="stat-value">${bailout.totalCNS ? bailout.totalCNS.toFixed(0) : 0}%</div><div class="stat-label">CNS</div></div>
+                <div class="result-stat"><div class="stat-value">${bailout.totalRuntime}</div><div class="stat-label">${_tr('RESULT_RUNTIME','Runtime')}</div></div>
+                <div class="result-stat"><div class="stat-value">${decoTime}</div><div class="stat-label">${_tr('RESULT_DECO_TIME','Deco Time')}</div></div>
+                <div class="result-stat"><div class="stat-value">${bailout.totalCNS ? bailout.totalCNS.toFixed(0) : 0}%</div><div class="stat-label">${_tr('RESULT_CNS','CNS')}</div></div>
             </div>
-            <table class="data-table"><thead><tr><th>Seg</th><th>Depth</th><th>Time</th><th>Runtime</th><th>Gas</th></tr></thead><tbody>`;
+            <table class="data-table"><thead><tr><th>${_tr('TH_SEG','Seg')}</th><th>${_tr('TH_DEPTH','Depth')}</th><th>${_tr('TH_TIME','Time')}</th><th>${_tr('TH_RUNTIME','Runtime')}</th><th>${_tr('TH_GAS','Gas')}</th></tr></thead><tbody>`;
 
     for (const seg of bailout.plan) {
         let rowClass = seg.type === 'stop' ? 'stop-row' : (seg.type === 'surface' ? 'surface-row' : '');
-        let label = seg.type === 'stop' ? 'Stop' : seg.type === 'descent' ? 'Desc' : seg.type === 'ascent' ? 'Asc' : seg.type === 'bottom' ? 'Bottom' : 'Surf';
+        let label = seg.type === 'stop' ? _tr('ACTION_STOP_SHORT','Stop') : seg.type === 'descent' ? _tr('ACTION_DESC_SHORT','Desc') : seg.type === 'ascent' ? _tr('ACTION_ASC_SHORT','Asc') : seg.type === 'bottom' ? _tr('ACTION_BOTTOM_SHORT','Bottom') : _tr('ACTION_SURF_SHORT','Surf');
         let depth = seg.depth ? `${seg.depth}${unit}` : seg.startDepth !== undefined ? `${seg.startDepth}→${seg.endDepth}${unit}` : `0${unit}`;
         html += `<tr class="${rowClass}"><td>${label}</td><td>${depth}</td><td>${seg.time || '--'}</td><td>${seg.runtime}</td><td>${seg.gas || '--'}</td></tr>`;
     }
@@ -449,16 +491,18 @@ function renderBailoutPlan(bailout, unit) {
         const sb = appState.settings;
         const isPsiB = sb.pressureUnit === 'psi';
         const pConvB = isPsiB ? 14.5038 : 1;
-        const pUnitB = isPsiB ? 'psi' : 'bar';
+        const pUnitB = isPsiB ? _tr('UNIT_PSI','psi') : _tr('UNIT_BAR','bar');
         const fmtPB = (bar) => `${Math.round(bar * pConvB)} ${pUnitB}`;
-        const volHdr = (sb.gasVolUnit === 'cuft') ? 'Volume' : 'Liters';
+        const volHdr = _tr('RESULT_TH_VOLUME','Volume');
 
-        html += '<h4 style="margin:8px 0 4px; color:#e53935;">Bailout Gas Required</h4>';
-        html += `<table class="data-table"><thead><tr><th>Gas</th><th>${volHdr}</th><th>11L</th><th>12L</th><th>15L</th><th>24L x2</th></tr></thead><tbody>`;
+        const volUB = (sb.gasVolUnit === 'cuft') ? _tr('UNIT_CUFT','cu.ft') : _tr('UNIT_L','L');
+        const lUB = _tr('UNIT_L','L');
+        html += '<h4 style="margin:8px 0 4px; color:#e53935;">' + _tr('RESULT_BAILOUT_GAS_REQ','Bailout Gas Required') + '</h4>';
+        html += `<table class="data-table"><thead><tr><th>${_tr('TH_GAS','Gas')}</th><th>${volHdr}</th><th>11${lUB}</th><th>12${lUB}</th><th>15${lUB}</th><th>24${lUB} x2</th></tr></thead><tbody>`;
         for (const g of bailout.gasUsage) {
-            const volStr = (g.volume !== undefined && g.volumeUnit)
-                ? `${g.volume} ${g.volumeUnit}`
-                : `${g.liters} L`;
+            const volStr = (g.volume !== undefined)
+                ? `${g.volume} ${volUB}`
+                : `${g.liters} ${lUB}`;
             html += `<tr><td>${g.gas}</td><td>${volStr}</td><td>${fmtPB(g.bar11)}</td><td>${fmtPB(g.bar12)}</td><td>${fmtPB(g.bar15)}</td><td>${fmtPB(g.bar24)}</td></tr>`;
         }
         html += '</tbody></table>';
@@ -472,8 +516,8 @@ function copyResultToClipboard() {
     const text = generateReportText();
     // Try modern Clipboard API first; fall back to legacy execCommand.
     // Always show the "Dive plan copied to clipboard." modal on success.
-    const showCopied = () => showAlert('Dive plan copied to clipboard.');
-    const showFailed = () => showAlert('Failed to copy to clipboard.');
+    const showCopied = () => showAlert(window.t ? window.t('MSG_COPIED') : 'Dive plan copied to clipboard.');
+    const showFailed = () => showAlert(window.t ? window.t('MSG_COPY_FAILED') : 'Failed to copy to clipboard.');
 
     if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(text).then(showCopied).catch(() => {
@@ -511,7 +555,7 @@ function showResultText() {
 
 function copyReportText() {
     const text = document.getElementById('report-text').textContent;
-    navigator.clipboard.writeText(text).then(() => showAlert('Copied!')).catch(() => {});
+    navigator.clipboard.writeText(text).then(() => showAlert(window.t ? window.t('MSG_COPIED_SHORT') : 'Copied!')).catch(() => {});
 }
 
 function generateReportText() {
@@ -519,25 +563,34 @@ function generateReportText() {
     const r = appState.lastResult;
     const unit = r.depthUnit;
     const s = appState.settings;
+    const T = (k, f) => (window.t ? window.t(k) : f);
+
+    // Translated depth unit (override raw unit when t() available)
+    const depthUnitT = window.t
+        ? (s.metric ? window.t('UNIT_M') : window.t('UNIT_FT'))
+        : unit;
+    const minT = T('UNIT_MIN', 'min');
 
     const modelName = r.modelName || getModelName(s.decoModel || 'ZHLC_GF');
-    let text = 'ApexDeco - Dive Plan\n';
+    let text = T('REPORT_TITLE', 'ApexDeco - Dive Plan') + '\n';
     text += '========================\n\n';
-    text += `Circuit: ${s.circuit || 'OC'}\n`;
-    text += `Model: ${modelName}`;
+    text += `${T('REPORT_CIRCUIT', 'Circuit')}: ${s.circuit || 'OC'}\n`;
+    text += `${T('REPORT_MODEL', 'Model')}: ${modelName}`;
     if (s.decoModel && s.decoModel.startsWith('VPM') && s.decoModel !== 'VPMB_GFS') {
-        text += ` (Conservatism: ${s.conservatism || 0})`;
+        text += ` (${T('LABEL_CONSERVATISM', 'Conservatism')}: ${s.conservatism || 0})`;
     } else {
         text += ` ${s.gfLo}/${s.gfHi}`;
     }
     text += '\n';
-    text += `Units: ${s.metric ? 'Metric' : 'Imperial'}, ${s.waterType === 0 ? 'Salt' : 'Fresh'} water\n\n`;
+    const unitsLabel = s.metric ? T('REPORT_UNITS_METRIC', 'Metric') : T('REPORT_UNITS_IMPERIAL', 'Imperial');
+    const waterLabel = s.waterType === 0 ? T('REPORT_WATER_SALT', 'Salt water') : T('REPORT_WATER_FRESH', 'Fresh water');
+    text += `${T('REPORT_UNITS', 'Units')}: ${unitsLabel}, ${waterLabel}\n\n`;
 
     // Only show selected (checked) levels
     const selectedLevels = appState.levels.filter(l => l.selected !== false);
-    text += 'Bottom Levels:\n';
+    text += T('REPORT_BOTTOM_LEVELS', 'Bottom Levels:') + '\n';
     selectedLevels.forEach(l => {
-        text += `  ${l.depth}${unit} / ${l.time}min / ${l.o2}/${l.he}\n`;
+        text += `  ${l.depth}${depthUnitT} / ${l.time}${minT} / ${l.o2}/${l.he}\n`;
     });
 
     // Only show decos that were selected and appear in the final plan
@@ -548,23 +601,36 @@ function generateReportText() {
         return planGases.has(gasLabel);
     });
     if (selectedDecos.length > 0) {
-        text += '\nDeco Mixes:\n';
+        text += '\n' + T('REPORT_DECO_MIXES', 'Deco Mixes:') + '\n';
         selectedDecos.forEach(d => {
             text += `  ${d.o2}/${d.he}\n`;
         });
     }
 
-    text += '\nPlan:\n';
-    text += padRight('Segment', 10) + padRight('Depth', 16) + padRight('Time', 8) + padRight('Run', 8) + 'Gas\n';
+    text += '\n' + T('REPORT_PLAN', 'Plan:') + '\n';
+    text += padRight(T('REPORT_TH_SEGMENT', 'Segment'), 10)
+         + padRight(T('REPORT_TH_DEPTH', 'Depth'), 16)
+         + padRight(T('REPORT_TH_TIME', 'Time'), 8)
+         + padRight(T('REPORT_TH_RUN', 'Run'), 8)
+         + T('REPORT_TH_GAS', 'Gas') + '\n';
     text += '-'.repeat(50) + '\n';
 
+    const segKey = {
+        descent: 'ACTION_DESCENT',
+        level: 'ACTION_LEVEL',
+        bottom: 'ACTION_LEVEL',
+        ascent: 'ACTION_ASCENT',
+        stop: 'ACTION_STOP',
+        surface: 'ACTION_SURFACE'
+    };
     r.plan.forEach(seg => {
-        let segLabel = seg.type.charAt(0).toUpperCase() + seg.type.slice(1);
+        const fallback = seg.type.charAt(0).toUpperCase() + seg.type.slice(1);
+        const segLabel = segKey[seg.type] ? T(segKey[seg.type], fallback) : fallback;
         let depthStr = '';
         if (seg.type === 'descent' || seg.type === 'ascent') {
-            depthStr = `${seg.startDepth}→${seg.endDepth}${unit}`;
+            depthStr = `${seg.startDepth}→${seg.endDepth}${depthUnitT}`;
         } else if (seg.depth !== undefined) {
-            depthStr = `${seg.depth}${unit}`;
+            depthStr = `${seg.depth}${depthUnitT}`;
         }
         const timeStr = formatStopTime(seg.time || 0);
         const runStr = String(Math.floor(seg.runtime || 0));
@@ -572,8 +638,8 @@ function generateReportText() {
     });
 
     text += '-'.repeat(50) + '\n';
-    text += `Total Runtime: ${r.totalRuntime} min\n`;
-    text += `OTU: ${r.totalOTU}  CNS: ${r.totalCNS.toFixed(0)}%\n`;
+    text += `${T('REPORT_TOTAL_RUNTIME', 'Total Runtime')}: ${r.totalRuntime} ${minT}\n`;
+    text += `${T('REPORT_OTU', 'OTU')}: ${r.totalOTU}  ${T('REPORT_CNS', 'CNS')}: ${r.totalCNS.toFixed(0)}%\n`;
 
     return text;
 }

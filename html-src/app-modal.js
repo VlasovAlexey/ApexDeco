@@ -22,20 +22,24 @@ function _showModal(message, isConfirm, onOk, onCancel) {
     overlay.style.opacity = '0';
     overlay.style.transition = 'opacity 0.2s ease';
 
+    const _t = (k, d) => (window.t ? window.t(k) : d);
+    const okLabel = _t('BTN_OK', 'OK');
+    const cancelLabel = _t('BTN_CANCEL', 'Cancel');
+
     let buttonsHTML;
     if (isConfirm) {
         buttonsHTML = `
-            <button class="btn btn-outline" id="alert-modal-cancel">Cancel</button>
-            <button class="btn btn-outline" id="alert-modal-ok">OK</button>`;
+            <button class="btn btn-outline" id="alert-modal-cancel">${cancelLabel}</button>
+            <button class="btn btn-outline" id="alert-modal-ok">${okLabel}</button>`;
     } else {
         buttonsHTML = `
-            <button class="btn btn-outline" id="alert-modal-ok">OK</button>`;
+            <button class="btn btn-outline" id="alert-modal-ok">${okLabel}</button>`;
     }
 
     overlay.innerHTML = `
         <div class="modal" style="transform:scale(0.95); transition:transform 0.2s ease">
-            <h3>MultiDeco</h3>
-            <div class="alert-modal-text">${message}</div>
+            <h3 style="text-align:center;">ApexDeco</h3>
+            <div class="alert-modal-text" style="text-align:center;">${message}</div>
             <div class="btn-group" style="justify-content:center; margin-top:12px;">${buttonsHTML}</div>
         </div>`;
 
