@@ -4,7 +4,12 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     appState.settings = DecoEngine.createDefaultSettings();
+    // Snapshot the HTML-defined default values of all Tools inputs
+    // BEFORE restoring persisted state, so Reset Configuration can restore them.
+    appState.toolsDefaults = captureToolsState();
     loadStateFromStorage();
+    loadConfigToUI();
+    applyToolsState();
     renderLevels();
     renderDecos();
     updateDepthUnits();
@@ -31,6 +36,14 @@ document.addEventListener('DOMContentLoaded', () => {
             panel.addEventListener('change', fn);
             panel.addEventListener('input', fn);
         }
+    }
+
+    // Persist tool inputs whenever anything on the Tools screen changes
+    const toolsScreen = document.getElementById('screen-tools');
+    if (toolsScreen) {
+        const persist = () => saveStateToStorage();
+        toolsScreen.addEventListener('change', persist);
+        toolsScreen.addEventListener('input', persist);
     }
 
     // Re-render dynamic lists and recalculate tools on language change

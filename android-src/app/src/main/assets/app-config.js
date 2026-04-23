@@ -152,6 +152,12 @@ function resetConfig() {
     showConfirm(window.t ? window.t('CONFIRM_RESET') : 'Reset all settings to defaults?', () => {
         appState.settings = DecoEngine.createDefaultSettings();
         loadConfigToUI();
+        // Reset Tools inputs to their HTML defaults captured at init
+        if (appState.toolsDefaults) {
+            appState.tools = JSON.parse(JSON.stringify(appState.toolsDefaults));
+            applyToolsState();
+            toggleBmTrimix();
+        }
         updateDepthUnits();
         recalcAllTools();
         saveStateToStorage();

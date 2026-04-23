@@ -148,9 +148,9 @@ function renderResult(result) {
             const fO2 = o2 / 100;
             const fHe = he / 100;
             const fN2 = 1 - fO2 - fHe;
-            if (isCCRMode && (seg.type === 'bottom' || isTravelSeg)) {
-                const sp = findLevelSetpoint(seg.gas, depth);
-                pO2Str = sp ? sp.toFixed(2) : (fO2 * pAmb).toFixed(2);
+            const sp = isCCRMode ? findLevelSetpoint(seg.gas, depth) : null;
+            if (sp) {
+                pO2Str = Math.min(sp, pAmb).toFixed(2);
             } else {
                 pO2Str = (fO2 * pAmb).toFixed(2);
             }
@@ -398,7 +398,7 @@ function renderGridPlan(result) {
     html += '<table class="data-table" style="font-family:Consolas,\'Courier New\',monospace; font-size:12px; white-space:nowrap; min-width:720px;">';
     html += '<thead><tr>'
         + '<th>' + _tr('TH_ACTION','Action') + '</th><th>' + _tr('TH_DEPTH','Depth') + '</th><th>' + _tr('TH_TIME','Time') + '</th><th>' + _tr('TH_RUNTIME','RunTime') + '</th>'
-        + '<th>' + _tr('TH_O2','O2') + '</th><th>' + _tr('TH_HE','He') + '</th><th>' + _tr('TH_SETPOINT','Setpoint') + '</th>'
+        + '<th>' + _tr('TH_O2','O2') + '</th><th>' + _tr('TH_HE','He') + '</th><th>' + (isCCR ? _tr('TH_SETPOINT','Setpoint') : _tr('TH_PPO2','pO2')) + '</th>'
         + '<th>' + _tr('TH_EAD','EAD') + '</th><th>' + _tr('TH_END','END') + '</th><th>' + _tr('TH_CNS','CNS') + '</th><th>' + _tr('TH_OTU',"OTU's") + '</th>'
         + '</tr></thead><tbody>';
 
@@ -423,13 +423,9 @@ function renderGridPlan(result) {
         const fO2 = o2 / 100, fHe = he / 100, fN2 = Math.max(0, 1 - fO2 - fHe);
         const pa = depth / slp + 1;
         let setpointStr;
-        if (isCCR && seg.type !== 'stop' && seg.type !== 'surface') {
-            const sp = findLevelSetpoint(seg.gas, depth);
-            if (sp) {
-                setpointStr = Math.min(sp, pa).toFixed(2);
-            } else {
-                setpointStr = (fO2 * pa).toFixed(2);
-            }
+        const sp = isCCR ? findLevelSetpoint(seg.gas, depth) : null;
+        if (sp) {
+            setpointStr = Math.min(sp, pa).toFixed(2);
         } else {
             setpointStr = (fO2 * pa).toFixed(2);
         }
@@ -465,23 +461,17 @@ function renderBailoutPlan(bailout, unit) {
     const container = document.getElementById('result-bailout');
     if (!container) return;
 
-    const decoTime = bailout.stops ? bailout.stops.reduce((a, s) => a + s.time, 0) : 0;
     const bailHeader = _tr('RESULT_BAILOUT_PLAN', `Bailout Plan — ${bailout.modelName || 'OC'}`, { model: bailout.modelName || 'OC' });
     let html = `<div class="card" style="margin-top:12px; border-left:3px solid #e53935;">
         <div class="card-header" style="color:#e53935;">${bailHeader}</div>
         <div class="card-body">
-            <div class="result-summary" style="margin-bottom:8px">
-                <div class="result-stat"><div class="stat-value">${bailout.totalRuntime}</div><div class="stat-label">${_tr('RESULT_RUNTIME','Runtime')}</div></div>
-                <div class="result-stat"><div class="stat-value">${decoTime}</div><div class="stat-label">${_tr('RESULT_DECO_TIME','Deco Time')}</div></div>
-                <div class="result-stat"><div class="stat-value">${bailout.totalCNS ? bailout.totalCNS.toFixed(0) : 0}%</div><div class="stat-label">${_tr('RESULT_CNS','CNS')}</div></div>
-            </div>
-            <table class="data-table"><thead><tr><th>${_tr('TH_SEG','Seg')}</th><th>${_tr('TH_DEPTH','Depth')}</th><th>${_tr('TH_TIME','Time')}</th><th>${_tr('TH_RUNTIME','Runtime')}</th><th>${_tr('TH_GAS','Gas')}</th></tr></thead><tbody>`;
+            <table class="data-table"><thead><tr><th>${_tr('TH_SEG','Seg')}</th><th>${_tr('TH_DEPTH','Depth')}</th><th>${_tr('TABLE_STOP','Stop')}</th><th>${_tr('TH_RUNTIME','Runtime')}</th><th>${_tr('TH_GAS','Gas')}</th></tr></thead><tbody>`;
 
     for (const seg of bailout.plan) {
         let rowClass = seg.type === 'stop' ? 'stop-row' : (seg.type === 'surface' ? 'surface-row' : '');
         let label = seg.type === 'stop' ? _tr('ACTION_STOP_SHORT','Stop') : seg.type === 'descent' ? _tr('ACTION_DESC_SHORT','Desc') : seg.type === 'ascent' ? _tr('ACTION_ASC_SHORT','Asc') : seg.type === 'bottom' ? _tr('ACTION_BOTTOM_SHORT','Bottom') : _tr('ACTION_SURF_SHORT','Surf');
         let depth = seg.depth ? `${seg.depth}${unit}` : seg.startDepth !== undefined ? `${seg.startDepth}→${seg.endDepth}${unit}` : `0${unit}`;
-        html += `<tr class="${rowClass}"><td>${label}</td><td>${depth}</td><td>${seg.time || '--'}</td><td>${seg.runtime}</td><td>${seg.gas || '--'}</td></tr>`;
+        html += `<tr class="${rowClass}"><td>${label}</td><td>${depth}</td><td>${seg.time ? formatStopTime(seg.time) : '--'}</td><td>${seg.runtime}</td><td>${seg.gas || '--'}</td></tr>`;
     }
 
     html += '</tbody></table>';
