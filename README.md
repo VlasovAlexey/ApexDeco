@@ -5,15 +5,17 @@
 </p>
 
 <p align="center">
-  <b>A modern, browser-based mixed-gas decompression planner</b><br>
+  <b>A browser-based mixed-gas decompression planner</b><br>
   Bühlmann ZH-L16C with Gradient Factors, VPM-B / VPM-A / VPM-B/E / VPM-B/GFS, OC and CCR
 </p>
 
 <p align="center">
   <img alt="Language" src="https://img.shields.io/badge/language-JavaScript-yellow">
   <img alt="Runtime" src="https://img.shields.io/badge/runtime-browser-blue">
-  <img alt="License" src="https://img.shields.io/badge/license-MIT-green">
+  <img alt="License" src="https://img.shields.io/badge/license-AGPLv3-green">
   <img alt="Math verified" src="https://img.shields.io/badge/math-verified%20vs%20native%20reference-brightgreen">
+  <img alt="coverage%20(core)" src="https://img.shields.io/badge/coverage%20(core)%2095%25-blue">
+  <img alt="coverage%20(core)" src="https://img.shields.io/badge/coverage%20(ui)%2080%25-red">
 </p>
 
 ## About
@@ -21,7 +23,7 @@ Try the online version first: https://vlasovalexey.github.io/ApexDeco/html-src/
 
 **ApexDeco** is an open technical diving decompression planner that runs entirely in your web browser. No server, no installation, no telemetry. It produces detailed ascent schedules for trimix, nitrox and air dives on open circuit or closed circuit rebreathers, using the two most widely trusted decompression models in technical diving: **Bühlmann ZH-L16C with Gradient Factors** and **VPM-B** (plus VPM-A, VPM-B/E, VPM-B/GFS variants).
 
-Every equation in this planner has been cross verified against a well known native reference implementation. The regression suite (`tests.html`) contains hundreds of numerical assertions that lock JS output to the native reference within one percent on reference profiles, including a full multi level trimix dive (80 m for 26 min, 30 m for 30 min, 70 m for 28 min) matching to the minute.
+Every equation in this planner has been cross verified against a well known native reference implementation. The regression suite (https://vlasovalexey.github.io/ApexDeco/html-src/tests.html) contains hundreds of numerical assertions that lock JS output to the native reference within one percent on reference profiles, including a full multi level trimix dive (80 m for 26 min, 30 m for 30 min, 70 m for 28 min) matching to the minute.
 
 > This project is not affiliated with, endorsed by, or derived from the source code of any commercial dive planning software. All algorithms are re implemented from published scientific literature and verified numerically.
 
@@ -100,7 +102,7 @@ Every equation in this planner has been cross verified against a well known nati
 | 50 m for 30 min, EAN32, GF 30/85 | matches | matches | under 1 percent |
 | Various short profiles (NDL, shallow deco) | matches | matches | under 1 percent |
 
-Open `tests.html` in your browser to run the full math verification suite.
+Open https://vlasovalexey.github.io/ApexDeco/html-src/tests.html in your browser to run the full math verification suite.
 
 ## Getting started
 
@@ -123,12 +125,12 @@ python -m http.server 8080
 > Serving via `file://` works too, but some browsers restrict `localStorage` on that protocol. A local static server is recommended.
 
 ### Use it offline
-Because everything runs in the browser, you can zip the `release_01/` folder and carry it on any laptop, USB stick or tablet. No network is required at runtime.
+Because everything runs in the browser, you can zip the `ApexDeco/` folder and carry it on any laptop, USB stick or tablet. No network is required at runtime.
 
 ## Architecture
 
 ```
-release_01/
+ApexDeco/
   index.html               Main planner UI
   tests.html               Math verification and regression suite
   deco-engine.js           Bühlmann ZH-L16C plus GF engine
@@ -136,7 +138,7 @@ release_01/
   app-*.js                 UI layers (state, config, levels, result, debug)
   profile-chart.js         Highcharts profile rendering
   tool-*.js                Stand alone dive tools
-  styles.css
+  ...
   res/                     Static assets (logo, screenshots)
 ```
 
