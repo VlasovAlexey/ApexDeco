@@ -186,7 +186,3 @@ Please keep the ZHL-16 engine (`deco-engine.js`) numerically unchanged unless yo
 ## License
 
 AGPLv3. See [LICENSE](LICENSE) for details.
-
-<p align="center">
-  <sub>Dive safe. Plan your dive, dive your plan.</sub>
-</p>
