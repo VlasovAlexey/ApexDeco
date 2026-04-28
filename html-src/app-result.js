@@ -31,6 +31,8 @@ function findLevelSetpoint(gas, depth) {
         const d = Math.abs((l.depth || 0) - depth);
         if (d < bestDiff) { best = l; bestDiff = d; }
     }
+    // OC/SCR leg → not breathing the loop, so no setpoint applies
+    if (best.oc || best.scr) return null;
     return best.setpoint;
 }
 

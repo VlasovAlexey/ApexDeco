@@ -23,6 +23,8 @@ function renderLevels() {
             <span class="item-time">${l.time}${minLabel}</span>
             <span class="item-gas">${l.o2}/${l.he}</span>
             ${isCCR ? `<span class="item-sp">SP${l.setpoint || 1.3}</span>` : ''}
+            ${isCCR && l.oc ? `<span class="item-sp" style="background:#e53935;color:#fff;">OC</span>` : ''}
+            ${isCCR && l.scr ? `<span class="item-sp" style="background:#fb8c00;color:#fff;">SCR</span>` : ''}
         </div>
     `).join('');
 }
@@ -42,6 +44,8 @@ function addLevel() {
     document.getElementById('lvl-o2').value = 21;
     document.getElementById('lvl-he').value = 0;
     document.getElementById('lvl-sp').value = 1.3;
+    document.getElementById('lvl-oc').checked = false;
+    document.getElementById('lvl-scr').checked = false;
     updateCCRVisibility();
     document.getElementById('level-modal').classList.add('active');
 }
@@ -55,6 +59,8 @@ function editLevel(idx) {
     document.getElementById('lvl-o2').value = l.o2;
     document.getElementById('lvl-he').value = l.he;
     document.getElementById('lvl-sp').value = l.setpoint || 1.3;
+    document.getElementById('lvl-oc').checked = !!l.oc;
+    document.getElementById('lvl-scr').checked = !!l.scr;
     updateCCRVisibility();
     document.getElementById('level-modal').classList.add('active');
 }
@@ -65,12 +71,18 @@ function saveLevelModal() {
     const o2 = parseInt(document.getElementById('lvl-o2').value) || 21;
     const he = parseInt(document.getElementById('lvl-he').value) || 0;
     const sp = parseFloat(document.getElementById('lvl-sp').value) || 1.3;
+    const oc = document.getElementById('lvl-oc').checked;
+    const scr = document.getElementById('lvl-scr').checked;
 
     if (depth <= 0 || time <= 0) return;
     if (o2 + he > 100) { showAlert(window.t ? window.t('ERR_O2_HE_EXCEED') : 'O2 + He cannot exceed 100%'); return; }
 
     const level = { depth, time, o2, he, selected: true };
-    if (appState.settings.circuit === 'CCR') level.setpoint = sp;
+    if (appState.settings.circuit === 'CCR') {
+        level.setpoint = sp;
+        if (oc) level.oc = true;
+        if (scr) level.scr = true;
+    }
 
     if (appState.editLevelIdx >= 0) {
         appState.levels[appState.editLevelIdx] = level;
@@ -84,7 +96,10 @@ function saveLevelModal() {
 }
 
 function deleteSelectedLevels() {
-    appState.levels = appState.levels.filter(l => !l.selected);
+    const filtered = appState.levels.filter(l => !l.selected);
+    if (appState.settings.circuit === 'CCR') appState.levelsCCR = filtered;
+    else appState.levelsOC = filtered;
+    appState.levels = filtered;
     renderLevels();
     saveStateToStorage();
 }

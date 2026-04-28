@@ -40,10 +40,8 @@ function calculateDeco() {
         return;
     }
 
-    // Apply extended stops
-    if (s.extendedStops) {
-        applyExtendedStops(result, s);
-    }
+    // Extended Stops are applied inside the deco engine itself
+    // (tissues loaded for the extra time → mini-level effect on later stops).
 
     // Calculate gas usage
     result.gasUsage = calculateGasUsage(result, levels, decos, s);
@@ -194,19 +192,19 @@ function generateWarnings(result, levels, settings) {
 
     // CNS
     if (s.warnCNS !== false && result.totalCNS > (s.cnsHigh || 80)) {
-        warnings.push({ level: 'error', msg: `CNS ${result.totalCNS.toFixed(0)}% exceeds ${s.cnsHigh || 80}%` });
+        warnings.push({ level: 'error', msg: `CNS ${result.totalCNS.toFixed(0)}% > ${s.cnsHigh || 80}%` });
     }
 
     // OTU
     if (s.warnOTU !== false && result.totalOTU > (s.otuHigh || 300)) {
-        warnings.push({ level: 'warn', msg: `OTU ${result.totalOTU} exceeds ${s.otuHigh || 300}` });
+        warnings.push({ level: 'warn', msg: `OTU ${result.totalOTU} > ${s.otuHigh || 300}` });
     }
 
     // 2-week OTU tracking
     if (s.twoWeekOTU > 0) {
         const cumulativeOTU = s.twoWeekOTU + result.totalOTU;
         if (cumulativeOTU > 300) {
-            warnings.push({ level: 'warn', msg: `2-week cumulative OTU ${cumulativeOTU} exceeds 300` });
+            warnings.push({ level: 'warn', msg: `2-week cumulative OTU ${cumulativeOTU} > 300` });
         }
     }
 
@@ -367,7 +365,7 @@ function siUpdateTotal() {
     const minutes = parseInt(document.getElementById('si-minutes').value) || 0;
     const total   = days * 1440 + hours * 60 + minutes;
     const lbl = document.getElementById('si-total-label');
-    if (lbl) lbl.textContent = `Total: ${total} min`;
+    if (lbl) lbl.textContent = (window.t ? window.t('LABEL_SI_TOTAL', { n: total }) : `Total: ${total} min`);
 }
 
 function confirmNextDive() {

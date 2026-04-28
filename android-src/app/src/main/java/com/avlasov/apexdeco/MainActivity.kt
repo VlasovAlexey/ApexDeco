@@ -97,6 +97,25 @@ class MainActivity : AppCompatActivity() {
             }
             vibrator.vibrate(VibrationEffect.createOneShot(20, VibrationEffect.DEFAULT_AMPLITUDE))
         }
+
+        @JavascriptInterface
+        fun onThemeChanged(isDark: Boolean) {
+            runOnUiThread {
+                if (isDark) {
+                    val darkColor = Color.parseColor("#1e1e1f")
+                    insetsController.isAppearanceLightStatusBars = false
+                    insetsController.isAppearanceLightNavigationBars = false
+                    webView.setBackgroundColor(darkColor)
+                    container.setBackgroundColor(darkColor)
+                } else {
+                    val lightColor = Color.parseColor("#f5f5f5")
+                    insetsController.isAppearanceLightStatusBars = true
+                    insetsController.isAppearanceLightNavigationBars = true
+                    webView.setBackgroundColor(lightColor)
+                    container.setBackgroundColor(lightColor)
+                }
+            }
+        }
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

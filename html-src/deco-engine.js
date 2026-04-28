@@ -541,6 +541,8 @@ const DecoEngine = (() => {
             let stopDepth = firstStopDepth;
             let maxIter = 500;
             let isFirstDecoStop = true;
+            // Extended Stops — track previous gas for mix-change detection
+            let prevStopGas = currentGasLabel;
 
             while (stopDepth >= effectiveLastStop && maxIter > 0) {
                 maxIter--;
@@ -609,6 +611,33 @@ const DecoEngine = (() => {
                     }
                 }
 
+                // ===== EXTENDED STOPS — actually load tissues for the extra time =====
+                // (mini-level effect: subsequent stops adapt to the new tissue state)
+                if (settings.extendedStops) {
+                    const deepMin = settings.extStopDeep || 0;
+                    const shallowMin = settings.extStopShallow || 0;
+                    const boundary = settings.metric ? 30 : 100;
+                    const isMixChange = currentGasLabel !== prevStopGas;
+                    let apply = settings.extendAllMix || isMixChange;
+                    if (apply && settings.extendO2Window && !settings.extendAllMix) {
+                        const curO2pct = Math.round(currentO2 * 100);
+                        const prevO2pct = parseInt((prevStopGas || '0/0').split('/')[0]) || 0;
+                        if (curO2pct <= prevO2pct) apply = false;
+                    }
+                    if (apply) {
+                        const extTime = stopDepth > boundary ? deepMin : shallowMin;
+                        if (extTime > 0) {
+                            const addExtra = settings.extendAdd
+                                ? extTime
+                                : Math.max(0, extTime - actualStopTime);
+                            if (addExtra > 0) {
+                                loadTissuesConstantDepth(tissues, stopDepth, addExtra, currentO2, currentHe, settings, currentSP);
+                                actualStopTime += addExtra;
+                            }
+                        }
+                    }
+                }
+
                 runtime += actualStopTime;
 
                 const pAmb = getAmbientPressure(stopDepth, settings);
@@ -626,6 +655,7 @@ const DecoEngine = (() => {
                     he: Math.round(currentHe * 100)
                 });
 
+                prevStopGas = currentGasLabel;
                 isFirstDecoStop = false;
 
                 if (stopDepth <= effectiveLastStop) break;
@@ -655,7 +685,8 @@ const DecoEngine = (() => {
             const time = level.time;
             const o2Frac = level.o2 / 100;
             const heFrac = level.he / 100;
-            const sp = isCCR ? (level.setpoint || 1.3) : 0;
+            // OC/SCR leg in CCR mode: treat as open-circuit (setpoint=0)
+            const sp = (isCCR && !level.oc && !level.scr) ? (level.setpoint || 1.3) : 0;
 
             // Set current gas for this level
             currentO2 = o2Frac;
@@ -730,7 +761,7 @@ const DecoEngine = (() => {
         currentO2 = lastLevel.o2 / 100;
         currentHe = lastLevel.he / 100;
         currentGasLabel = `${lastLevel.o2}/${lastLevel.he}`;
-        const lastSP = isCCR ? (lastLevel.setpoint || 1.3) : 0;
+        const lastSP = (isCCR && !lastLevel.oc && !lastLevel.scr) ? (lastLevel.setpoint || 1.3) : 0;
         currentSP = lastSP;
 
         // Compute decozone start: depth during ascent where tissue tension first exceeds pAmb

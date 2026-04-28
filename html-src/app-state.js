@@ -4,7 +4,9 @@
 
 // ===== STATE =====
 let appState = {
-    levels: [],       // [{depth, time, o2, he, selected}]
+    levels: [],       // active list — alias for levelsOC or levelsCCR depending on circuit
+    levelsOC: [],     // OC bottom levels
+    levelsCCR: [],    // CCR bottom levels (with optional .setpoint, .oc, .scr per level)
     decos: [],        // [{o2, he, selected}]
     lastResult: null,
     settings: null,
@@ -12,6 +14,12 @@ let appState = {
     editLevelIdx: -1,
     editDecoIdx: -1
 };
+
+// Switch active levels list according to current circuit. Call after settings.circuit changes.
+function applyLevelsForCircuit() {
+    const isCCR = appState.settings && appState.settings.circuit === 'CCR';
+    appState.levels = isCCR ? appState.levelsCCR : appState.levelsOC;
+}
 
 // ===== HELPERS =====
 function getRadio(name) {
@@ -28,7 +36,8 @@ function setRadio(name, value) {
 function saveStateToStorage() {
     try {
         const data = {
-            levels: appState.levels,
+            levelsOC: appState.levelsOC,
+            levelsCCR: appState.levelsCCR,
             decos: appState.decos,
             settings: appState.settings,
             tools: captureToolsState()
@@ -42,10 +51,18 @@ function loadStateFromStorage() {
         const raw = localStorage.getItem('multideco_state');
         if (!raw) return;
         const data = JSON.parse(raw);
-        if (data.levels) appState.levels = data.levels;
+        if (data.levelsOC) appState.levelsOC = data.levelsOC;
+        if (data.levelsCCR) appState.levelsCCR = data.levelsCCR;
+        // Backwards compat: older storage put one merged "levels" array
+        if (!data.levelsOC && !data.levelsCCR && Array.isArray(data.levels)) {
+            const wasCCR = data.settings && data.settings.circuit === 'CCR';
+            if (wasCCR) appState.levelsCCR = data.levels;
+            else appState.levelsOC = data.levels;
+        }
         if (data.decos) appState.decos = data.decos;
         if (data.settings) appState.settings = { ...appState.settings, ...data.settings };
         if (data.tools) appState.tools = data.tools;
+        applyLevelsForCircuit();
     } catch (e) { /* ignore */ }
 }
 

@@ -33,6 +33,7 @@ function onCircuitChange() {
     document.querySelectorAll('.ccr-field').forEach(el => {
         el.style.display = isCCR ? 'flex' : 'none';
     });
+    applyLevelsForCircuit();
     renderLevels();
 }
 

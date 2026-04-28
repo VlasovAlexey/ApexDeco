@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // BEFORE restoring persisted state, so Reset Configuration can restore them.
     appState.toolsDefaults = captureToolsState();
     loadStateFromStorage();
+    applyLevelsForCircuit();
     loadConfigToUI();
     applyToolsState();
     renderLevels();
