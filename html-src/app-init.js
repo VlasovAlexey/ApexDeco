@@ -57,6 +57,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (appState && appState.lastResult && typeof renderResult === 'function') {
             try { renderResult(appState.lastResult); } catch (e) {}
         }
+        // Re-render Help in the new language (clears the per-language cache key).
+        const helpRoot = document.getElementById('screen-help');
+        if (helpRoot) {
+            helpRoot.dataset.rendered = '';
+            if (helpRoot.classList.contains('active') && typeof renderHelp === 'function') renderHelp();
+        }
     });
 
     // Fix EAD row visibility based on initial radio state

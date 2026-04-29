@@ -601,11 +601,10 @@ const DecoEngine = (() => {
                         loadTissuesConstantDepth(tissues, stopDepth, extraFirst, currentO2, currentHe, settings, currentSP);
                     }
                 } else {
-                    // Round the stop time itself up to the next grid multiple,
-                    // matching Android MultiDeco — transit between stops is NOT
-                    // folded into the grid (otherwise every stop ends at :40
-                    // when transit = 20s, accumulating extra deco vs Android).
-                    actualStopTime = Math.max(grid, Math.ceil(rawStopTime / grid) * grid);
+                    // Round total at level up to next grid multiple, enforcing at least one grid unit
+                    const total = transitTime + rawStopTime;
+                    const totalAtLevel = Math.max(grid, Math.ceil(total / grid) * grid);
+                    actualStopTime = totalAtLevel - transitTime;
                     const extraTime = actualStopTime - rawStopTime;
                     if (extraTime > 0.001) {
                         loadTissuesConstantDepth(tissues, stopDepth, extraTime, currentO2, currentHe, settings, currentSP);

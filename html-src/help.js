@@ -36,7 +36,7 @@ const HelpData = {
   "Settings": [
     {
       "q": "Configuration",
-      "a": "Settings in ApexDeco are grouped into cards. Below is what each control does.\n\nAppearance\n\n- Language: UI language (English, Russian, Spanish, Chinese, Hindi).\n\n- Interface Style: Light or Dark theme. The choice is remembered between sessions.\n\nModel Settings\n\n- Circuit: OC or CCR. Switching circuit also swaps the Bottom Mix & Travel list — OC and CCR levels are stored separately.\n\n- Deco Model: ZH-L16C with Gradient Factors, VPM-B, or VPM-B/E.\n\n- Conservatism: 0 to 4 — used by VPM-B / VPM-B/E. Larger values inflate the critical bubble radii and yield longer decompression. Has no effect on Bühlmann GF (which is controlled by GF Lo / GF Hi).\n\n- GF Lo / GF Hi: Bühlmann gradient factors that control deep stops and surfacing tension.\n\n- GFS Hi (Bailout): GF Hi used during the bailout-plan re-calculation.\n\n- O2 Narcotic: include oxygen partial pressure when calculating END.\n\nUnit Settings\n\n- Depth Units: meters or feet (for both display and input).\n\n- Water Type: fresh or salt (SG 1.026). Affects ambient pressure per metre.\n\n- Altitude / Acclimatized: dive elevation and the elevation the diver is acclimatized to. Used to correct ambient pressure for altitude diving.\n\n- Gas Volume: litres or cubic feet for gas consumption results.\n\n- Pressure Units: bar or psi for tank pressures.\n\n- Gauge Type: cylinder rating / measurement convention used in gas calculations.\n\n- Temperature: ambient temperature, used by the gas-mixing tools.\n\nDescent / Ascent Rates\n\n- Descent Rate: rate during descent segments.\n\n- Ascent Rate: rate from bottom to the first stop.\n\n- Deco Ascent Rate: rate between deco stops.\n\n- Surface Ascent Rate: rate from the last stop to the surface.\n\nDeco Stop Settings\n\n- Step Size: spacing between deco stops.\n\n- Last Stop (OC) / Last Stop (CCR): depth of the final stop. Separate values for open- and closed-circuit dives.\n\n- Min Stop Time: smallest stop duration the planner will issue.\n\n- ppO2 Deco Swap: ppO2 used to decide when the planner switches to a deco gas.\n\n- ppO2 28-45% mix / ppO2 45-99% mix / ppO2 Bottom Max: per-range ppO2 caps that gate which mixes can be selected at each depth.\n\n- O2 100% Max Depth: maximum depth where pure O2 may be used as a deco gas.\n\n- First Stop 30sec / First Stop Double Step: shaping options for the deepest stop.\n\nCCR Settings\n\n- Default Setpoint: setpoint applied before the first level-defined setpoint becomes active.\n\n- SP Units: bar or atm for setpoint values.\n\nRMV / Gas Planning\n\n- Bottom RMV: surface-equivalent consumption used during descent and bottom segments.\n\n- Deco RMV: consumption used during deco stops.\n\nExtended Stops\n\n- Extended Stops: master switch.\n\n- Add time to stop: when On, the extension is added to the required stop time. When Off, the extension is taken as Math.max(required, extension).\n\n- All mix changes: when On, every stop is extended; when Off, only stops where the deco mix changes.\n\n- O2 window effect: when On, extension is applied only when the new gas has a higher inspired ppO2 than the previous one.\n\n- 7..30 m / 30 + m: the extra minutes added at shallow and deep stops (the boundary is 30 m / 100 ft).\n\nWarning Thresholds\n\n- See the \"Warning levels & colors\" topic for what each threshold does.\n\nBailout Settings\n\n- Bailout Plan: when On, ApexDeco generates an additional Bailout Plan card alongside the main plan, assuming bail-out at the deepest level.\n\n- Bailout Model / Bailout GF Lo / Bailout GF Hi / Bailout GFS Hi: deco model and gradient factors used for the bail-out re-calculation, independent of the main-plan settings.\n\n- Bailout RMV: gas consumption used while computing the bail-out volumes.\n\n- Extra Bottom Min / Extra Time: extra bottom minutes added before the failure point and additional time padded into the bail-out ascent.\n\n- Bailout Dive # / Cave Type Bail / Return Portion: cave-style bail-out where part of the plan is duplicated to model the return.\n\nSurface Interval / Multi-dive\n\n- The Surface Interval modal applies surface time between dives so tissues off-gas before the next plan.\n\n- 2-Week OTU: rolling OTU load carried over from the past two weeks; used for the cumulative OTU warning.\n\n- Travel Gas O2% / He%: gas breathed during the surface interval (typically air)."
+      "a": "Settings in ApexDeco are grouped into cards. Below is what each control does.\n\n## Appearance\n\n- Language: UI language (English, Russian, Spanish, Chinese, Hindi).\n\n- Interface Style: Light or Dark theme. The choice is remembered between sessions.\n\n## Model Settings\n\n- Circuit: OC or CCR. Switching circuit also swaps the Bottom Mix & Travel list — OC and CCR levels are stored separately.\n\n- Deco Model: ZH-L16C with Gradient Factors, VPM-B, or VPM-B/E.\n\n- Conservatism: 0 to 4 — used by VPM-B / VPM-B/E. Larger values inflate the critical bubble radii and yield longer decompression. Has no effect on Bühlmann GF (which is controlled by GF Lo / GF Hi).\n\n- GF Lo / GF Hi: Bühlmann gradient factors that control deep stops and surfacing tension.\n\n- GFS Hi (Bailout): GF Hi used during the bailout-plan re-calculation.\n\n- O2 Narcotic: include oxygen partial pressure when calculating END.\n\n## Unit Settings\n\n- Depth Units: meters or feet (for both display and input).\n\n- Water Type: fresh or salt (SG 1.026). Affects ambient pressure per metre.\n\n- Altitude / Acclimatized: dive elevation and the elevation the diver is acclimatized to. Used to correct ambient pressure for altitude diving.\n\n- Gas Volume: litres or cubic feet for gas consumption results.\n\n- Pressure Units: bar or psi for tank pressures.\n\n- Gauge Type: cylinder rating / measurement convention used in gas calculations.\n\n- Temperature: ambient temperature, used by the gas-mixing tools.\n\n## Descent / Ascent Rates\n\n- Descent Rate: rate during descent segments.\n\n- Ascent Rate: rate from bottom to the first stop.\n\n- Deco Ascent Rate: rate between deco stops.\n\n- Surface Ascent Rate: rate from the last stop to the surface.\n\n## Deco Stop Settings\n\n- Step Size: spacing between deco stops.\n\n- Last Stop (OC) / Last Stop (CCR): depth of the final stop. Separate values for open- and closed-circuit dives.\n\n- Min Stop Time: smallest stop duration the planner will issue.\n\n- ppO2 Deco Swap: ppO2 used to decide when the planner switches to a deco gas.\n\n- ppO2 28-45% mix / ppO2 45-99% mix / ppO2 Bottom Max: per-range ppO2 caps that gate which mixes can be selected at each depth.\n\n- O2 100% Max Depth: maximum depth where pure O2 may be used as a deco gas.\n\n- First Stop 30sec / First Stop Double Step: shaping options for the deepest stop.\n\n## CCR Settings\n\n- Default Setpoint: setpoint applied before the first level-defined setpoint becomes active.\n\n- SP Units: bar or atm for setpoint values.\n\n## RMV / Gas Planning\n\n- Bottom RMV: surface-equivalent consumption used during descent and bottom segments.\n\n- Deco RMV: consumption used during deco stops.\n\n## Extended Stops\n\n- Extended Stops: master switch.\n\n- Add time to stop: when On, the extension is added to the required stop time. When Off, the extension is taken as Math.max(required, extension).\n\n- All mix changes: when On, every stop is extended; when Off, only stops where the deco mix changes.\n\n- O2 window effect: when On, extension is applied only when the new gas has a higher inspired ppO2 than the previous one.\n\n- 7..30 m / 30 + m: the extra minutes added at shallow and deep stops (the boundary is 30 m / 100 ft).\n\n## Warning Thresholds\n\n- See the \"Warning levels & colors\" topic for what each threshold does.\n\n## Bailout Settings\n\n- Bailout Plan: when On, ApexDeco generates an additional Bailout Plan card alongside the main plan, assuming bail-out at the deepest level.\n\n- Bailout Model / Bailout GF Lo / Bailout GF Hi / Bailout GFS Hi: deco model and gradient factors used for the bail-out re-calculation, independent of the main-plan settings.\n\n- Bailout RMV: gas consumption used while computing the bail-out volumes.\n\n- Extra Bottom Min / Extra Time: extra bottom minutes added before the failure point and additional time padded into the bail-out ascent.\n\n- Bailout Dive # / Cave Type Bail / Return Portion: cave-style bail-out where part of the plan is duplicated to model the return.\n\n## Surface Interval / Multi-dive\n\n- The Surface Interval modal applies surface time between dives so tissues off-gas before the next plan.\n\n- 2-Week OTU: rolling OTU load carried over from the past two weeks; used for the cumulative OTU warning.\n\n- Travel Gas O2% / He%: gas breathed during the surface interval (typically air)."
     },
     {
       "q": "Warning levels & colors",
@@ -136,10 +136,14 @@ const HELP_ABOUT_HTML = `
 function renderHelp() {
     const root = document.getElementById('screen-help');
     if (!root) return;
-    if (root.dataset.rendered === '1') return;
+    const lang = (window.getCurrentLanguage && window.getCurrentLanguage()) || 'en';
+    if (root.dataset.rendered === lang) return;
+
+    const data = (typeof getHelpData === 'function') ? getHelpData() : HelpData;
+    const tabLabel = (typeof getHelpTabLabel === 'function') ? getHelpTabLabel : (c => c);
 
     const tabs = HELP_CATEGORY_ORDER.map((c, i) => `
-        <button class="help-tab${i === 0 ? ' active' : ''}" data-help-tab="${c}" onclick="selectHelpTab('${c.replace(/'/g, "\'")}', this)">${c}</button>
+        <button class="help-tab${i === 0 ? ' active' : ''}" data-help-tab="${c}" onclick="selectHelpTab('${c.replace(/'/g, "\'")}', this)">${escapeHelpHtml(tabLabel(c))}</button>
     `).join('');
 
     const panels = HELP_CATEGORY_ORDER.map((c, i) => {
@@ -147,7 +151,7 @@ function renderHelp() {
         if (c === 'About') {
             body = HELP_ABOUT_HTML;
         } else {
-            body = (HelpData[c] || []).map(it => `
+            body = (data[c] || []).map(it => `
                 <details class="help-item">
                     <summary>${escapeHelpHtml(it.q)}</summary>
                     <div class="help-answer">${formatHelpAnswer(it.a)}</div>
@@ -165,7 +169,9 @@ function renderHelp() {
             </div>
         </div>
     `;
-    root.dataset.rendered = '1';
+    root.dataset.rendered = lang;
+    // Re-apply data-i18n attributes for the About panel HTML.
+    if (typeof window.applyTranslations === 'function') window.applyTranslations();
 }
 
 function selectHelpTab(name, btn) {
@@ -200,10 +206,10 @@ function renderPlanTable(rows) {
     for (const r of rows) {
         html += '<tr>';
         html += `<td>${escapeHelpHtml(r.depth)}</td>`;
-        html += `<td>${escapeHelpHtml(r.time === '-' ? '—' : r.time)}</td>`;
+        html += `<td>${escapeHelpHtml(r.time === '-' ? '1' : r.time)}</td>`;
         html += `<td>${escapeHelpHtml(r.mix)}</td>`;
         if (hasSP) html += `<td>${escapeHelpHtml(r.sp)}</td>`;
-        html += `<td style="text-align:left;">${escapeHelpHtml(r.note)}</td>`;
+        html += `<td>${escapeHelpHtml(r.note)}</td>`;
         html += '</tr>';
     }
     html += '</tbody></table>';
@@ -211,29 +217,39 @@ function renderPlanTable(rows) {
 }
 
 function formatHelpAnswer(s) {
-    // Split by blank lines into blocks; within each block, group consecutive
-    // lines by mode: 'ul' (bullet), 'plan' (dive plan leg), or 'p' (paragraph).
+    // Split by blank lines into blocks. Modes 'ul' (bullets) and 'plan' (dive
+    // plan legs) accumulate ACROSS blank lines so consecutive plan-leg blocks
+    // separated only by blank lines collapse into a single table. Paragraphs
+    // and section headings flush at block boundaries to stay separate.
     const blocks = String(s).split(/\n\s*\n/);
-    return blocks.map(block => {
-        const lines = block.split(/\n/).map(l => l.trim()).filter(Boolean);
-        // Section heading: single short line with no sentence punctuation.
-        if (lines.length === 1 && lines[0].length <= 60 && !/[.,:?!]$/.test(lines[0]) && !lines[0].startsWith('- ') && !parsePlanLeg(lines[0])) {
-            return `<h4 class="help-section">${escapeHelpHtml(lines[0])}</h4>`;
+    let html = '';
+    let buf = [];
+    let mode = null;
+    const flush = () => {
+        if (!buf.length) return;
+        if (mode === 'h4') {
+            html += `<h4 class="help-section">${escapeHelpHtml(buf[0])}</h4>`;
+        } else if (mode === 'ul') {
+            html += '<ul>' + buf.map(l => `<li>${escapeHelpHtml(l.slice(2))}</li>`).join('') + '</ul>';
+        } else if (mode === 'plan') {
+            html += renderPlanTable(buf);
+        } else if (mode === 'p') {
+            html += `<p>${escapeHelpHtml(buf.join(' '))}</p>`;
         }
-        let html = '';
-        let buf = [];
-        let mode = null;
-        const flush = () => {
-            if (!buf.length) return;
-            if (mode === 'ul') {
-                html += '<ul>' + buf.map(l => `<li>${escapeHelpHtml(l.slice(2))}</li>`).join('') + '</ul>';
-            } else if (mode === 'plan') {
-                html += renderPlanTable(buf);
-            } else {
-                html += `<p>${escapeHelpHtml(buf.join(' '))}</p>`;
-            }
-            buf = [];
-        };
+        buf = [];
+        mode = null;
+    };
+    for (const block of blocks) {
+        const lines = block.split(/\n/).map(l => l.trim()).filter(Boolean);
+        if (!lines.length) continue;
+        // Section heading: explicit "## Title" — its own block.
+        if (lines.length === 1 && lines[0].startsWith('## ')) {
+            flush();
+            mode = 'h4';
+            buf.push(lines[0].slice(3).trim());
+            flush();
+            continue;
+        }
         for (const l of lines) {
             let m, item;
             if (l.startsWith('- ')) { m = 'ul'; item = l; }
@@ -242,7 +258,11 @@ function formatHelpAnswer(s) {
             if (m !== mode) { flush(); mode = m; }
             buf.push(item);
         }
-        flush();
-        return html;
-    }).join('');
+        // Paragraphs are flushed at every block boundary so each paragraph
+        // stays its own <p>. 'plan' and 'ul' keep buffering across blank
+        // lines so adjacent leg-only / bullet-only blocks merge.
+        if (mode === 'p') flush();
+    }
+    flush();
+    return html;
 }

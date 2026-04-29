@@ -619,3 +619,23 @@ table.data-table tr.surface-row { background: #E8F5E9; font-weight: 600; }
     margin: 12px 0 6px;
 }
 .help-answer h4.help-section:first-child { margin-top: 0; }
+
+/* Help — plan-leg tables: outer border + thin vertical separators */
+.help-answer table.data-table {
+    border: 1px solid var(--divider);
+}
+.help-answer table.data-table th,
+.help-answer table.data-table td {
+    border-right: 1px solid var(--divider);
+}
+.help-answer table.data-table th:last-child,
+.help-answer table.data-table td:last-child {
+    border-right: none;
+}
+
+/* Tools — calculator results: bold instead of italic */
+#screen-tools .result-stat .stat-value,
+#screen-tools .tool-result .result-value {
+    font-style: normal;
+    font-weight: 700;
+}
