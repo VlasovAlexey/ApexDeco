@@ -14,7 +14,7 @@
   <img alt="Runtime" src="https://img.shields.io/badge/runtime-browser-blue">
   <img alt="License" src="https://img.shields.io/badge/license-AGPLv3-green">
   <img alt="Math verified" src="https://img.shields.io/badge/math-verified%20vs%20native%20reference-brightgreen">
-  <img alt="coverage%20(core)" src="https://img.shields.io/badge/coverage%20(core)%2095%25-blue">
+  <img alt="coverage%20(core)" src="https://img.shields.io/badge/coverage%20(core)%2099%25-blue">
   <img alt="coverage%20(core)" src="https://img.shields.io/badge/coverage%20(ui)%2080%25-red">
 </p>
 
