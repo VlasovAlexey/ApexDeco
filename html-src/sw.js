@@ -24,7 +24,7 @@ const STATIC_ASSETS = [
     './app-state.js',
     './app-tools-ui.js',
     './chart-theme.js',
-    './deco-engine.js',
+    './zhl16-engine.js',
     './help-i18n.js',
     './help.js',
     './highcharts.js',

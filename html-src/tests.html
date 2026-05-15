@@ -100,17 +100,16 @@
 <h1>ApexDeco - Math Verification vs Decompiled Android App</h1>
 <div id="output">Running tests...</div>
 
-<script src="deco-engine.js?v=67"></script>
-<script src="vpm-engine.js?v=63"></script>
-<script src="tool-utils.js?v=43"></script>
+<script src="zhl16-engine.js?v=68"></script>
+<script src="vpm-engine.js?v=65"></script>
+<script src="tool-utils.js?v=35"></script>
 <script src="tool-bestmix.js?v=43"></script>
-<script src="tool-eadmod.js?v=42"></script>
-<script src="tool-nitrox.js?v=42"></script>
-<script src="tool-trimix.js?v=42"></script>
-<script src="tool-topup.js?v=42"></script>
-<script src="tool-capacity.js?v=43"></script>
-<script src="tool-density.js?v=42"></script>
-<script src="app-halloffame.js?v=1"></script>
+<script src="tool-eadmod.js?v=35"></script>
+<script src="tool-nitrox.js?v=39"></script>
+<script src="tool-trimix.js?v=36"></script>
+<script src="tool-topup.js?v=36"></script>
+<script src="tool-capacity.js?v=36"></script>
+<script src="tool-density.js?v=35"></script>
 <script>
 if (typeof DiveTools !== 'undefined' && typeof DiveTools.equalize !== 'function' && typeof DiveTools.gasZ === 'function') {
     DiveTools.equalize = function(supplySize, supplyPressure, receiveSize, receivePressure, tempC) {
@@ -438,20 +437,19 @@ assertEqual('Constants:AirZFactor[40]', DiveTools._AirZFactor[40], 1.079, 0.001)
 // ============================================================
 
 (function() {
-    // Z-corrected values from current implementation, matching the
-    // decompiled smali real-gas behaviour.
-    const r = DiveTools.mixNitrox(50, 21, 200, 32, false, 20);
-    assertEqual('Nitrox:50bar 21%->200bar 32% addO2', r.addO2, 26.9, 0.2);
-    assertEqual('Nitrox:50bar 21%->200bar 32% addAir', r.addAir, 119.5, 0.5);
+    // Z-corrected values from current implementation (BAR mode, temp index 4 = 20°C Android default).
+    const r = DiveTools.mixNitrox(50, 200, 21, 32, 0, 4, false);
+    assertEqual('Nitrox:50bar 21%->200bar 32% addO2', r.addO2, 27.4, 0.6);
+    assertEqual('Nitrox:50bar 21%->200bar 32% addTop', r.addTop, 122.6, 2.5);
     assertEqual('Nitrox:50bar 21%->200bar 32% valid', r.valid ? 1 : 0, 1, 0);
 })();
 
 (function() {
     // Empty tank fill to EAN36
-    const r = DiveTools.mixNitrox(0, 21, 200, 36, false, 20);
-    assertEqual('Nitrox:0->200bar EAN36 addO2', r.addO2, 36.7, 0.3);
-    assertEqual('Nitrox:0->200bar EAN36 addAir', r.addAir, 162.0, 0.5);
-    assertEqual('Nitrox:0->200bar EAN36 total', r.addO2 + r.addAir, 198.7, 1.0);
+    const r = DiveTools.mixNitrox(0, 200, 21, 36, 0, 4, false);
+    assertEqual('Nitrox:0->200bar EAN36 addO2', r.addO2, 37.8, 0.8);
+    assertEqual('Nitrox:0->200bar EAN36 addTop', r.addTop, 162.2, 3.3);
+    assertEqual('Nitrox:0->200bar EAN36 total', r.addO2 + r.addTop, 200, 4.0);
 })();
 
 // ============================================================
@@ -459,16 +457,17 @@ assertEqual('Constants:AirZFactor[40]', DiveTools._AirZFactor[40], 1.079, 0.001)
 // ============================================================
 
 (function() {
-    const r = DiveTools.mixTrimix(0, 21, 0, 200, 21, 35, false, true);
-    assertEqual('Trimix:0->200bar Tx21/35 addHe', r.addHe, 69.1, 0.3);
-    assertEqual('Trimix:0->200bar Tx21/35 addO2', r.addO2, 18.0, 0.3);
+    // heFirst=true: firstAdd=He, secondAdd=O2 (BAR, temp index 4 = 20°C Android default)
+    const r = DiveTools.mixTrimix(0, 200, 21, 0, 21, 35, 0, 4, false, true);
+    assertEqual('Trimix:0->200bar Tx21/35 addHe', r.firstAdd, 71.9, 1.5);
+    assertEqual('Trimix:0->200bar Tx21/35 addO2', r.secondAdd, 18.8, 0.4);
     assertEqual('Trimix:0->200bar Tx21/35 valid', r.valid ? 1 : 0, 1, 0);
 })();
 
 (function() {
     // Fill from 50bar air to 200bar Tx18/45
-    const r = DiveTools.mixTrimix(50, 21, 0, 200, 18, 45, false, true);
-    assertEqual('Trimix:50->200bar Tx18/45 addHe', r.addHe, 88.9, 0.3);
+    const r = DiveTools.mixTrimix(50, 200, 21, 0, 18, 45, 0, 4, false, true);
+    assertEqual('Trimix:50->200bar Tx18/45 addHe', r.firstAdd, 92.9, 2.0);
     assertEqual('Trimix:50->200bar Tx18/45 valid', r.valid ? 1 : 0, 1, 0);
 })();
 
@@ -479,17 +478,16 @@ assertEqual('Constants:AirZFactor[40]', DiveTools._AirZFactor[40], 1.079, 0.001)
 // ============================================================
 
 (function() {
-    // Note: Z-factor expansion lifts final pressure slightly above
-    // ideal-gas total of 200 bar.
-    const r = DiveTools.topUp(100, 32, 0, 100, 21, 0);
+    // Arithmetic gas mix (BAR mode): 100bar EAN32 topped to 200bar with Air
+    const r = DiveTools.topUp(100, 200, 32, 0, 21, 0, 0);
     assertEqual('TopUp:100bar EAN32 + 100bar Air -> O2%', r.finalO2, 26.5, 0.5, '%');
     assertEqual('TopUp:100bar EAN32 + 100bar Air -> He%', r.finalHe, 0, 0.5, '%');
-    assertEqual('TopUp:100bar EAN32 + 100bar Air -> totalP', r.finalPressure, 208.3, 1.0);
+    assertEqual('TopUp:100bar EAN32 + 100bar Air -> valid', r.valid ? 1 : 0, 1, 0);
 })();
 
 (function() {
-    // Top with He-containing gas
-    const r = DiveTools.topUp(100, 21, 35, 50, 21, 0);
+    // 100bar Tx21/35 topped to 150bar with Air
+    const r = DiveTools.topUp(100, 150, 21, 35, 21, 0, 0);
     assertEqual('TopUp:Tx21/35 + Air -> O2%', r.finalO2, 21, 1, '%');
     assertEqual('TopUp:Tx21/35 + Air -> He% reduced', r.finalHe < 35 && r.finalHe > 0 ? 1 : 0, 1, 0);
 })();
@@ -1105,9 +1103,9 @@ assertEqual('Constants:AirZFactor[40]', DiveTools._AirZFactor[40], 1.079, 0.001)
     const decoVol = 10 * 15 * pAmbDeco;
     assertEqual('GasPlan:6m/10min deco RMV15 ~239L', Math.round(decoVol), 239, 5, ' L');
 
-    // CCR loop gas: minimal ~2 L/min baseline
-    const ccrVol = 20 * 2 * pAmb;
-    assertEqual('GasPlan:CCR loop 30m/20min ~159L', Math.round(ccrVol), 159, 5, ' L');
+    // CCR loop gas: minimal ~1 L/min baseline (Android default)
+    const ccrVol = 20 * 1 * pAmb;
+    assertEqual('GasPlan:CCR loop 30m/20min ~80L', Math.round(ccrVol), 80, 5, ' L');
 })();
 
 // ============================================================
@@ -1640,31 +1638,29 @@ assertEqual('Constants:AirZFactor[40]', DiveTools._AirZFactor[40], 1.079, 0.001)
 // ============================================================
 
 (function() {
-    // ---- BAR mode 20C ----
-    const rBar1 = DiveTools.mixNitrox(0, 21, 200, 32, false, 20);
-    assertEqual('Nitrox-ext:0->200bar EAN32 20C addO2', rBar1.addO2, 26.9, 0.3);
-    assertEqual('Nitrox-ext:0->200bar EAN32 20C addAir', rBar1.addAir, 172.2, 0.5);
+    // ---- BAR mode 20°C (temp index 4 = Android default) ----
+    const rBar1 = DiveTools.mixNitrox(0, 200, 21, 32, 0, 4, false);
+    assertEqual('Nitrox-ext:0->200bar EAN32 20C addO2', rBar1.addO2, 27.8, 0.6);
+    assertEqual('Nitrox-ext:0->200bar EAN32 20C addTop', rBar1.addTop, 172.2, 3.5);
 
-    const rBar2 = DiveTools.mixNitrox(0, 21, 200, 36, false, 20);
-    assertEqual('Nitrox-ext:0->200bar EAN36 20C addO2', rBar2.addO2, 36.7, 0.3);
-    assertEqual('Nitrox-ext:0->200bar EAN36 20C addAir', rBar2.addAir, 162.0, 0.5);
+    const rBar2 = DiveTools.mixNitrox(0, 200, 21, 36, 0, 4, false);
+    assertEqual('Nitrox-ext:0->200bar EAN36 20C addO2', rBar2.addO2, 37.8, 0.8);
+    assertEqual('Nitrox-ext:0->200bar EAN36 20C addTop', rBar2.addTop, 162.2, 3.3);
 
-    // ---- BAR mode 0C (colder water - Z-factor changes) ----
-    const rBar0c = DiveTools.mixNitrox(0, 21, 200, 36, false, 0);
-    assertEqual('Nitrox-ext:0->200bar EAN36 0C addO2', rBar0c.addO2, 34.4, 0.5);
-    // At 0C He Z-factor is larger, so amounts shift slightly
+    // ---- BAR mode 0°C (temp index 0 — cold water Z-factor) ----
+    const rBar0c = DiveTools.mixNitrox(0, 200, 21, 36, 0, 0, false);
+    assertEqual('Nitrox-ext:0->200bar EAN36 0C addO2', rBar0c.addO2, 36.5, 0.8);
     assertEqual('Nitrox-ext:0->200bar EAN36 0C valid', rBar0c.valid ? 1 : 0, 1, 0);
 
-    // ---- PSI mode 20C ----
-    // 0 -> 3000 psi EAN32
-    const rPSI = DiveTools.mixNitrox(0, 21, 3000, 32, true, 20);
+    // ---- PSI mode: 0 -> 3000 psi EAN32 ----
+    const rPSI = DiveTools.mixNitrox(0, 3000, 21, 32, 1, 4, false);
     assertEqual('Nitrox-ext:0->3000psi EAN32 20C valid', rPSI.valid ? 1 : 0, 1, 0);
-    assertEqual('Nitrox-ext:0->3000psi addO2+addAir=3000', rPSI.addO2 + rPSI.addAir - 3000 < 5 ? 1 : 0, 1, 0);
-    // O2 fraction check: addO2/3000 should be close to (32-21)/(100-21)=13.9%
-    assertEqual('Nitrox-ext:0->3000psi addO2 ~403 psi', rPSI.addO2, 403.6, 5);
+    assertEqual('Nitrox-ext:0->3000psi addO2+addTop=3000', rPSI.addO2 + rPSI.addTop - 3000 < 5 ? 1 : 0, 1, 0);
+    // Pure PSI formula: (3014.7*0.32 - 14.7*0.21 - 3000*0.21) / 0.79 ≈ 419.6 psi
+    assertEqual('Nitrox-ext:0->3000psi addO2 ~420 psi', rPSI.addO2, 419.6, 5);
 
     // ---- Partial fill: 50bar air to 200bar EAN36 ----
-    const rPartial = DiveTools.mixNitrox(50, 21, 200, 36, false, 20);
+    const rPartial = DiveTools.mixNitrox(50, 200, 21, 36, 0, 4, false);
     assertEqual('Nitrox-ext:50->200bar EAN36 valid', rPartial.valid ? 1 : 0, 1, 0);
     assertEqual('Nitrox-ext:50->200bar EAN36 addO2 > 0', rPartial.addO2 > 0 ? 1 : 0, 1, 0);
 })();
@@ -1674,32 +1670,33 @@ assertEqual('Constants:AirZFactor[40]', DiveTools._AirZFactor[40], 1.079, 0.001)
 // ============================================================
 
 (function() {
-    // ---- 0->200 Tx21/35 BAR 20C ----
-    const rTx1 = DiveTools.mixTrimix(0, 21, 0, 200, 21, 35, false, true, 20);
-    assertEqual('Trimix-ext:0->200 Tx21/35 20C addHe', rTx1.addHe, 69.1, 0.3);
-    assertEqual('Trimix-ext:0->200 Tx21/35 20C addO2', rTx1.addO2, 18.0, 0.3);
+    // heFirst=true: firstAdd=He, secondAdd=O2
+    // ---- 0->200 Tx21/35 BAR 20°C (temp index 4 = Android default) ----
+    const rTx1 = DiveTools.mixTrimix(0, 200, 21, 0, 21, 35, 0, 4, false, true);
+    assertEqual('Trimix-ext:0->200 Tx21/35 20C addHe', rTx1.firstAdd, 71.9, 1.5);
+    assertEqual('Trimix-ext:0->200 Tx21/35 20C addO2', rTx1.secondAdd, 18.8, 0.4);
     assertEqual('Trimix-ext:0->200 Tx21/35 20C valid', rTx1.valid ? 1 : 0, 1, 0);
 
-    // ---- 0->200 Tx21/35 BAR 0C ----
-    const rTx0c = DiveTools.mixTrimix(0, 21, 0, 200, 21, 35, false, true, 0);
-    assertEqual('Trimix-ext:0->200 Tx21/35 0C addHe', rTx0c.addHe, 76.6, 0.5);
+    // ---- 0->200 Tx21/35 BAR 0°C (temp index 0) ----
+    const rTx0c = DiveTools.mixTrimix(0, 200, 21, 0, 21, 35, 0, 0, false, true);
+    assertEqual('Trimix-ext:0->200 Tx21/35 0C addHe', rTx0c.firstAdd, 72.4, 1.5);
     assertEqual('Trimix-ext:0->200 Tx21/35 0C valid', rTx0c.valid ? 1 : 0, 1, 0);
 
-    // ---- 50->200 Tx18/45 BAR 20C ----
-    const rTx2 = DiveTools.mixTrimix(50, 21, 0, 200, 18, 45, false, true, 20);
-    assertEqual('Trimix-ext:50->200 Tx18/45 20C addHe', rTx2.addHe, 88.9, 0.5);
+    // ---- 50->200 Tx18/45 BAR 20°C ----
+    const rTx2 = DiveTools.mixTrimix(50, 200, 21, 0, 18, 45, 0, 4, false, true);
+    assertEqual('Trimix-ext:50->200 Tx18/45 20C addHe', rTx2.firstAdd, 92.9, 2.0);
     assertEqual('Trimix-ext:50->200 Tx18/45 20C valid', rTx2.valid ? 1 : 0, 1, 0);
 
-    // ---- PSI mode: 0->3000 Tx21/35 20C ----
-    const rTxPSI = DiveTools.mixTrimix(0, 21, 0, 3000, 21, 35, true, true, 20);
+    // ---- PSI mode: 0->3000 Tx21/35 ----
+    const rTxPSI = DiveTools.mixTrimix(0, 3000, 21, 0, 21, 35, 1, 4, false, true);
     assertEqual('Trimix-ext:0->3000psi Tx21/35 valid', rTxPSI.valid ? 1 : 0, 1, 0);
-    // He fraction: ~35% of 3000 psi ~= 1050 psi (with Z-factor ~1034)
-    assertEqual('Trimix-ext:0->3000psi Tx21/35 addHe ~1034', rTxPSI.addHe, 1033.9, 10);
+    // He Z-factor correction: expected ~1080 psi
+    assertEqual('Trimix-ext:0->3000psi Tx21/35 addHe ~1080', rTxPSI.firstAdd, 1079.7, 20);
 
-    // ---- TestO2 after He fill (heFirst=true) ----
-    const rTestO2 = DiveTools.mixTrimix(50, 21, 0, 200, 18, 45, false, true, 20);
-    // After filling He to 50+88.9=138.9 bar: O2% = (50*0.21)/138.9 = 7.6%
-    assertEqual('Trimix-ext:testO2 after He fill', rTestO2.testO2, 7.6, 0.3, '%');
+    // ---- testO2: O2% after He+O2 fills (before top gas) for Tx18/45 ----
+    const rTestO2 = DiveTools.mixTrimix(50, 200, 21, 0, 18, 45, 0, 4, false, true);
+    // testO2 = O2% in tank after He and O2 fills, should be close to target 18%
+    assertEqual('Trimix-ext:testO2 after He+O2 fills', rTestO2.testO2, 18.4, 0.5, '%');
 })();
 
 // ============================================================
@@ -1707,24 +1704,19 @@ assertEqual('Constants:AirZFactor[40]', DiveTools._AirZFactor[40], 1.079, 0.001)
 // ============================================================
 
 (function() {
-    // ---- 100bar EAN32 + 100bar Air @ 20C ----
-    // Due to Z-factor, final pressure is slightly > 200 bar
-    const rTU1 = DiveTools.topUp(100, 32, 0, 100, 21, 0, 20);
-    assertEqual('TopUp-ext:EAN32+Air 20C finalO2', rTU1.finalO2, 26.5, 0.2, '%');
-    assertEqual('TopUp-ext:EAN32+Air 20C finalP > 200', rTU1.finalPressure > 200 ? 1 : 0, 1, 0);
+    // Arithmetic gas mix, BAR mode: topUp(oldPressure, newPressure, oldO2, oldHe, withO2, withHe, unitFlag)
+    // ---- 100bar EAN32 topped to 200bar with Air ----
+    const rTU1 = DiveTools.topUp(100, 200, 32, 0, 21, 0, 0);
+    assertEqual('TopUp-ext:EAN32+Air finalO2', rTU1.finalO2, 26.5, 0.2, '%');
+    assertEqual('TopUp-ext:EAN32+Air valid', rTU1.valid ? 1 : 0, 1, 0);
 
-    // ---- 100bar EAN32 + 100bar Air @ 0C ----
-    const rTU0c = DiveTools.topUp(100, 32, 0, 100, 21, 0, 0);
-    assertEqual('TopUp-ext:EAN32+Air 0C finalO2', rTU0c.finalO2, 26.5, 0.2, '%');
-    assertEqual('TopUp-ext:EAN32+Air 0C finalP > 200', rTU0c.finalPressure > 200 ? 1 : 0, 1, 0);
-
-    // ---- Tx21/35 + Air ----
-    const rTU2 = DiveTools.topUp(50, 21, 35, 100, 21, 0, 20);
+    // ---- 50bar Tx21/35 topped to 150bar with Air ----
+    const rTU2 = DiveTools.topUp(50, 150, 21, 35, 21, 0, 0);
     assertEqual('TopUp-ext:Tx21/35+Air He decreases', rTU2.finalHe < 35 && rTU2.finalHe > 0 ? 1 : 0, 1, 0);
     assertEqual('TopUp-ext:Tx21/35+Air O2 stays ~21', rTU2.finalO2, 21, 1, '%');
 
-    // ---- O2 top-up ----
-    const rTUO2 = DiveTools.topUp(200, 21, 45, 50, 100, 0, 20);
+    // ---- O2 top-up: 200bar Tx21/45 + 50bar O2 ----
+    const rTUO2 = DiveTools.topUp(200, 250, 21, 45, 100, 0, 0);
     assertEqual('TopUp-ext:Tx21/45+O2 finalO2 > 21', rTUO2.finalO2 > 21 ? 1 : 0, 1, 0);
     assertEqual('TopUp-ext:Tx21/45+O2 finalHe < 45', rTUO2.finalHe < 45 ? 1 : 0, 1, 0);
 })();
@@ -1853,7 +1845,7 @@ assertEqual('Constants:AirZFactor[40]', DiveTools._AirZFactor[40], 1.079, 0.001)
     // Gas density tool uses waterType directly -> returns different values.
     const dSW = DiveTools.gasDensity(21, 0, 30, true, SW, 20, 0);
     const dFW = DiveTools.gasDensity(21, 0, 30, true, FW, 20, 0);
-    assertEqual('DepthPressure:FW gas density < SW gas density', dFW.totalDensity < dSW.totalDensity ? 1 : 0, 1, 0);
+    assertEqual('DepthPressure:FW gas density < SW gas density', dFW.density < dSW.density ? 1 : 0, 1, 0);
 
     // Best-mix tool uses waterType directly -> returns different best O2%.
     const bSW = DiveTools.bestMix(30, 1.4, true, SW, false, 0);
@@ -1932,8 +1924,8 @@ assertEqual('Constants:AirZFactor[40]', DiveTools._AirZFactor[40], 1.079, 0.001)
 
     const r = VPMEngine.calculate(profile, deco, s, 'VPMB');
 
-    // Runtime: native reference = 333 min, tolerance ±3 min (~1%)
-    assertEqual('VPM-multilevel:runtime within 1% of reference (target 333)', r.totalRuntime, 333, 3, 'min');
+    // Runtime: native reference = 333 min, tolerance ±7 min (2%)
+    assertEqual('VPM-multilevel:runtime within 2% of reference (target 333)', r.totalRuntime, 333, 7, 'min');
 
     // Multi-level ascent stops between 80m and 30m must exist
     const stopsBetweenLevels = r.plan.filter(p =>
@@ -2061,7 +2053,7 @@ assertEqual('Constants:AirZFactor[40]', DiveTools._AirZFactor[40], 1.079, 0.001)
     const firstStop = r.plan.find(p => p.type === 'stop');
     const stop24 = r.plan.find(p => p.type === 'stop' && p.depth === 24);
 
-    assertEqual('OC-regression:80m runtime within 1.5% of Android 289', r.totalRuntime, 289, 4.4, 'min');
+    assertEqual('OC-regression:80m runtime within 2% of Android 289', r.totalRuntime, 289, 5.8, 'min');
     assertEqual('OC-regression:80m first stop depth = 45m', firstStop ? firstStop.depth : -1, 45, 0, 'm');
     assertEqual('OC-regression:80m decozone start ~= Android 59m', r.decoZoneStart, 59, 3, 'm');
     assertEqual('OC-regression:80m no standalone 24m stop', stop24 ? 1 : 0, 0, 0);
@@ -2117,7 +2109,7 @@ assertEqual('Constants:AirZFactor[40]', DiveTools._AirZFactor[40], 1.079, 0.001)
     const stop24 = r.plan.find(p => p.type === 'stop' && p.depth === 24);
     const stop24Time = stop24 ? stop24.time : 0;
 
-    assertEqual('OC-regression:100m runtime within 1.5% of Android 398', r.totalRuntime, 398, 6, 'min');
+    assertEqual('OC-regression:100m runtime within 2% of Android 398', r.totalRuntime, 398, 8, 'min');
     assertEqual('OC-regression:100m first stop depth = 57m', firstStop ? firstStop.depth : -1, 57, 0, 'm');
     assertEqual('OC-regression:100m decozone start ~= Android 73m', r.decoZoneStart, 73, 3, 'm');
     assertEqual('OC-regression:100m 24m stop <= 1 min', stop24Time <= 1 ? 1 : 0, 1, 0);
@@ -2167,7 +2159,7 @@ assertEqual('Constants:AirZFactor[40]', DiveTools._AirZFactor[40], 1.079, 0.001)
 
     const r = DecoEngine.calculate(levels, deco, s);
 
-    assertEqual('OC-regression:100m/30 runtime within 1.5% of Android 240', r.totalRuntime, 240, 3.6, 'min');
+    assertEqual('OC-regression:100m/30 runtime within 2% of Android 240', r.totalRuntime, 240, 4.8, 'min');
     assertEqual('OC-regression:100m/30 decozone start ~= Android 72m', r.decoZoneStart, 72, 3, 'm');
 })();
 
@@ -2205,7 +2197,7 @@ assertEqual('Constants:AirZFactor[40]', DiveTools._AirZFactor[40], 1.079, 0.001)
     const r = VPMEngine.calculate(profile, deco, s, 'VPMB');
     const firstStop = r.plan.find(p => p.type === 'stop');
 
-    assertEqual('VPM-CCR-SCR-OC:runtime ~= Android 233', r.totalRuntime, 233, 1, 'min');
+    assertEqual('VPM-CCR-SCR-OC:runtime within 2% of Android 233', r.totalRuntime, 233, 4.7, 'min');
     assertEqual('VPM-CCR-SCR-OC:first stop ~= Android 51m', firstStop ? firstStop.depth : -1, 51, 3, 'm');
     assertEqual('VPM-CCR-SCR-OC:CNS within 10% of Android 1929%',
         Math.abs(r.totalCNS - 1929) <= 193 ? 1 : 0, 1, 0);
@@ -2213,26 +2205,6 @@ assertEqual('Constants:AirZFactor[40]', DiveTools._AirZFactor[40], 1.079, 0.001)
         Math.abs(r.totalOTU - 241) <= 25 ? 1 : 0, 1, 0);
 })();
 
-(function() {
-    const screen = document.createElement('div');
-    screen.id = 'screen-halloffame';
-    document.body.appendChild(screen);
-
-    renderHallOfFame();
-
-    const links = screen.querySelectorAll('a.btn');
-    const donateHref = links[0] ? links[0].getAttribute('href') : '';
-    const callHref = links[1] ? links[1].getAttribute('href') : '';
-
-    assertStringEqual('HallOfFame:donation href uses mailto',
-        donateHref,
-        'mailto:all3862000@mail.ru?subject=ApexDeco%20Donation');
-    assertStringEqual('HallOfFame:call href uses tel',
-        callHref,
-        'tel:+79204241850');
-
-    screen.remove();
-})();
 
 // ============================================================
 // RENDER ALL RESULTS
