@@ -256,10 +256,17 @@ function getSegmentActualPpO2(seg, levels, settings, depth) {
     const { o2 } = parseWarningGas(seg.gas);
     const pAmb = getWarningAmbientPressure(depth, settings);
     if (settings.circuit === 'CCR') {
-        const level = findWarningLevel(levels, seg.gas, depth);
-        if (level && !level.oc && !level.scr) {
-            const sp = level.setpoint || settings.ccrDefaultSP || 1.3;
-            return Math.min(sp, pAmb);
+        if (Object.prototype.hasOwnProperty.call(seg, 'setpoint')) {
+            const segSp = Number(seg.setpoint);
+            if (Number.isFinite(segSp) && segSp > 0) {
+                return Math.min(segSp, pAmb);
+            }
+        } else {
+            const level = findWarningLevel(levels, seg.gas, depth);
+            if (level && !level.oc && !level.scr) {
+                const sp = level.setpoint || settings.ccrDefaultSP || 1.3;
+                return Math.min(sp, pAmb);
+            }
         }
     }
     return (o2 / 100) * pAmb;
@@ -300,19 +307,24 @@ function buildPlanWarningState(result, levels, settings) {
         const minDepth = getSegmentMinDepth(seg);
         let segSetpoint = 0;
         if (settings.circuit === 'CCR' && seg.gas) {
-            let lvlForSeg = null;
-            if (seg.type === 'bottom') {
-                lvlForSeg = allLevels.find(l =>
-                    Math.round(l.depth || 0) === Math.round(seg.depth || 0) &&
-                    `${l.o2}/${l.he}` === seg.gas
-                );
+            if (Object.prototype.hasOwnProperty.call(seg, 'setpoint')) {
+                const segSp = Number(seg.setpoint);
+                segSetpoint = Number.isFinite(segSp) && segSp > 0 ? segSp : 0;
             } else {
-                lvlForSeg = allLevels.find(l =>
-                    !l.oc && !l.scr && `${l.o2}/${l.he}` === seg.gas
-                );
-            }
-            if (lvlForSeg && !lvlForSeg.oc && !lvlForSeg.scr) {
-                segSetpoint = lvlForSeg.setpoint || settings.ccrDefaultSP || 1.3;
+                let lvlForSeg = null;
+                if (seg.type === 'bottom') {
+                    lvlForSeg = allLevels.find(l =>
+                        Math.round(l.depth || 0) === Math.round(seg.depth || 0) &&
+                        `${l.o2}/${l.he}` === seg.gas
+                    );
+                } else {
+                    lvlForSeg = allLevels.find(l =>
+                        !l.oc && !l.scr && `${l.o2}/${l.he}` === seg.gas
+                    );
+                }
+                if (lvlForSeg && !lvlForSeg.oc && !lvlForSeg.scr) {
+                    segSetpoint = lvlForSeg.setpoint || settings.ccrDefaultSP || 1.3;
+                }
             }
         }
         if (settings.warnOTU !== false && (seg._dispOTU || 0) > (settings.otuHigh || 300)) {

@@ -798,6 +798,9 @@ const VPMEngine = (() => {
         function appendPlan(ctx, segment) {
             if (!ctx.plan) return;
             try {
+                if (segment.setpoint == null) {
+                    segment.setpoint = ctx.currentSP > 0 ? ctx.currentSP : 0;
+                }
                 segment._tissues = ctx.state.tissues.map(t => ({ pN2: t.pN2, pHe: t.pHe }));
                 segment._cumOTU = ctx.totalOTU;
                 segment._cumCNS = ctx.totalCNS;
@@ -1111,7 +1114,8 @@ const VPMEngine = (() => {
                     runtime: Math.round(runtime * 10) / 10,
                     gas: curGasLabel,
                     o2: Math.round(curO2 * 100),
-                    he: Math.round(curHe * 100)
+                    he: Math.round(curHe * 100),
+                    setpoint: curSP > 0 ? curSP : 0
                 });
                 return { depth: targetDepth, o2: curO2, he: curHe, gasLabel: curGasLabel, sp: curSP };
             }
@@ -1162,7 +1166,8 @@ const VPMEngine = (() => {
                 runtime: Math.round(runtime * 10) / 10,
                 gas: curGasLabel,
                 o2: Math.round(curO2 * 100),
-                he: Math.round(curHe * 100)
+                he: Math.round(curHe * 100),
+                setpoint: curSP > 0 ? curSP : 0
             });
             let stopDepth = firstStopDepth;
             let maxIter = 500;
@@ -1201,7 +1206,8 @@ const VPMEngine = (() => {
                     runtime: Math.round(runtime * 10) / 10,
                     gas: curGasLabel,
                     o2: Math.round(curO2 * 100),
-                    he: Math.round(curHe * 100)
+                    he: Math.round(curHe * 100),
+                    setpoint: curSP > 0 ? curSP : 0
                 });
                 if (nextStopClamped < stopDepth) {
                     const ascSegTime = loadTissuesLinear(state, stopDepth, nextStopClamped, decoAscentRate, curO2, curHe, settings, curSP);
@@ -1240,7 +1246,8 @@ const VPMEngine = (() => {
                     type: 'descent', startDepth: currentDepth, endDepth: depth,
                     time: Math.round(descTime * 10) / 10,
                     runtime: Math.round(runtime * 10) / 10,
-                    gas: `${level.o2}/${level.he}`, o2: level.o2, he: level.he
+                    gas: `${level.o2}/${level.he}`, o2: level.o2, he: level.he,
+                    setpoint: sp > 0 ? sp : 0
                 });
                 curO2 = o2Frac; curHe = heFrac; curGasLabel = `${level.o2}/${level.he}`; curSP = sp;
             } else if (depth < currentDepth) {
@@ -1262,7 +1269,8 @@ const VPMEngine = (() => {
                 plan.push({
                     type: 'bottom', depth, time: Math.round(bottomTime * 10) / 10,
                     runtime: Math.round(runtime * 10) / 10,
-                    gas: `${level.o2}/${level.he}`, o2: level.o2, he: level.he
+                    gas: `${level.o2}/${level.he}`, o2: level.o2, he: level.he,
+                    setpoint: sp > 0 ? sp : 0
                 });
             }
             currentDepth = depth;

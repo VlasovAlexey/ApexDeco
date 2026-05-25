@@ -26,7 +26,18 @@ function findLevelSetpoint(gas, depth) {
         if (d < bestDiff) { best = l; bestDiff = d; }
     }
     if (best.oc || best.scr) return null;
-    return best.setpoint;
+    const sp = best.setpoint != null ? Number(best.setpoint) : Number(appState.settings && appState.settings.ccrDefaultSP);
+    return Number.isFinite(sp) && sp > 0 ? sp : 1.3;
+}
+function getSegmentSetpoint(seg, gas, depth, settings) {
+    if (!settings || settings.circuit !== 'CCR') return null;
+    if (seg && Object.prototype.hasOwnProperty.call(seg, 'setpoint')) {
+        const segSp = Number(seg.setpoint);
+        return Number.isFinite(segSp) && segSp > 0 ? segSp : null;
+    }
+    const levelSp = findLevelSetpoint(gas, depth);
+    const sp = Number(levelSp);
+    return Number.isFinite(sp) && sp > 0 ? sp : null;
 }
 function parseGas(gasStr) {
     if (!gasStr) return { o2: 21, he: 0 };
@@ -161,7 +172,7 @@ function renderResult(result) {
             const fO2 = o2 / 100;
             const fHe = he / 100;
             const fN2 = 1 - fO2 - fHe;
-            const sp = isCCRMode ? findLevelSetpoint(seg.gas, depth) : null;
+            const sp = isCCRMode ? getSegmentSetpoint(seg, seg.gas, depth, s) : null;
             if (sp) {
                 pO2Str = Math.min(sp, pAmb).toFixed(2);
             } else {
@@ -230,7 +241,9 @@ function renderResult(result) {
         const gasDiv = document.getElementById('result-gas-usage');
         if (gasDiv) gasDiv.innerHTML = gasHTML;
     }
-    if (result.bailoutPlan) {
+    const bailoutDiv = document.getElementById('result-bailout');
+    if (bailoutDiv) bailoutDiv.innerHTML = '';
+    if (s.bailoutActive && result.bailoutPlan) {
         renderBailoutPlan(result.bailoutPlan, unit);
     }
     renderPPChart(result);
@@ -254,13 +267,13 @@ function renderPPChart(result) {
         const fO2 = o2 / 100, fHe = he / 100, fN2 = Math.max(0, 1 - fO2 - fHe);
         const pa = depth / slp + 1;
         let ppO2;
-        if (isCCR && seg.type !== 'stop' && seg.type !== 'surface') {
-            const sp = s.setpoint || 1.3;
+        const sp = isCCR && seg.type !== 'surface' ? getSegmentSetpoint(seg, seg.gas, depth, s) : null;
+        if (sp) {
             ppO2 = Math.min(sp, pa);
-            const remaining = Math.max(0.001, pa - ppO2);
             const dilN2 = fN2 * pa;
             const dilHe = fHe * pa;
-            const scale = remaining / Math.max(0.001, dilN2 + dilHe);
+            const remaining = Math.max(0, pa - ppO2);
+            const scale = (dilN2 + dilHe) > 0 ? remaining / (dilN2 + dilHe) : 0;
             pN2.push([rt, dilN2 * scale]);
             pHe.push([rt, dilHe * scale]);
         } else {
@@ -360,7 +373,7 @@ function renderGridPlan(result) {
         const fO2 = o2 / 100, fHe = he / 100, fN2 = Math.max(0, 1 - fO2 - fHe);
         const pa = depth / slp + 1;
         let setpointStr;
-        const sp = isCCR ? findLevelSetpoint(seg.gas, depth) : null;
+        const sp = isCCR ? getSegmentSetpoint(seg, seg.gas, depth, s) : null;
         if (sp) {
             setpointStr = Math.min(sp, pa).toFixed(2);
         } else {

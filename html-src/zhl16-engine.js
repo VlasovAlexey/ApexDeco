@@ -1,4 +1,43 @@
 const DecoEngine = (() => {
+    // ZHL-16A (Bühlmann 1984) — first compartment N2 ht=5.0 min, a[0]=1.1696, b[0]=0.5578
+    const ZHL16A_N2 = [
+        { ht: 5.0,    a: 1.1696, b: 0.5578 },
+        { ht: 8.0,    a: 1.0000, b: 0.6514 },
+        { ht: 12.5,   a: 0.8618, b: 0.7222 },
+        { ht: 18.5,   a: 0.7562, b: 0.7825 },
+        { ht: 27.0,   a: 0.6200, b: 0.8126 },
+        { ht: 38.3,   a: 0.5043, b: 0.8434 },
+        { ht: 54.3,   a: 0.4410, b: 0.8693 },
+        { ht: 77.0,   a: 0.4000, b: 0.8910 },
+        { ht: 109.0,  a: 0.3750, b: 0.9092 },
+        { ht: 146.0,  a: 0.3500, b: 0.9222 },
+        { ht: 187.0,  a: 0.3295, b: 0.9319 },
+        { ht: 239.0,  a: 0.3065, b: 0.9403 },
+        { ht: 305.0,  a: 0.2835, b: 0.9477 },
+        { ht: 390.0,  a: 0.2610, b: 0.9544 },
+        { ht: 498.0,  a: 0.2480, b: 0.9602 },
+        { ht: 635.0,  a: 0.2327, b: 0.9653 }
+    ];
+    // ZHL-16B (Bühlmann 1992) — first compartment N2 ht=5.0 min, a[0]=1.2599, b[0]=0.5050
+    const ZHL16B_N2 = [
+        { ht: 5.0,    a: 1.2599, b: 0.5050 },
+        { ht: 8.0,    a: 1.0000, b: 0.6514 },
+        { ht: 12.5,   a: 0.8618, b: 0.7222 },
+        { ht: 18.5,   a: 0.7562, b: 0.7825 },
+        { ht: 27.0,   a: 0.6200, b: 0.8126 },
+        { ht: 38.3,   a: 0.5043, b: 0.8434 },
+        { ht: 54.3,   a: 0.4410, b: 0.8693 },
+        { ht: 77.0,   a: 0.4000, b: 0.8910 },
+        { ht: 109.0,  a: 0.3750, b: 0.9092 },
+        { ht: 146.0,  a: 0.3500, b: 0.9222 },
+        { ht: 187.0,  a: 0.3295, b: 0.9319 },
+        { ht: 239.0,  a: 0.3065, b: 0.9403 },
+        { ht: 305.0,  a: 0.2835, b: 0.9477 },
+        { ht: 390.0,  a: 0.2610, b: 0.9544 },
+        { ht: 498.0,  a: 0.2480, b: 0.9602 },
+        { ht: 635.0,  a: 0.2327, b: 0.9653 }
+    ];
+    // ZHL-16C — first compartment N2 ht=4.0 min (most conservative, used in dive computers)
     const ZHL16C_N2 = [
         { ht: 4.0,    a: 1.2599, b: 0.5050 },
         { ht: 8.0,    a: 1.0000, b: 0.6514 },
@@ -17,6 +56,8 @@ const DecoEngine = (() => {
         { ht: 498.0,  a: 0.2480, b: 0.9602 },
         { ht: 635.0,  a: 0.2327, b: 0.9653 }
     ];
+    // Active N2 table — selected per calculate() call based on settings.decoModel
+    let _tblN2 = ZHL16C_N2;
     const ZHL16C_He = [
         { ht: 1.51,   a: 1.7424, b: 0.4245 },
         { ht: 3.02,   a: 1.3830, b: 0.5747 },
@@ -201,7 +242,7 @@ const DecoEngine = (() => {
         const inspN2 = n2Frac * (pAmb - ppH2O);
         const inspHe = heFracEff * (pAmb - ppH2O);
         for (let i = 0; i < NUM_COMPARTMENTS; i++) {
-            tissues[i].pN2 = haldaneEquation(tissues[i].pN2, inspN2, ZHL16C_N2[i].ht, time);
+            tissues[i].pN2 = haldaneEquation(tissues[i].pN2, inspN2, _tblN2[i].ht, time);
             tissues[i].pHe = haldaneEquation(tissues[i].pHe, inspHe, ZHL16C_He[i].ht, time);
         }
     }
@@ -237,7 +278,7 @@ const DecoEngine = (() => {
                 const rN2 = n2Frac * pressureRate;
                 const rHe = heFracEff * pressureRate;
                 for (let i = 0; i < NUM_COMPARTMENTS; i++) {
-                    const kN2 = Math.LN2 / ZHL16C_N2[i].ht;
+                    const kN2 = Math.LN2 / _tblN2[i].ht;
                     const kHe = Math.LN2 / ZHL16C_He[i].ht;
                     tissues[i].pN2 = inspN2Start + rN2 * (dt - 1/kN2)
                         - (inspN2Start - tissues[i].pN2 - rN2/kN2) * Math.exp(-kN2 * dt);
@@ -255,7 +296,7 @@ const DecoEngine = (() => {
             const rN2 = n2Frac * pressureRate;
             const rHe = heFrac * pressureRate;
             for (let i = 0; i < NUM_COMPARTMENTS; i++) {
-                const kN2 = Math.LN2 / ZHL16C_N2[i].ht;
+                const kN2 = Math.LN2 / _tblN2[i].ht;
                 const kHe = Math.LN2 / ZHL16C_He[i].ht;
                 tissues[i].pN2 = inspN2Start + rN2 * (time - 1/kN2)
                     - (inspN2Start - tissues[i].pN2 - rN2/kN2) * Math.exp(-kN2 * time);
@@ -278,11 +319,11 @@ const DecoEngine = (() => {
             const pTotal = tissues[i].pN2 + tissues[i].pHe;
             let a, b;
             if (pTotal > 0) {
-                a = (tissues[i].pN2 * ZHL16C_N2[i].a + tissues[i].pHe * ZHL16C_He[i].a) / pTotal;
-                b = (tissues[i].pN2 * ZHL16C_N2[i].b + tissues[i].pHe * ZHL16C_He[i].b) / pTotal;
+                a = (tissues[i].pN2 * _tblN2[i].a + tissues[i].pHe * ZHL16C_He[i].a) / pTotal;
+                b = (tissues[i].pN2 * _tblN2[i].b + tissues[i].pHe * ZHL16C_He[i].b) / pTotal;
             } else {
-                a = ZHL16C_N2[i].a;
-                b = ZHL16C_N2[i].b;
+                a = _tblN2[i].a;
+                b = _tblN2[i].b;
             }
             const gf = gfLo / 100;
             const pAmbTol = (pTotal - a * gf) / (gf / b - gf + 1);
@@ -339,11 +380,11 @@ const DecoEngine = (() => {
             const pTotal = tissues[i].pN2 + tissues[i].pHe;
             let a, b;
             if (pTotal > 0) {
-                a = (tissues[i].pN2 * ZHL16C_N2[i].a + tissues[i].pHe * ZHL16C_He[i].a) / pTotal;
-                b = (tissues[i].pN2 * ZHL16C_N2[i].b + tissues[i].pHe * ZHL16C_He[i].b) / pTotal;
+                a = (tissues[i].pN2 * _tblN2[i].a + tissues[i].pHe * ZHL16C_He[i].a) / pTotal;
+                b = (tissues[i].pN2 * _tblN2[i].b + tissues[i].pHe * ZHL16C_He[i].b) / pTotal;
             } else {
-                a = ZHL16C_N2[i].a;
-                b = ZHL16C_N2[i].b;
+                a = _tblN2[i].a;
+                b = _tblN2[i].b;
             }
             const mValue = a + pAmb / b;
             const mValueGF = pAmb + gf * (mValue - pAmb);
@@ -404,6 +445,15 @@ const DecoEngine = (() => {
         if (!levels || levels.length === 0) {
             return { error: 'No bottom segments defined', stops: [], totalTime: 0 };
         }
+        // Select N2 compartment table based on requested ZHL-16 variant
+        const _model = (settings.decoModel || 'ZHLC_GF').toUpperCase();
+        if (_model.startsWith('ZHLA')) {
+            _tblN2 = ZHL16A_N2;
+        } else if (_model.startsWith('ZHLB')) {
+            _tblN2 = ZHL16B_N2;
+        } else {
+            _tblN2 = ZHL16C_N2; // default: ZHL-16C
+        }
         const stepSizeRaw = settings.stepSize || 3;
         const lastStopRaw = settings.lastStop || 3;
         const stepSize = settings.metric ? stepSizeRaw : Math.round(stepSizeRaw * 3.28084);
@@ -423,6 +473,9 @@ const DecoEngine = (() => {
         const _origPush = plan.push;
         plan.push = function(seg) {
             try {
+                if (seg.setpoint == null) {
+                    seg.setpoint = currentSP > 0 ? currentSP : 0;
+                }
                 const segDepth = Math.max(0,
                     seg.depth !== undefined ? seg.depth :
                     (seg.endDepth !== undefined ? seg.endDepth :
@@ -484,7 +537,7 @@ const DecoEngine = (() => {
         function projectAscentTissuesAtDepth(projection, fromDepth, depth) {
             const t = (fromDepth - depth) / ascentRate;
             return projection.savedTissues.map((saved, i) => {
-                const kN2 = Math.LN2 / ZHL16C_N2[i].ht;
+                const kN2 = Math.LN2 / _tblN2[i].ht;
                 const kHe = Math.LN2 / ZHL16C_He[i].ht;
                 return {
                     pN2: projection.inspN2Start + projection.rN2 * (t - 1 / kN2)
@@ -844,7 +897,7 @@ const DecoEngine = (() => {
         const ppH2O = WATER_VAPOR_PRESSURE;
         const inspN2 = 0.7902 * (pAmb - ppH2O);
         for (let i = 0; i < NUM_COMPARTMENTS; i++) {
-            tissues[i].pN2 = haldaneEquation(tissues[i].pN2, inspN2, ZHL16C_N2[i].ht, intervalMinutes);
+            tissues[i].pN2 = haldaneEquation(tissues[i].pN2, inspN2, _tblN2[i].ht, intervalMinutes);
             tissues[i].pHe = haldaneEquation(tissues[i].pHe, 0, ZHL16C_He[i].ht, intervalMinutes);
         }
     }
@@ -864,6 +917,8 @@ const DecoEngine = (() => {
         loadTissuesConstantDepth,
         loadTissuesLinearDepthChange,
         WATER_VAPOR_PRESSURE,
+        ZHL16A_N2,
+        ZHL16B_N2,
         ZHL16C_N2,
         ZHL16C_He,
         NUM_COMPARTMENTS,

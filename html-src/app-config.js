@@ -41,6 +41,17 @@ function onBailoutChange() {
     document.querySelectorAll('.bail-field').forEach(el => {
         el.style.display = on ? 'flex' : 'none';
     });
+    if (appState && appState.settings) {
+        appState.settings.bailoutActive = on;
+    }
+    if (!on) {
+        const bailoutContainer = document.getElementById('result-bailout');
+        if (bailoutContainer) bailoutContainer.innerHTML = '';
+    }
+    if (appState && appState.lastResult && typeof renderResult === 'function') {
+        renderResult(appState.lastResult);
+    }
+    if (typeof saveStateToStorage === 'function') saveStateToStorage();
 }
 const WARNING_COLOR_INPUT_IDS = [
     'cfg-warn-ppo2hi-color',
