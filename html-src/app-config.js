@@ -351,6 +351,93 @@ function confirmWarnColorPicker() {
     state.pendingColor = color;
     closeWarnColorPicker();
 }
+const LITERS_PER_CUFT = 28.3168;
+const GAS_VOLUME_INPUT_SPECS = Object.freeze({
+    'cfg-rmv-bottom': {
+        settingKey: 'rmvBottom',
+        defaultLiters: 22,
+        litersMin: 5,
+        litersMax: 50,
+        litersStep: '1',
+        litersDecimals: 0,
+        cuftStep: '0.001',
+        cuftDecimals: 3
+    },
+    'cfg-rmv-deco': {
+        settingKey: 'rmvDeco',
+        defaultLiters: 20,
+        litersMin: 5,
+        litersMax: 50,
+        litersStep: '1',
+        litersDecimals: 0,
+        cuftStep: '0.001',
+        cuftDecimals: 3
+    },
+    'cfg-rmv-ccr-dil': {
+        settingKey: 'rmvDilCCR',
+        defaultLiters: 1,
+        litersMin: 0.1,
+        litersMax: 5,
+        litersStep: '0.1',
+        litersDecimals: 1,
+        cuftStep: '0.0001',
+        cuftDecimals: 4
+    },
+    'cfg-bail-rmv': {
+        settingKey: 'bailRMV',
+        defaultLiters: 30,
+        litersMin: 10,
+        litersMax: 60,
+        litersStep: '1',
+        litersDecimals: 0,
+        cuftStep: '0.001',
+        cuftDecimals: 3
+    }
+});
+function formatGasVolumeValue(value, decimals) {
+    if (!Number.isFinite(value)) return '';
+    const factor = Math.pow(10, decimals);
+    return String(Math.round(value * factor) / factor);
+}
+function getStoredGasVolumeValue(settingKey, fallbackValue) {
+    const settings = appState && appState.settings ? appState.settings : null;
+    const raw = settings ? Number(settings[settingKey]) : Number.NaN;
+    return Number.isFinite(raw) ? raw : fallbackValue;
+}
+function parseDisplayedGasVolumeInput(inputId, displayedUnit) {
+    const spec = GAS_VOLUME_INPUT_SPECS[inputId];
+    if (!spec) return 0;
+    const input = document.getElementById(inputId);
+    const raw = input ? parseFloat(input.value) : Number.NaN;
+    if (!Number.isFinite(raw)) return spec.defaultLiters;
+    return displayedUnit === 'cuft' ? raw * LITERS_PER_CUFT : raw;
+}
+function updateGasVolumeInputs() {
+    const settings = appState && appState.settings ? appState.settings : {};
+    const gasVolUnit = settings.gasVolUnit === 'cuft' ? 'cuft' : 'ltr';
+    const _t = (k, d) => (window.t ? window.t(k) : d);
+    const rmvUnit = gasVolUnit === 'cuft'
+        ? _t('UNIT_CUFT_MIN', 'cu ft/min')
+        : _t('UNIT_L_MIN', 'L/min');
+    ['rmv-unit', 'rmv-unit2', 'rmv-unit3', 'bail-rmv-unit'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.textContent = rmvUnit;
+    });
+    Object.entries(GAS_VOLUME_INPUT_SPECS).forEach(([inputId, spec]) => {
+        const input = document.getElementById(inputId);
+        if (!input) return;
+        const litersValue = getStoredGasVolumeValue(spec.settingKey, spec.defaultLiters);
+        const isCuFt = gasVolUnit === 'cuft';
+        const decimals = isCuFt ? spec.cuftDecimals : spec.litersDecimals;
+        const displayValue = isCuFt ? litersValue / LITERS_PER_CUFT : litersValue;
+        const minValue = isCuFt ? spec.litersMin / LITERS_PER_CUFT : spec.litersMin;
+        const maxValue = isCuFt ? spec.litersMax / LITERS_PER_CUFT : spec.litersMax;
+        input.min = formatGasVolumeValue(minValue, decimals);
+        input.max = formatGasVolumeValue(maxValue, decimals);
+        input.step = isCuFt ? spec.cuftStep : spec.litersStep;
+        input.value = formatGasVolumeValue(displayValue, decimals);
+    });
+}
 function loadConfigToUI() {
     const s = appState.settings;
     document.getElementById('cfg-model').value = s.decoModel || 'ZHLC_GF';
@@ -382,9 +469,7 @@ function loadConfigToUI() {
     setRadio('gaugetype', String(s.gaugeType || 0));
     document.getElementById('cfg-ccr-default-sp').value = s.ccrDefaultSP || 1.3;
     setRadio('spunits', s.spUnits || 'bar');
-    document.getElementById('cfg-rmv-bottom').value = s.rmvBottom || 22;
-    document.getElementById('cfg-rmv-deco').value = s.rmvDeco || 20;
-    document.getElementById('cfg-rmv-ccr-dil').value = s.rmvDilCCR != null ? s.rmvDilCCR : 1;
+    updateGasVolumeInputs();
     setRadio('extstops', s.extendedStops ? '1' : '0');
     document.getElementById('cfg-ext-deep').value = s.extStopDeep || 1;
     document.getElementById('cfg-ext-shallow').value = s.extStopShallow || 2;
@@ -418,7 +503,6 @@ function loadConfigToUI() {
     document.getElementById('cfg-bail-gflo').value = s.bailGFLo || 30;
     document.getElementById('cfg-bail-gfhi').value = s.bailGFHi || 85;
     document.getElementById('cfg-bail-gfs').value = s.bailGFS || 85;
-    document.getElementById('cfg-bail-rmv').value = s.bailRMV || 30;
     setRadio('bailextra', s.bailExtraMin ? '1' : '0');
     document.getElementById('cfg-bail-extra-time').value = s.bailExtraMinTime || 1;
     document.getElementById('cfg-bail-divenum').value = s.bailDiveNum || 1;
@@ -471,6 +555,7 @@ function resetConfig() {
 function saveConfig() {
     const s = appState.settings;
     const prevMetric = s.metric;
+    const prevGasVolUnit = s.gasVolUnit === 'cuft' ? 'cuft' : 'ltr';
     s.decoModel = document.getElementById('cfg-model').value || 'ZHLC_GF';
     s.gfLo = parseInt(document.getElementById('cfg-gflo').value) || 30;
     s.gfHi = parseInt(document.getElementById('cfg-gfhi').value) || 85;
@@ -503,13 +588,13 @@ function saveConfig() {
     s.pressureUnit = getRadio('press-units') || 'bar';
     s.oxyNarc = getRadio('oxynarc') === '1';
     s.circuit = getRadio('circuit') || 'OC';
-    s.gasVolUnit = getRadio('gasvol') || 'ltr';
     s.gaugeType = parseInt(getRadio('gaugetype')) || 0;
     s.ccrDefaultSP = parseFloat(document.getElementById('cfg-ccr-default-sp').value) || 1.3;
     s.spUnits = getRadio('spunits') || 'bar';
-    s.rmvBottom = parseInt(document.getElementById('cfg-rmv-bottom').value) || 22;
-    s.rmvDeco = parseInt(document.getElementById('cfg-rmv-deco').value) || 20;
-    s.rmvDilCCR = parseFloat(document.getElementById('cfg-rmv-ccr-dil').value) || 1;
+    s.rmvBottom = parseDisplayedGasVolumeInput('cfg-rmv-bottom', prevGasVolUnit);
+    s.rmvDeco = parseDisplayedGasVolumeInput('cfg-rmv-deco', prevGasVolUnit);
+    s.rmvDilCCR = parseDisplayedGasVolumeInput('cfg-rmv-ccr-dil', prevGasVolUnit);
+    s.gasVolUnit = getRadio('gasvol') || 'ltr';
     s.extendedStops = getRadio('extstops') === '1';
     s.extStopDeep = parseInt(document.getElementById('cfg-ext-deep').value) || 0;
     s.extStopShallow = parseInt(document.getElementById('cfg-ext-shallow').value) || 0;
@@ -541,7 +626,7 @@ function saveConfig() {
     s.bailGFLo = parseInt(document.getElementById('cfg-bail-gflo').value) || 30;
     s.bailGFHi = parseInt(document.getElementById('cfg-bail-gfhi').value) || 85;
     s.bailGFS = parseInt(document.getElementById('cfg-bail-gfs').value) || 85;
-    s.bailRMV = parseInt(document.getElementById('cfg-bail-rmv').value) || 30;
+    s.bailRMV = parseDisplayedGasVolumeInput('cfg-bail-rmv', prevGasVolUnit);
     s.bailExtraMin = getRadio('bailextra') === '1';
     s.bailExtraMinTime = parseInt(document.getElementById('cfg-bail-extra-time').value) || 1;
     s.bailDiveNum = parseInt(document.getElementById('cfg-bail-divenum').value) || 1;
@@ -625,11 +710,7 @@ function updateDepthUnits() {
         const el = document.getElementById(id);
         if (el) el.textContent = rateUnit;
     });
-    const lMin = _t('UNIT_L_MIN', 'L/min');
-    ['rmv-unit', 'rmv-unit2', 'rmv-unit3', 'bail-rmv-unit'].forEach(id => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = lMin;
-    });
+    updateGasVolumeInputs();
     updateExtendedStopsLabels();
     updateStopSelectLabels();
 }
