@@ -3,7 +3,7 @@
  * Change CACHE_VERSION to force an immediate update on next deployment.
  */
 'use strict';
-const CACHE_VERSION = 'apexdeco-v2';
+const CACHE_VERSION = 'apexdeco-v3';
 const CACHE_TS_KEY  = '/_sw_cache_ts';
 const MAX_AGE_MS    = 90 * 24 * 60 * 60 * 1000; // 90 days
 const STATIC_ASSETS = [
