@@ -62,6 +62,8 @@ body {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.app-bar.app-bar-tight h1 { font-size: 14px; }
+.app-bar.app-bar-very-tight h1 { font-size: 11px; }
 .app-bar-btn {
     background: none;
     border: none;
@@ -589,9 +591,11 @@ table.data-table tr.warn-row:hover { background: var(--warn-row-bg) !important; 
         align-items: center;
     }
     .app-bar h1 {
-        font-size: 16px;
+        font-size: 14px;
         line-height: 1;
     }
+    .app-bar.app-bar-tight h1 { font-size: 12px; }
+    .app-bar.app-bar-very-tight h1 { font-size: 10px; }
 }
 
 @media (hover: none) and (pointer: coarse) {

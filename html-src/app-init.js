@@ -42,6 +42,32 @@ function enhanceMobileNumericInputs() {
     document.addEventListener('input', (e) => normalizeTarget(e.target), true);
     document.addEventListener('change', (e) => normalizeTarget(e.target), true);
 }
+function adjustAppBarTitleDensity() {
+    const bar = document.querySelector('.app-bar');
+    const title = bar && bar.querySelector('h1');
+    if (!bar || !title) return;
+    const buttons = Array.from(bar.querySelectorAll('.app-bar-btn'));
+    if (!buttons.length) return;
+
+    bar.classList.remove('app-bar-tight', 'app-bar-very-tight');
+
+    const style = window.getComputedStyle(bar);
+    const horizontalPadding = parseFloat(style.paddingLeft || '0') + parseFloat(style.paddingRight || '0');
+    const available = Math.max(0, bar.clientWidth - horizontalPadding);
+    const navWidth = buttons.reduce((sum, btn) => {
+        const btnStyle = window.getComputedStyle(btn);
+        const margins = parseFloat(btnStyle.marginLeft || '0') + parseFloat(btnStyle.marginRight || '0');
+        return sum + btn.getBoundingClientRect().width + margins;
+    }, 0);
+    const titleNeed = title.scrollWidth;
+    const remaining = available - navWidth;
+
+    if (navWidth > available * 0.78 || remaining < 54) {
+        bar.classList.add('app-bar-very-tight');
+    } else if (navWidth + titleNeed > available || navWidth > available * 0.66 || remaining < 88) {
+        bar.classList.add('app-bar-tight');
+    }
+}
 document.addEventListener('DOMContentLoaded', () => {
     appState.settings = DecoEngine.createDefaultSettings();
     enhanceMobileNumericInputs();
@@ -55,6 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderLevels();
     renderDecos();
     updateDepthUnits();
+    adjustAppBarTitleDensity();
     const cfgScreen = document.getElementById('screen-config');
     if (cfgScreen) {
         cfgScreen.addEventListener('change', () => saveConfig());
@@ -83,6 +110,7 @@ document.addEventListener('DOMContentLoaded', () => {
         toolsScreen.addEventListener('input', persist);
     }
     document.addEventListener('languagechange', () => {
+        setTimeout(adjustAppBarTitleDensity, 0);
         if (typeof renderLevels === 'function') renderLevels();
         if (typeof renderDecos === 'function') renderDecos();
         if (typeof updateDepthUnits === 'function') updateDepthUnits();
@@ -96,6 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
             if (helpRoot.classList.contains('active') && typeof renderHelp === 'function') renderHelp();
         }
     });
+    window.addEventListener('resize', adjustAppBarTitleDensity);
     toggleBmTrimix();
     toggleEadModSPRow();
     toggleDensityModeRows();
