@@ -54,9 +54,22 @@ function extractScriptSources(indexHtml) {
 }
 
 function listAllJsFiles() {
-    return fs.readdirSync(srcDir)
-        .filter((name) => name.toLowerCase().endsWith('.js'))
-        .sort();
+    const result = [];
+    function walk(dirPath, relativeDir) {
+        fs.readdirSync(dirPath, { withFileTypes: true }).forEach((entry) => {
+            const nextRelative = relativeDir ? `${relativeDir}/${entry.name}` : entry.name;
+            const nextPath = path.join(dirPath, entry.name);
+            if (entry.isDirectory()) {
+                walk(nextPath, nextRelative);
+                return;
+            }
+            if (entry.isFile() && entry.name.toLowerCase().endsWith('.js')) {
+                result.push(nextRelative.replace(/\\/g, '/'));
+            }
+        });
+    }
+    walk(srcDir, '');
+    return result.sort();
 }
 
 function replaceAll(text, from, to) {

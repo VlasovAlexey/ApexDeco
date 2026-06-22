@@ -3,7 +3,7 @@
  * Change CACHE_VERSION to force an immediate update on next deployment.
  */
 'use strict';
-const CACHE_VERSION = 'apexdeco-v3';
+const CACHE_VERSION = 'apexdeco-v7';
 const CACHE_TS_KEY  = '/_sw_cache_ts';
 const MAX_AGE_MS    = 90 * 24 * 60 * 60 * 1000; // 90 days
 const STATIC_ASSETS = [
@@ -25,12 +25,42 @@ const STATIC_ASSETS = [
     './app-tools-ui.js',
     './chart-theme.js',
     './zhl16-engine.js',
-    './help-i18n.js',
     './help.js',
     './highcharts.js',
     './highstock.js',
     './i18n.js',
-    './lng.js',
+    './locales/index.js',
+    './locales/en.js',
+    './locales/ru.js',
+    './locales/es.js',
+    './locales/zh.js',
+    './locales/hi.js',
+    './locales/fr.js',
+    './locales/pt.js',
+    './locales/de.js',
+    './locales/it.js',
+    './locales/ko.js',
+    './locales/bg.js',
+    './locales/nb.js',
+    './locales/ja.js',
+    './locales/pl.js',
+    './locales/tr.js',
+    './locales/help/index.js',
+    './locales/help/en.js',
+    './locales/help/ru.js',
+    './locales/help/es.js',
+    './locales/help/zh.js',
+    './locales/help/hi.js',
+    './locales/help/fr.js',
+    './locales/help/pt.js',
+    './locales/help/de.js',
+    './locales/help/it.js',
+    './locales/help/ko.js',
+    './locales/help/bg.js',
+    './locales/help/nb.js',
+    './locales/help/ja.js',
+    './locales/help/pl.js',
+    './locales/help/tr.js',
     './profile-chart.js',
     './supersat-chart.js',
     './tool-bestmix.js',

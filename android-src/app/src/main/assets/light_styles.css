@@ -21,12 +21,18 @@
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
+html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
 body {
     font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
     font-size: 14px;
     color: var(--text);
     background: var(--bg);
     min-height: 100vh;
+    overflow-x: hidden;
 }
 
 
@@ -47,6 +53,10 @@ body {
     font-weight: 500;
     flex: 1;
     line-height: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .app-bar-btn {
     background: none;
@@ -57,6 +67,8 @@ body {
     cursor: pointer;
     border-radius: 4px;
     margin-left: 4px;
+    flex: 0 0 auto;
+    white-space: nowrap;
 }
 .app-bar-btn:hover { background: rgba(255,255,255,0.15); }
 .app-bar-btn.active { background: rgba(255,255,255,0.25); font-weight: 600; }
@@ -67,6 +79,8 @@ body {
     padding: 12px;
     max-width: 900px;
     margin: 0 auto;
+    width: 100%;
+    overflow-x: hidden;
 }
 .screen.active {
     display: block;

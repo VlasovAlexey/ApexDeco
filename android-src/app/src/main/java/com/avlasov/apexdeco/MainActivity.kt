@@ -60,6 +60,7 @@ class MainActivity : AppCompatActivity() {
             settings.allowFileAccess = true
             settings.useWideViewPort = true
             settings.loadWithOverviewMode = true
+            settings.textZoom = 100
             setBackgroundColor(lightColor)
 
             addJavascriptInterface(NativeBridge(), "Android")

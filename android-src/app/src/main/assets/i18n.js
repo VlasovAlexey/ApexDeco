@@ -2,16 +2,20 @@
     'use strict';
     var STORAGE_KEY = 'apexdeco_language';
     var DEFAULT_LANG = 'en';
-    var translations = window.translations || {};
+    function getTranslations() {
+        return window.translations || {};
+    }
     function LanguageManager() {
         this.currentLanguage = DEFAULT_LANG;
         var saved = null;
         try { saved = localStorage.getItem(STORAGE_KEY); } catch (e) {}
+        var translations = getTranslations();
         if (saved && translations[saved]) {
             this.currentLanguage = saved;
         }
     }
     LanguageManager.prototype.t = function (key, params) {
+        var translations = getTranslations();
         var dict = translations[this.currentLanguage] || translations[DEFAULT_LANG] || {};
         var fallback = translations[DEFAULT_LANG] || {};
         var value = (dict[key] !== undefined) ? dict[key] : (fallback[key] !== undefined ? fallback[key] : key);
@@ -23,6 +27,7 @@
         return value;
     };
     LanguageManager.prototype.setLanguage = function (lang) {
+        var translations = getTranslations();
         if (!translations[lang]) return false;
         this.currentLanguage = lang;
         try { localStorage.setItem(STORAGE_KEY, lang); } catch (e) {}
