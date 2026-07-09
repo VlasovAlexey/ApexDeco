@@ -152,10 +152,13 @@ function copyTextToClipboard(text) {
     }
 }
 function copyDebugToClipboard() {
+    copyTextToClipboard(JSON.stringify(collectPlannerDebugData(), null, 2));
+}
+function collectPlannerDebugData() {
     let theme = null, language = null;
     try { theme = localStorage.getItem('apexdeco_theme'); } catch (e) {}
     try { language = localStorage.getItem('apexdeco_language'); } catch (e) {}
-    const data = {
+    return {
         settings: appState.settings || {},
         levelsOC: appState.levelsOC || [],
         levelsCCR: appState.levelsCCR || [],
@@ -163,7 +166,51 @@ function copyDebugToClipboard() {
         theme: theme,
         language: language
     };
-    copyTextToClipboard(JSON.stringify(data, null, 2));
+}
+function applyPlannerDebugData(data, options) {
+    const opts = options || {};
+    const loaded = [];
+    if (data.settings && typeof data.settings === 'object') {
+        appState.settings = Object.assign({}, appState.settings, data.settings);
+        if (typeof loadConfigToUI === 'function') loadConfigToUI();
+        if (typeof updateDepthUnits === 'function') updateDepthUnits();
+        loaded.push('settings');
+    }
+    if (Array.isArray(data.levelsOC)) {
+        appState.levelsOC = data.levelsOC;
+        loaded.push('levelsOC');
+    }
+    if (Array.isArray(data.levelsCCR)) {
+        appState.levelsCCR = data.levelsCCR;
+        loaded.push('levelsCCR');
+    }
+    if (Array.isArray(data.decos)) {
+        appState.decos = data.decos;
+        loaded.push('decos');
+    }
+    if (typeof data.theme === 'string' && data.theme) {
+        try { localStorage.setItem('apexdeco_theme', data.theme); } catch (e) {}
+        const themeSel = document.getElementById('cfg-theme');
+        if (themeSel) themeSel.value = data.theme;
+        if (typeof onThemeChange === 'function') onThemeChange(data.theme);
+        loaded.push('theme');
+    }
+    if (typeof data.language === 'string' && data.language) {
+        try { localStorage.setItem('apexdeco_language', data.language); } catch (e) {}
+        const langSel = document.getElementById('cfg-language');
+        if (langSel) langSel.value = data.language;
+        if (window.setLanguage) window.setLanguage(data.language);
+        loaded.push('language');
+    }
+    if (loaded.length === 0) return false;
+    applyLevelsForCircuit();
+    if (typeof renderLevels === 'function') renderLevels();
+    if (typeof renderDecos === 'function') renderDecos();
+    saveStateToStorage();
+    if (opts.showAlert !== false) {
+        showAlert(window.t ? window.t('MSG_DEBUG_LOADED') : 'Debug info loaded from clipboard.');
+    }
+    return true;
 }
 function loadDebugFromClipboard() {
     const doLoad = (text) => {
@@ -174,47 +221,10 @@ function loadDebugFromClipboard() {
             showAlert(window.t ? window.t('MSG_DEBUG_LOAD_FAILED') : 'Failed to load debug info: invalid JSON.');
             return;
         }
-        const loaded = [];
-        if (data.settings && typeof data.settings === 'object') {
-            appState.settings = Object.assign({}, appState.settings, data.settings);
-            if (typeof loadConfigToUI === 'function') loadConfigToUI();
-            if (typeof updateDepthUnits === 'function') updateDepthUnits();
-            loaded.push('settings');
-        }
-        if (Array.isArray(data.levelsOC)) {
-            appState.levelsOC = data.levelsOC;
-            loaded.push('levelsOC');
-        }
-        if (Array.isArray(data.levelsCCR)) {
-            appState.levelsCCR = data.levelsCCR;
-            loaded.push('levelsCCR');
-        }
-        if (Array.isArray(data.decos)) {
-            appState.decos = data.decos;
-            loaded.push('decos');
-        }
-        if (typeof data.theme === 'string' && data.theme) {
-            try { localStorage.setItem('apexdeco_theme', data.theme); } catch (e) {}
-            const themeSel = document.getElementById('cfg-theme');
-            if (themeSel) themeSel.value = data.theme;
-            if (typeof onThemeChange === 'function') onThemeChange(data.theme);
-            loaded.push('theme');
-        }
-        if (typeof data.language === 'string' && data.language) {
-            try { localStorage.setItem('apexdeco_language', data.language); } catch (e) {}
-            const langSel = document.getElementById('cfg-language');
-            if (langSel) langSel.value = data.language;
-            if (window.setLanguage) window.setLanguage(data.language);
-            loaded.push('language');
-        }
-        if (loaded.length === 0) {
+        if (!applyPlannerDebugData(data, { showAlert: false })) {
             showAlert(window.t ? window.t('MSG_DEBUG_LOAD_FAILED') : 'Failed to load debug info: no recognized data.');
             return;
         }
-        applyLevelsForCircuit();
-        if (typeof renderLevels === 'function') renderLevels();
-        if (typeof renderDecos === 'function') renderDecos();
-        saveStateToStorage();
         showAlert(window.t ? window.t('MSG_DEBUG_LOADED') : 'Debug info loaded from clipboard.');
     };
     if (window.Android && typeof window.Android.getClipboardText === 'function') {

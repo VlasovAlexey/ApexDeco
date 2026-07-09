@@ -37,6 +37,9 @@ function calculateDeco() {
     appState.lastResult = result;
     renderResult(result);
     logPlanToConsole(result, s);
+    if (typeof onPreviousPlanCalculated === 'function') {
+        onPreviousPlanCalculated(result, levels, s);
+    }
     showScreen('result');
     saveStateToStorage();
 }

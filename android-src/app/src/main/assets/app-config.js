@@ -713,6 +713,7 @@ function updateDepthUnits() {
     updateGasVolumeInputs();
     updateExtendedStopsLabels();
     updateStopSelectLabels();
+    if (typeof renderPreviousPlans === 'function') renderPreviousPlans();
 }
 function updateStopSelectLabels() {
     const metric = appState.settings.metric;

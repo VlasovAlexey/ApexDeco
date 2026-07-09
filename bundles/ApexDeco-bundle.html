@@ -154,6 +154,10 @@ body {
     margin-bottom: 12px;
     overflow: hidden;
 }
+/* Bailout Settings is hidden intentionally. Remove this rule and the bailout-settings-hidden class to show it again. */
+.bailout-settings-hidden {
+    display: none !important;
+}
 .card-header {
     background: var(--primary);
     color: white;
@@ -340,6 +344,7 @@ table.data-table tr.warn-row:hover { background: var(--warn-row-bg) !important; 
     width: 34px;
     min-width: 34px;
     height: 26px;
+    margin-left: auto;
     padding: 2px;
     border: 1px solid var(--border);
     border-radius: 4px;
@@ -655,7 +660,8 @@ table.data-table tr.warn-row:hover { background: var(--warn-row-bg) !important; 
     }
 
     #levels-list .item-row,
-    #decos-list .item-row {
+    #decos-list .item-row,
+    #previous-plans-list .item-row {
         font-size: 14px;
         min-height: 36px;
         padding: 7px 8px;
@@ -675,7 +681,8 @@ table.data-table tr.warn-row:hover { background: var(--warn-row-bg) !important; 
     }
 
     #levels-list .item-row .drag-handle,
-    #decos-list .item-row .drag-handle {
+    #decos-list .item-row .drag-handle,
+    #previous-plans-list .item-row .drag-handle {
         font-size: 13px;
     }
 }
@@ -858,6 +865,46 @@ table.data-table tr.warn-row:hover { background: var(--warn-row-bg) !important; 
 .item-row.drop-above { box-shadow: inset 0 2px 0 0 var(--primary); }
 .item-row.drop-below { box-shadow: inset 0 -2px 0 0 var(--primary); }
 
+.previous-plans-card {
+    margin-top: 4px;
+}
+.previous-plan-row {
+    cursor: default;
+}
+.previous-plan-button {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+    padding: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.previous-plan-button:hover {
+    color: var(--primary);
+}
+.previous-plan-max-depth,
+.previous-plan-depth {
+    font-weight: 600;
+}
+.previous-plan-gas {
+    color: var(--primary);
+}
+.previous-plans-empty {
+    color: var(--text-secondary);
+    font-size: 12px;
+    padding: 8px;
+    text-align: center;
+}
+.previous-plans-actions {
+    margin-top: 10px;
+}
+
 </style>
 <style id="theme-style-dark" media="not all">
 
@@ -966,6 +1013,10 @@ body {
     border-radius: 6px;
     margin-bottom: 12px;
     overflow: hidden;
+}
+/* Bailout Settings is hidden intentionally. Remove this rule and the bailout-settings-hidden class to show it again. */
+.bailout-settings-hidden {
+    display: none !important;
 }
 .card-header {
     background: #626262;
@@ -1156,6 +1207,7 @@ table.data-table tr.warn-row:hover { background: var(--warn-row-bg) !important; 
     width: 34px;
     min-width: 34px;
     height: 26px;
+    margin-left: auto;
     padding: 2px;
     border: 1px solid var(--border);
     border-radius: 4px;
@@ -1474,7 +1526,8 @@ table.data-table tr.warn-row:hover { background: var(--warn-row-bg) !important; 
     }
 
     #levels-list .item-row,
-    #decos-list .item-row {
+    #decos-list .item-row,
+    #previous-plans-list .item-row {
         font-size: 14px;
         min-height: 36px;
         padding: 7px 8px;
@@ -1494,7 +1547,8 @@ table.data-table tr.warn-row:hover { background: var(--warn-row-bg) !important; 
     }
 
     #levels-list .item-row .drag-handle,
-    #decos-list .item-row .drag-handle {
+    #decos-list .item-row .drag-handle,
+    #previous-plans-list .item-row .drag-handle {
         font-size: 13px;
     }
 }
@@ -1689,6 +1743,46 @@ table.data-table tr.warn-row:hover { background: var(--warn-row-bg) !important; 
 .item-row.drop-above { box-shadow: inset 0 2px 0 0 var(--primary-light); }
 .item-row.drop-below { box-shadow: inset 0 -2px 0 0 var(--primary-light); }
 
+.previous-plans-card {
+    margin-top: 4px;
+}
+.previous-plan-row {
+    cursor: default;
+}
+.previous-plan-button {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+    padding: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.previous-plan-button:hover {
+    color: var(--primary-light);
+}
+.previous-plan-max-depth,
+.previous-plan-depth {
+    font-weight: 600;
+}
+.previous-plan-gas {
+    color: var(--primary-light);
+}
+.previous-plans-empty {
+    color: var(--text-secondary);
+    font-size: 12px;
+    padding: 8px;
+    text-align: center;
+}
+.previous-plans-actions {
+    margin-top: 10px;
+}
+
 </style>
 <script>
 (function () {
@@ -1758,6 +1852,16 @@ table.data-table tr.warn-row:hover { background: var(--warn-row-bg) !important; 
     <div class="footer-bar">
         <button class="btn btn-accent" onclick="calculateDeco()" style="font-size:15px; padding:10px 32px;" data-i18n="BTN_CALCULATE">Calculate</button>
         <button id="btn-reset-tissues" class="btn btn-outline" style="display:none; margin-left:12px;" onclick="resetSurfaceTissues()" data-i18n="BTN_RESET_TISSUES">Reset surface tissues</button>
+    </div>
+
+    <div class="card previous-plans-card">
+        <div class="card-header" data-i18n="CARD_PREVIOUS_PLANS">Previous Plans</div>
+        <div class="card-body">
+            <div id="previous-plans-list"></div>
+            <div class="btn-group planner-mix-actions previous-plans-actions">
+                <button id="btn-clear-previous-plans" class="btn btn-outline" onclick="clearPreviousPlans()" data-i18n="BTN_CLEAR_PREVIOUS_PLANS">Clear Previous Plans</button>
+            </div>
+        </div>
     </div>
 
 </div>
@@ -2131,7 +2235,8 @@ table.data-table tr.warn-row:hover { background: var(--warn-row-bg) !important; 
         </div>
     </div>
 
-    <div class="card ccr-field" style="display:none">
+    <!-- Bailout Settings is intentionally hidden. To show it again later, remove the bailout-settings-hidden class and its CSS rule. -->
+    <div class="card ccr-field bailout-settings-hidden" style="display:none">
         <div class="card-header" data-i18n="CARD_CCR_SETTINGS">CCR Settings</div>
         <div class="card-body">
             <div class="form-row">
@@ -2998,11 +3103,20 @@ window.registerTranslations("en", {
     "BTN_RESET_TISSUES": "Reset surface tissues",
     "MSG_NO_BOTTOM_LEVELS": "No bottom levels. Click + Add Level.",
     "MSG_NO_DECO_MIXES": "No deco mixes. Click + Add Deco.",
+    "CARD_PREVIOUS_PLANS": "Previous Plans",
+    "BTN_CLEAR_PREVIOUS_PLANS": "Clear Previous Plans",
+    "MSG_NO_PREVIOUS_PLANS": "No previous plans yet. Press {calculate} to save a plan here.",
+    "MSG_PREVIOUS_PLAN_LOADED": "Previous plan loaded.",
+    "MSG_PREVIOUS_PLAN_LOAD_FAILED": "Failed to load previous plan.",
+    "MSG_PREVIOUS_PLANS_CLEARED": "Previous plans cleared.",
+    "TITLE_DRAG_TO_REORDER": "Drag to reorder",
     "MODAL_TITLE_ADD_LEVEL": "Add Bottom Mix & Travel",
     "MODAL_TITLE_EDIT_LEVEL": "Edit Bottom Mix & Travel",
     "MODAL_TITLE_ADD_DECO": "Add Deco Mix",
     "MODAL_TITLE_EDIT_DECO": "Edit Deco Mix",
     "LABEL_DEPTH": "Depth",
+    "LABEL_MAX_DEPTH": "Max Depth",
+    "LABEL_PLAN": "Plan",
     "LABEL_TIME_MIN": "Time (min)",
     "LABEL_O2_PERCENT": "O2 %",
     "LABEL_HE_PERCENT": "He %",
@@ -3383,11 +3497,20 @@ window.registerTranslations("ru", {
     "BTN_RESET_TISSUES": "Сбросить ткани на поверхности",
     "MSG_NO_BOTTOM_LEVELS": "Нет донных уровней. Нажмите + Добавить уровень.",
     "MSG_NO_DECO_MIXES": "Нет декогазов. Нажмите + Добавить деко.",
+    "CARD_PREVIOUS_PLANS": "Предыдущие планы",
+    "BTN_CLEAR_PREVIOUS_PLANS": "Очистить предыдущие планы",
+    "MSG_NO_PREVIOUS_PLANS": "Предыдущих планов пока нет. Нажмите {calculate}, чтобы сохранить план здесь.",
+    "MSG_PREVIOUS_PLAN_LOADED": "Предыдущий план загружен.",
+    "MSG_PREVIOUS_PLAN_LOAD_FAILED": "Не удалось загрузить предыдущий план.",
+    "MSG_PREVIOUS_PLANS_CLEARED": "Предыдущие планы очищены.",
+    "TITLE_DRAG_TO_REORDER": "Перетащите, чтобы изменить порядок",
     "MODAL_TITLE_ADD_LEVEL": "Добавить донный газ и переход",
     "MODAL_TITLE_EDIT_LEVEL": "Изменить донный газ и переход",
     "MODAL_TITLE_ADD_DECO": "Добавить декогаз",
     "MODAL_TITLE_EDIT_DECO": "Изменить декогаз",
     "LABEL_DEPTH": "Глубина",
+    "LABEL_MAX_DEPTH": "Макс. глубина",
+    "LABEL_PLAN": "План",
     "LABEL_TIME_MIN": "Время (мин)",
     "LABEL_O2_PERCENT": "O2 %",
     "LABEL_HE_PERCENT": "He %",
@@ -3768,11 +3891,20 @@ window.registerTranslations("es", {
     "BTN_RESET_TISSUES": "Reiniciar tejidos en superficie",
     "MSG_NO_BOTTOM_LEVELS": "Sin niveles de fondo. Pulse + Añadir nivel.",
     "MSG_NO_DECO_MIXES": "Sin mezclas de deco. Pulse + Añadir deco.",
+    "CARD_PREVIOUS_PLANS": "Planes anteriores",
+    "BTN_CLEAR_PREVIOUS_PLANS": "Borrar planes anteriores",
+    "MSG_NO_PREVIOUS_PLANS": "Todavía no hay planes anteriores. Pulse {calculate} para guardar un plan aquí.",
+    "MSG_PREVIOUS_PLAN_LOADED": "Plan anterior cargado.",
+    "MSG_PREVIOUS_PLAN_LOAD_FAILED": "No se pudo cargar el plan anterior.",
+    "MSG_PREVIOUS_PLANS_CLEARED": "Planes anteriores borrados.",
+    "TITLE_DRAG_TO_REORDER": "Arrastrar para reordenar",
     "MODAL_TITLE_ADD_LEVEL": "Añadir mezcla de fondo y tránsito",
     "MODAL_TITLE_EDIT_LEVEL": "Editar mezcla de fondo y tránsito",
     "MODAL_TITLE_ADD_DECO": "Añadir mezcla de deco",
     "MODAL_TITLE_EDIT_DECO": "Editar mezcla de deco",
     "LABEL_DEPTH": "Profundidad",
+    "LABEL_MAX_DEPTH": "Prof. máx.",
+    "LABEL_PLAN": "Plan",
     "LABEL_TIME_MIN": "Tiempo (min)",
     "LABEL_O2_PERCENT": "O2 %",
     "LABEL_HE_PERCENT": "He %",
@@ -4153,11 +4285,20 @@ window.registerTranslations("zh", {
     "BTN_RESET_TISSUES": "重置水面组织",
     "MSG_NO_BOTTOM_LEVELS": "没有底部层级。点击 + 添加层级。",
     "MSG_NO_DECO_MIXES": "没有减压气。点击 + 添加减压气。",
+    "CARD_PREVIOUS_PLANS": "历史计划",
+    "BTN_CLEAR_PREVIOUS_PLANS": "清空历史计划",
+    "MSG_NO_PREVIOUS_PLANS": "还没有历史计划。按 {calculate} 可将计划保存在这里。",
+    "MSG_PREVIOUS_PLAN_LOADED": "历史计划已加载。",
+    "MSG_PREVIOUS_PLAN_LOAD_FAILED": "无法加载历史计划。",
+    "MSG_PREVIOUS_PLANS_CLEARED": "历史计划已清空。",
+    "TITLE_DRAG_TO_REORDER": "拖动以重新排序",
     "MODAL_TITLE_ADD_LEVEL": "添加底部气体与过渡气",
     "MODAL_TITLE_EDIT_LEVEL": "编辑底部气体与过渡气",
     "MODAL_TITLE_ADD_DECO": "添加减压气",
     "MODAL_TITLE_EDIT_DECO": "编辑减压气",
     "LABEL_DEPTH": "深度",
+    "LABEL_MAX_DEPTH": "最大深度",
+    "LABEL_PLAN": "计划",
     "LABEL_TIME_MIN": "时间（分钟）",
     "LABEL_O2_PERCENT": "O2 %",
     "LABEL_HE_PERCENT": "He %",
@@ -4538,11 +4679,20 @@ window.registerTranslations("hi", {
     "BTN_RESET_TISSUES": "सतह ऊतक रीसेट करें",
     "MSG_NO_BOTTOM_LEVELS": "कोई तल स्तर नहीं। + स्तर जोड़ें पर क्लिक करें।",
     "MSG_NO_DECO_MIXES": "कोई डिको गैस नहीं। + डिको जोड़ें पर क्लिक करें।",
+    "CARD_PREVIOUS_PLANS": "पिछले प्लान",
+    "BTN_CLEAR_PREVIOUS_PLANS": "पिछले प्लान साफ करें",
+    "MSG_NO_PREVIOUS_PLANS": "अभी कोई पिछला प्लान नहीं है। इसे यहाँ सहेजने के लिए {calculate} दबाएँ।",
+    "MSG_PREVIOUS_PLAN_LOADED": "पिछला प्लान लोड हो गया।",
+    "MSG_PREVIOUS_PLAN_LOAD_FAILED": "पिछला प्लान लोड नहीं हो सका।",
+    "MSG_PREVIOUS_PLANS_CLEARED": "पिछले प्लान साफ कर दिए गए।",
+    "TITLE_DRAG_TO_REORDER": "क्रम बदलने के लिए खींचें",
     "MODAL_TITLE_ADD_LEVEL": "तल गैस और यात्रा गैस जोड़ें",
     "MODAL_TITLE_EDIT_LEVEL": "तल गैस और यात्रा गैस संपादित करें",
     "MODAL_TITLE_ADD_DECO": "डिको गैस जोड़ें",
     "MODAL_TITLE_EDIT_DECO": "डिको गैस संपादित करें",
     "LABEL_DEPTH": "गहराई",
+    "LABEL_MAX_DEPTH": "अधिकतम गहराई",
+    "LABEL_PLAN": "योजना",
     "LABEL_TIME_MIN": "समय (मिनट)",
     "LABEL_O2_PERCENT": "O2 %",
     "LABEL_HE_PERCENT": "He %",
@@ -4923,11 +5073,20 @@ window.registerTranslations("fr", {
     "BTN_RESET_TISSUES": "Réinitialiser les tissus de surface",
     "MSG_NO_BOTTOM_LEVELS": "Pas de niveaux inférieurs. Cliquez sur + Ajouter un niveau.",
     "MSG_NO_DECO_MIXES": "Pas de mixage deco. Cliquez sur + Ajouter Deco.",
+    "CARD_PREVIOUS_PLANS": "Plans précédents",
+    "BTN_CLEAR_PREVIOUS_PLANS": "Effacer les plans précédents",
+    "MSG_NO_PREVIOUS_PLANS": "Aucun plan précédent pour l’instant. Appuyez sur {calculate} pour enregistrer un plan ici.",
+    "MSG_PREVIOUS_PLAN_LOADED": "Plan précédent chargé.",
+    "MSG_PREVIOUS_PLAN_LOAD_FAILED": "Impossible de charger le plan précédent.",
+    "MSG_PREVIOUS_PLANS_CLEARED": "Plans précédents effacés.",
+    "TITLE_DRAG_TO_REORDER": "Faire glisser pour réordonner",
     "MODAL_TITLE_ADD_LEVEL": "Ajouter Bottom Mix & Travel",
     "MODAL_TITLE_EDIT_LEVEL": "Modifier Bottom Mix & Travel",
     "MODAL_TITLE_ADD_DECO": "Ajouter le mélange Deco",
     "MODAL_TITLE_EDIT_DECO": "Modifier Deco Mixer",
     "LABEL_DEPTH": "Profondeur",
+    "LABEL_MAX_DEPTH": "Profondeur max.",
+    "LABEL_PLAN": "Plan",
     "LABEL_TIME_MIN": "Temps (min)",
     "LABEL_O2_PERCENT": "O2 %",
     "LABEL_HE_PERCENT": "He %",
@@ -5308,11 +5467,20 @@ window.registerTranslations("pt", {
     "BTN_RESET_TISSUES": "Repor tecidos de superfície",
     "MSG_NO_BOTTOM_LEVELS": "Sem níveis inferiores. Clique em + Adicionar nível.",
     "MSG_NO_DECO_MIXES": "Não existem misturas deco. Clique em + Adicionar Deco.",
+    "CARD_PREVIOUS_PLANS": "Planos anteriores",
+    "BTN_CLEAR_PREVIOUS_PLANS": "Limpar planos anteriores",
+    "MSG_NO_PREVIOUS_PLANS": "Ainda não há planos anteriores. Prima {calculate} para guardar um plano aqui.",
+    "MSG_PREVIOUS_PLAN_LOADED": "Plano anterior carregado.",
+    "MSG_PREVIOUS_PLAN_LOAD_FAILED": "Não foi possível carregar o plano anterior.",
+    "MSG_PREVIOUS_PLANS_CLEARED": "Planos anteriores limpos.",
+    "TITLE_DRAG_TO_REORDER": "Arrastar para reordenar",
     "MODAL_TITLE_ADD_LEVEL": "Adicionar Bottom Mix & Travel",
     "MODAL_TITLE_EDIT_LEVEL": "Editar Bottom Mix & Travel",
     "MODAL_TITLE_ADD_DECO": "Adicionar Deco Mistura",
     "MODAL_TITLE_EDIT_DECO": "Editar Deco Mistura",
     "LABEL_DEPTH": "Profundidade",
+    "LABEL_MAX_DEPTH": "Profundidade máx.",
+    "LABEL_PLAN": "Plano",
     "LABEL_TIME_MIN": "Tempo (min)",
     "LABEL_O2_PERCENT": "O2 %",
     "LABEL_HE_PERCENT": "He %",
@@ -5693,11 +5861,20 @@ window.registerTranslations("de", {
     "BTN_RESET_TISSUES": "Oberflächengewebe zurücksetzen",
     "MSG_NO_BOTTOM_LEVELS": "Keine unteren Ebenen. Klicken Sie auf + Ebene hinzufügen.",
     "MSG_NO_DECO_MIXES": "Keine deco-Mischungen. Klicken Sie auf + Deco hinzufügen.",
+    "CARD_PREVIOUS_PLANS": "Vorherige Pläne",
+    "BTN_CLEAR_PREVIOUS_PLANS": "Vorherige Pläne löschen",
+    "MSG_NO_PREVIOUS_PLANS": "Noch keine vorherigen Pläne. Drücken Sie {calculate}, um hier einen Plan zu speichern.",
+    "MSG_PREVIOUS_PLAN_LOADED": "Vorheriger Plan geladen.",
+    "MSG_PREVIOUS_PLAN_LOAD_FAILED": "Vorheriger Plan konnte nicht geladen werden.",
+    "MSG_PREVIOUS_PLANS_CLEARED": "Vorherige Pläne gelöscht.",
+    "TITLE_DRAG_TO_REORDER": "Ziehen, um neu zu ordnen",
     "MODAL_TITLE_ADD_LEVEL": "Add Bottom Mix & Travel",
     "MODAL_TITLE_EDIT_LEVEL": "Bearbeiten Bottom Mix & Travel",
     "MODAL_TITLE_ADD_DECO": "Add Deco Mix",
     "MODAL_TITLE_EDIT_DECO": "Edit Deco Mix",
     "LABEL_DEPTH": "Depth",
+    "LABEL_MAX_DEPTH": "Max. Tiefe",
+    "LABEL_PLAN": "Plan",
     "LABEL_TIME_MIN": "Zeit (min)",
     "LABEL_O2_PERCENT": "O2 %",
     "LABEL_HE_PERCENT": "He %",
@@ -6078,11 +6255,20 @@ window.registerTranslations("it", {
     "BTN_RESET_TISSUES": "Ripristina i tessuti superficiali",
     "MSG_NO_BOTTOM_LEVELS": "Nessun livello inferiore. Fai clic su + Aggiungi livello. ",
     "MSG_NO_DECO_MIXES": "Nessun mix deco. Fai clic su + Aggiungi Deco.",
+    "CARD_PREVIOUS_PLANS": "Piani precedenti",
+    "BTN_CLEAR_PREVIOUS_PLANS": "Cancella piani precedenti",
+    "MSG_NO_PREVIOUS_PLANS": "Non ci sono ancora piani precedenti. Premi {calculate} per salvare un piano qui.",
+    "MSG_PREVIOUS_PLAN_LOADED": "Piano precedente caricato.",
+    "MSG_PREVIOUS_PLAN_LOAD_FAILED": "Impossibile caricare il piano precedente.",
+    "MSG_PREVIOUS_PLANS_CLEARED": "Piani precedenti cancellati.",
+    "TITLE_DRAG_TO_REORDER": "Trascina per riordinare",
     "MODAL_TITLE_ADD_LEVEL": "Aggiungi Bottom Mix & Travel",
     "MODAL_TITLE_EDIT_LEVEL": "Modifica Bottom Mix & Travel",
     "MODAL_TITLE_ADD_DECO": "Aggiungi Deco Mix",
     "MODAL_TITLE_EDIT_DECO": "Modifica Deco Mix",
     "LABEL_DEPTH": "Profondità",
+    "LABEL_MAX_DEPTH": "Profondità max.",
+    "LABEL_PLAN": "Piano",
     "LABEL_TIME_MIN": "Tempo (min)",
     "LABEL_O2_PERCENT": "O2 %",
     "LABEL_HE_PERCENT": "He %",
@@ -6463,11 +6649,20 @@ window.registerTranslations("ko", {
     "BTN_RESET_TISSUES": "표면 조직 재설정",
     "MSG_NO_BOTTOM_LEVELS": "하단 레벨 없음. + 레벨 추가를 클릭하세요.",
     "MSG_NO_DECO_MIXES": "No deco 믹스입니다. + 추가 Deco를 클릭하세요.",
+    "CARD_PREVIOUS_PLANS": "이전 계획",
+    "BTN_CLEAR_PREVIOUS_PLANS": "이전 계획 지우기",
+    "MSG_NO_PREVIOUS_PLANS": "아직 이전 계획이 없습니다. 여기에 계획을 저장하려면 {calculate}을(를) 누르세요.",
+    "MSG_PREVIOUS_PLAN_LOADED": "이전 계획을 불러왔습니다.",
+    "MSG_PREVIOUS_PLAN_LOAD_FAILED": "이전 계획을 불러오지 못했습니다.",
+    "MSG_PREVIOUS_PLANS_CLEARED": "이전 계획을 지웠습니다.",
+    "TITLE_DRAG_TO_REORDER": "드래그하여 순서 변경",
     "MODAL_TITLE_ADD_LEVEL": "추가 Bottom Mix & Travel",
     "MODAL_TITLE_EDIT_LEVEL": "편집 Bottom Mix & Travel",
     "MODAL_TITLE_ADD_DECO": "추가 Deco 믹스",
     "MODAL_TITLE_EDIT_DECO": "편집 Deco 믹스",
     "LABEL_DEPTH": "깊이",
+    "LABEL_MAX_DEPTH": "최대 깊이",
+    "LABEL_PLAN": "계획",
     "LABEL_TIME_MIN": "시간(분)",
     "LABEL_O2_PERCENT": "O2 %",
     "LABEL_HE_PERCENT": "He %",
@@ -6848,11 +7043,20 @@ window.registerTranslations("bg", {
     "BTN_RESET_TISSUES": "Нулирайте повърхностните тъкани",
     "MSG_NO_BOTTOM_LEVELS": "Без долни нива. Щракнете върху + Добавяне на ниво.",
     "MSG_NO_DECO_MIXES": "Без миксове deco. Щракнете върху + Добавяне Deco.",
+    "CARD_PREVIOUS_PLANS": "Предишни планове",
+    "BTN_CLEAR_PREVIOUS_PLANS": "Изчистване на предишните планове",
+    "MSG_NO_PREVIOUS_PLANS": "Все още няма предишни планове. Натиснете {calculate}, за да запазите план тук.",
+    "MSG_PREVIOUS_PLAN_LOADED": "Предишният план е зареден.",
+    "MSG_PREVIOUS_PLAN_LOAD_FAILED": "Неуспешно зареждане на предишния план.",
+    "MSG_PREVIOUS_PLANS_CLEARED": "Предишните планове са изчистени.",
+    "TITLE_DRAG_TO_REORDER": "Плъзнете, за да пренаредите",
     "MODAL_TITLE_ADD_LEVEL": "Добавяне Bottom Mix & Travel",
     "MODAL_TITLE_EDIT_LEVEL": "Редактиране Bottom Mix & Travel",
     "MODAL_TITLE_ADD_DECO": "Добавяне на Deco Микс",
     "MODAL_TITLE_EDIT_DECO": "Редактиране Deco Микс",
     "LABEL_DEPTH": "Дълбочина",
+    "LABEL_MAX_DEPTH": "Макс. дълбочина",
+    "LABEL_PLAN": "План",
     "LABEL_TIME_MIN": "Време (мин)",
     "LABEL_O2_PERCENT": "O2 %",
     "LABEL_HE_PERCENT": "He %",
@@ -7233,11 +7437,20 @@ window.registerTranslations("nb", {
     "BTN_RESET_TISSUES": "Tilbakestill overflatevev",
     "MSG_NO_BOTTOM_LEVELS": "Ingen bunnnivåer. Klikk + Legg til nivå.",
     "MSG_NO_DECO_MIXES": "Ingen deco-mikser. Klikk + Legg til Deco.",
+    "CARD_PREVIOUS_PLANS": "Tidligere planer",
+    "BTN_CLEAR_PREVIOUS_PLANS": "Tøm tidligere planer",
+    "MSG_NO_PREVIOUS_PLANS": "Ingen tidligere planer ennå. Trykk {calculate} for å lagre en plan her.",
+    "MSG_PREVIOUS_PLAN_LOADED": "Tidligere plan lastet.",
+    "MSG_PREVIOUS_PLAN_LOAD_FAILED": "Kunne ikke laste tidligere plan.",
+    "MSG_PREVIOUS_PLANS_CLEARED": "Tidligere planer tømt.",
+    "TITLE_DRAG_TO_REORDER": "Dra for å endre rekkefølge",
     "MODAL_TITLE_ADD_LEVEL": "Legg til Bottom Mix & Travel",
     "MODAL_TITLE_EDIT_LEVEL": "Rediger Bottom Mix & Travel",
     "MODAL_TITLE_ADD_DECO": "Legg til Deco Mix",
     "MODAL_TITLE_EDIT_DECO": "Rediger Deco Mix",
     "LABEL_DEPTH": "Dybde",
+    "LABEL_MAX_DEPTH": "Maks dybde",
+    "LABEL_PLAN": "Plan",
     "LABEL_TIME_MIN": "Tid (min)",
     "LABEL_O2_PERCENT": "O2 %",
     "LABEL_HE_PERCENT": "He %",
@@ -7618,11 +7831,20 @@ window.registerTranslations("ja", {
     "BTN_RESET_TISSUES": "表面組織をリセット",
     "MSG_NO_BOTTOM_LEVELS": "最下位レベルはありません。 [+ レベルの追加] をクリックします。",
     "MSG_NO_DECO_MIXES": "deco ミックスはありません。 [+ Deco を追加] をクリックします。",
+    "CARD_PREVIOUS_PLANS": "過去の計画",
+    "BTN_CLEAR_PREVIOUS_PLANS": "過去の計画を消去",
+    "MSG_NO_PREVIOUS_PLANS": "過去の計画はまだありません。ここに計画を保存するには {calculate} を押してください。",
+    "MSG_PREVIOUS_PLAN_LOADED": "過去の計画を読み込みました。",
+    "MSG_PREVIOUS_PLAN_LOAD_FAILED": "過去の計画を読み込めませんでした。",
+    "MSG_PREVIOUS_PLANS_CLEARED": "過去の計画を消去しました。",
+    "TITLE_DRAG_TO_REORDER": "ドラッグして並べ替え",
     "MODAL_TITLE_ADD_LEVEL": "Bottom Mix & Travel を追加",
     "MODAL_TITLE_EDIT_LEVEL": "Bottom Mix & Travel",
     "MODAL_TITLE_ADD_DECO": "追加Decoミックス",
     "MODAL_TITLE_EDIT_DECO": "編集Decoミックス",
     "LABEL_DEPTH": "深さ",
+    "LABEL_MAX_DEPTH": "最大深度",
+    "LABEL_PLAN": "プラン",
     "LABEL_TIME_MIN": "時間 (分)",
     "LABEL_O2_PERCENT": "O2 %",
     "LABEL_HE_PERCENT": "He %",
@@ -8003,11 +8225,20 @@ window.registerTranslations("pl", {
     "BTN_RESET_TISSUES": "Zresetuj tkanki powierzchniowe",
     "MSG_NO_BOTTOM_LEVELS": "Brak dolnych poziomów. Kliknij + Dodaj poziom.",
     "MSG_NO_DECO_MIXES": "Brak miksów deco. Kliknij + Dodaj Deco.",
+    "CARD_PREVIOUS_PLANS": "Poprzednie plany",
+    "BTN_CLEAR_PREVIOUS_PLANS": "Wyczyść poprzednie plany",
+    "MSG_NO_PREVIOUS_PLANS": "Nie ma jeszcze poprzednich planów. Naciśnij {calculate}, aby zapisać plan tutaj.",
+    "MSG_PREVIOUS_PLAN_LOADED": "Poprzedni plan załadowany.",
+    "MSG_PREVIOUS_PLAN_LOAD_FAILED": "Nie udało się załadować poprzedniego planu.",
+    "MSG_PREVIOUS_PLANS_CLEARED": "Poprzednie plany wyczyszczone.",
+    "TITLE_DRAG_TO_REORDER": "Przeciągnij, aby zmienić kolejność",
     "MODAL_TITLE_ADD_LEVEL": "Dodaj Bottom Mix & Travel",
     "MODAL_TITLE_EDIT_LEVEL": "Edytuj Bottom Mix & Travel",
     "MODAL_TITLE_ADD_DECO": "Dodaj Deco Mieszanka",
     "MODAL_TITLE_EDIT_DECO": "Edytuj Deco Mieszanka",
     "LABEL_DEPTH": "Głębokość",
+    "LABEL_MAX_DEPTH": "Maks. głębokość",
+    "LABEL_PLAN": "Plan",
     "LABEL_TIME_MIN": "Czas (min)",
     "LABEL_O2_PERCENT": "O2 %",
     "LABEL_HE_PERCENT": "He %",
@@ -8388,11 +8619,20 @@ window.registerTranslations("tr", {
     "BTN_RESET_TISSUES": "Yüzey dokularını sıfırlayın",
     "MSG_NO_BOTTOM_LEVELS": "Alt seviye yok. + Seviye Ekle'ye tıklayın.",
     "MSG_NO_DECO_MIXES": "deco karışımı yok. + Ekle'ye tıklayın Deco.",
+    "CARD_PREVIOUS_PLANS": "Önceki Planlar",
+    "BTN_CLEAR_PREVIOUS_PLANS": "Önceki Planları Temizle",
+    "MSG_NO_PREVIOUS_PLANS": "Henüz önceki plan yok. Buraya bir plan kaydetmek için {calculate} düğmesine basın.",
+    "MSG_PREVIOUS_PLAN_LOADED": "Önceki plan yüklendi.",
+    "MSG_PREVIOUS_PLAN_LOAD_FAILED": "Önceki plan yüklenemedi.",
+    "MSG_PREVIOUS_PLANS_CLEARED": "Önceki planlar temizlendi.",
+    "TITLE_DRAG_TO_REORDER": "Yeniden sıralamak için sürükleyin",
     "MODAL_TITLE_ADD_LEVEL": "Ekle Bottom Mix & Travel",
     "MODAL_TITLE_EDIT_LEVEL": "Düzenle Bottom Mix & Travel",
     "MODAL_TITLE_ADD_DECO": "Ekle Deco Karıştır",
     "MODAL_TITLE_EDIT_DECO": "Düzenle Deco Karıştır",
     "LABEL_DEPTH": "Derinlik",
+    "LABEL_MAX_DEPTH": "Maks. derinlik",
+    "LABEL_PLAN": "Plan",
     "LABEL_TIME_MIN": "Süre (dak)",
     "LABEL_O2_PERCENT": "O2 %",
     "LABEL_HE_PERCENT": "He %",
@@ -13490,10 +13730,13 @@ function copyTextToClipboard(text) {
     }
 }
 function copyDebugToClipboard() {
+    copyTextToClipboard(JSON.stringify(collectPlannerDebugData(), null, 2));
+}
+function collectPlannerDebugData() {
     let theme = null, language = null;
     try { theme = localStorage.getItem('apexdeco_theme'); } catch (e) {}
     try { language = localStorage.getItem('apexdeco_language'); } catch (e) {}
-    const data = {
+    return {
         settings: appState.settings || {},
         levelsOC: appState.levelsOC || [],
         levelsCCR: appState.levelsCCR || [],
@@ -13501,7 +13744,51 @@ function copyDebugToClipboard() {
         theme: theme,
         language: language
     };
-    copyTextToClipboard(JSON.stringify(data, null, 2));
+}
+function applyPlannerDebugData(data, options) {
+    const opts = options || {};
+    const loaded = [];
+    if (data.settings && typeof data.settings === 'object') {
+        appState.settings = Object.assign({}, appState.settings, data.settings);
+        if (typeof loadConfigToUI === 'function') loadConfigToUI();
+        if (typeof updateDepthUnits === 'function') updateDepthUnits();
+        loaded.push('settings');
+    }
+    if (Array.isArray(data.levelsOC)) {
+        appState.levelsOC = data.levelsOC;
+        loaded.push('levelsOC');
+    }
+    if (Array.isArray(data.levelsCCR)) {
+        appState.levelsCCR = data.levelsCCR;
+        loaded.push('levelsCCR');
+    }
+    if (Array.isArray(data.decos)) {
+        appState.decos = data.decos;
+        loaded.push('decos');
+    }
+    if (typeof data.theme === 'string' && data.theme) {
+        try { localStorage.setItem('apexdeco_theme', data.theme); } catch (e) {}
+        const themeSel = document.getElementById('cfg-theme');
+        if (themeSel) themeSel.value = data.theme;
+        if (typeof onThemeChange === 'function') onThemeChange(data.theme);
+        loaded.push('theme');
+    }
+    if (typeof data.language === 'string' && data.language) {
+        try { localStorage.setItem('apexdeco_language', data.language); } catch (e) {}
+        const langSel = document.getElementById('cfg-language');
+        if (langSel) langSel.value = data.language;
+        if (window.setLanguage) window.setLanguage(data.language);
+        loaded.push('language');
+    }
+    if (loaded.length === 0) return false;
+    applyLevelsForCircuit();
+    if (typeof renderLevels === 'function') renderLevels();
+    if (typeof renderDecos === 'function') renderDecos();
+    saveStateToStorage();
+    if (opts.showAlert !== false) {
+        showAlert(window.t ? window.t('MSG_DEBUG_LOADED') : 'Debug info loaded from clipboard.');
+    }
+    return true;
 }
 function loadDebugFromClipboard() {
     const doLoad = (text) => {
@@ -13512,47 +13799,10 @@ function loadDebugFromClipboard() {
             showAlert(window.t ? window.t('MSG_DEBUG_LOAD_FAILED') : 'Failed to load debug info: invalid JSON.');
             return;
         }
-        const loaded = [];
-        if (data.settings && typeof data.settings === 'object') {
-            appState.settings = Object.assign({}, appState.settings, data.settings);
-            if (typeof loadConfigToUI === 'function') loadConfigToUI();
-            if (typeof updateDepthUnits === 'function') updateDepthUnits();
-            loaded.push('settings');
-        }
-        if (Array.isArray(data.levelsOC)) {
-            appState.levelsOC = data.levelsOC;
-            loaded.push('levelsOC');
-        }
-        if (Array.isArray(data.levelsCCR)) {
-            appState.levelsCCR = data.levelsCCR;
-            loaded.push('levelsCCR');
-        }
-        if (Array.isArray(data.decos)) {
-            appState.decos = data.decos;
-            loaded.push('decos');
-        }
-        if (typeof data.theme === 'string' && data.theme) {
-            try { localStorage.setItem('apexdeco_theme', data.theme); } catch (e) {}
-            const themeSel = document.getElementById('cfg-theme');
-            if (themeSel) themeSel.value = data.theme;
-            if (typeof onThemeChange === 'function') onThemeChange(data.theme);
-            loaded.push('theme');
-        }
-        if (typeof data.language === 'string' && data.language) {
-            try { localStorage.setItem('apexdeco_language', data.language); } catch (e) {}
-            const langSel = document.getElementById('cfg-language');
-            if (langSel) langSel.value = data.language;
-            if (window.setLanguage) window.setLanguage(data.language);
-            loaded.push('language');
-        }
-        if (loaded.length === 0) {
+        if (!applyPlannerDebugData(data, { showAlert: false })) {
             showAlert(window.t ? window.t('MSG_DEBUG_LOAD_FAILED') : 'Failed to load debug info: no recognized data.');
             return;
         }
-        applyLevelsForCircuit();
-        if (typeof renderLevels === 'function') renderLevels();
-        if (typeof renderDecos === 'function') renderDecos();
-        saveStateToStorage();
         showAlert(window.t ? window.t('MSG_DEBUG_LOADED') : 'Debug info loaded from clipboard.');
     };
     if (window.Android && typeof window.Android.getClipboardText === 'function') {
@@ -13580,6 +13830,251 @@ function copyToolsDebugToClipboard() {
     ];
     copyTextToClipboard(sections.join('\n\n'));
 }
+
+</script>
+<script data-bundled-src="app-previous-plans.js">
+(function () {
+    'use strict';
+
+    const STORAGE_KEY = 'apexdeco_previous_plans';
+    const MAX_PLANS = 10;
+    const M_TO_FT = 3.28084;
+
+    function cloneJson(value) {
+        return JSON.parse(JSON.stringify(value || null));
+    }
+
+    function sortJsonValue(value) {
+        if (Array.isArray(value)) return value.map(sortJsonValue);
+        if (value && typeof value === 'object') {
+            const out = {};
+            Object.keys(value).sort().forEach(key => {
+                out[key] = sortJsonValue(value[key]);
+            });
+            return out;
+        }
+        return value;
+    }
+
+    function stableStringify(value) {
+        return JSON.stringify(sortJsonValue(value));
+    }
+
+    function readPlans() {
+        try {
+            const parsed = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+            return Array.isArray(parsed) ? parsed : [];
+        } catch (e) {
+            return [];
+        }
+    }
+
+    function writePlans(plans) {
+        try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(plans.slice(0, MAX_PLANS)));
+        } catch (e) {}
+    }
+
+    function tValue(key, fallback) {
+        return window.t ? window.t(key) : fallback;
+    }
+
+    function isMetric(settings) {
+        return settings && typeof settings.metric === 'boolean' ? settings.metric : true;
+    }
+
+    function getCurrentMetric(fallbackMetric) {
+        if (typeof appState !== 'undefined' && appState && appState.settings && typeof appState.settings.metric === 'boolean') {
+            return appState.settings.metric;
+        }
+        return typeof fallbackMetric === 'boolean' ? fallbackMetric : true;
+    }
+
+    function getDepthUnit(metric) {
+        const lang = (window.getCurrentLanguage && window.getCurrentLanguage()) || 'en';
+        if (metric) return tValue('UNIT_M', 'm');
+        return lang === 'ru' ? 'ф' : tValue('UNIT_FT', 'ft');
+    }
+
+    function convertDepthForDisplay(depth, fromMetric, toMetric) {
+        const value = Number(depth) || 0;
+        if (fromMetric === toMetric) return value;
+        return fromMetric ? value * M_TO_FT : value / M_TO_FT;
+    }
+
+    function findMaxDepthLevel(levels) {
+        const selected = (levels || []).filter(level => level && level.selected !== false);
+        if (!selected.length) return null;
+        return selected.reduce((best, level) => {
+            const bestDepth = Number(best.depth) || 0;
+            const depth = Number(level.depth) || 0;
+            return depth > bestDepth ? level : best;
+        }, selected[0]);
+    }
+
+    function getNextDiveNumber(plans) {
+        const maxExisting = plans.reduce((max, plan) => Math.max(max, parseInt(plan.diveNumber, 10) || 0), 0);
+        return maxExisting + 1;
+    }
+
+    function buildPlanSummaryData(result, levels, settings) {
+        const s = settings || {};
+        const maxLevel = findMaxDepthLevel(levels) || {};
+        const gas = `${parseInt(maxLevel.o2, 10) || 21}/${parseInt(maxLevel.he, 10) || 0}`;
+        return {
+            sourceMetric: isMetric(s),
+            circuit: s.circuit === 'CCR' ? 'CCR' : 'OC',
+            maxDepth: Number(maxLevel.depth) || 0,
+            gas,
+            runtime: Math.round(Number(result && result.totalRuntime) || 0)
+        };
+    }
+
+    function getPlanLevels(data, circuit) {
+        if (!data || typeof data !== 'object') return [];
+        if (circuit === 'CCR' && Array.isArray(data.levelsCCR)) return data.levelsCCR;
+        if (Array.isArray(data.levelsOC)) return data.levelsOC;
+        if (Array.isArray(data.levelsCCR)) return data.levelsCCR;
+        return [];
+    }
+
+    function parseRuntimeFromTitle(title) {
+        const parts = String(title || '').split('|');
+        const last = parts[parts.length - 1] || '';
+        const match = last.match(/\d+/);
+        return match ? parseInt(match[0], 10) : 0;
+    }
+
+    function buildPlanSummary(plan) {
+        const data = plan && plan.data && typeof plan.data === 'object' ? plan.data : {};
+        const settings = data.settings && typeof data.settings === 'object' ? data.settings : {};
+        const saved = plan && plan.summary && typeof plan.summary === 'object' ? plan.summary : {};
+        const circuit = saved.circuit || (settings.circuit === 'CCR' ? 'CCR' : 'OC');
+        const sourceMetric = typeof saved.sourceMetric === 'boolean' ? saved.sourceMetric : isMetric(settings);
+        const levels = getPlanLevels(data, circuit);
+        const maxLevel = findMaxDepthLevel(levels) || {};
+        const maxDepth = Number.isFinite(Number(saved.maxDepth)) ? Number(saved.maxDepth) : (Number(maxLevel.depth) || 0);
+        const gas = saved.gas || `${parseInt(maxLevel.o2, 10) || 21}/${parseInt(maxLevel.he, 10) || 0}`;
+        const runtime = Number.isFinite(Number(saved.runtime)) ? Math.round(Number(saved.runtime)) : parseRuntimeFromTitle(plan && plan.title);
+        return { circuit, sourceMetric, maxDepth, gas, runtime };
+    }
+
+    function renderPreviousPlanTitle(plan) {
+        if (!plan || (!plan.data && !plan.summary)) return escapePreviousPlanHtml(plan && plan.title ? plan.title : '');
+        const summary = buildPlanSummary(plan);
+        const metric = getCurrentMetric(summary.sourceMetric);
+        const depth = Math.round(convertDepthForDisplay(summary.maxDepth, summary.sourceMetric, metric));
+        const unit = getDepthUnit(metric);
+        const minLabel = tValue('UNIT_MIN', 'min');
+        return [
+            `#${escapePreviousPlanHtml(plan.diveNumber || '')}`,
+            escapePreviousPlanHtml(summary.circuit),
+            `<span class="previous-plan-max-depth">${escapePreviousPlanHtml(depth)}${escapePreviousPlanHtml(unit)}</span>.`,
+            `<span class="previous-plan-gas">${escapePreviousPlanHtml(summary.gas)}</span>`,
+            `${escapePreviousPlanHtml(summary.runtime)} ${escapePreviousPlanHtml(minLabel)}.`
+        ].join(' | ');
+    }
+
+    function reorderPlans(fromIdx, toIdx) {
+        const plans = readPlans();
+        if (fromIdx < 0 || fromIdx >= plans.length || toIdx < 0 || toIdx >= plans.length || fromIdx === toIdx) return;
+        const item = plans.splice(fromIdx, 1)[0];
+        plans.splice(toIdx, 0, item);
+        writePlans(plans);
+        renderPreviousPlans();
+    }
+
+    function attachPreviousPlansDnD() {
+        if (typeof attachItemsDnD !== 'function') return;
+        attachItemsDnD('previous-plans-list', readPlans, reorderPlans);
+    }
+
+    function renderPreviousPlans() {
+        const list = document.getElementById('previous-plans-list');
+        const clearBtn = document.getElementById('btn-clear-previous-plans');
+        if (!list) return;
+
+        const plans = readPlans();
+        if (clearBtn) clearBtn.style.display = plans.length ? '' : 'none';
+        if (!plans.length) {
+            const lang = (window.getCurrentLanguage && window.getCurrentLanguage()) || undefined;
+            const calculate = (window.t ? window.t('BTN_CALCULATE') : 'Calculate').toLocaleUpperCase(lang);
+            list.innerHTML = '<div class="previous-plans-empty">' +
+                (window.t ? window.t('MSG_NO_PREVIOUS_PLANS', { calculate }) : `No previous plans yet. Press ${calculate} to save a plan here.`) +
+                '</div>';
+            return;
+        }
+
+        list.innerHTML = plans.map((plan, index) => `
+            <div class="item-row previous-plan-row" data-idx="${index}">
+                <button class="previous-plan-button" type="button" onclick="loadPreviousPlan(${index})">${renderPreviousPlanTitle(plan)}</button>
+                <span class="drag-handle" onclick="event.stopPropagation()" title="${escapePreviousPlanHtml(window.t ? window.t('TITLE_DRAG_TO_REORDER') : 'Drag to reorder')}" aria-label="${escapePreviousPlanHtml(window.t ? window.t('TITLE_DRAG_TO_REORDER') : 'Drag to reorder')}">⋮⋮</span>
+            </div>
+        `).join('');
+        attachPreviousPlansDnD();
+    }
+
+    function escapePreviousPlanHtml(value) {
+        return String(value).replace(/[&<>"']/g, ch => ({
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#39;'
+        }[ch]));
+    }
+
+    function saveCurrentPlanToHistory(result, levels, settings) {
+        if (typeof collectPlannerDebugData !== 'function') return;
+        const data = cloneJson(collectPlannerDebugData());
+        const signature = stableStringify(data);
+        const plans = readPlans();
+        if (plans[0] && plans[0].signature === signature) return;
+
+        const diveNumber = getNextDiveNumber(plans);
+        const item = {
+            id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+            createdAt: new Date().toISOString(),
+            diveNumber,
+            summary: buildPlanSummaryData(result, levels, settings),
+            signature,
+            data
+        };
+        plans.unshift(item);
+        writePlans(plans);
+        renderPreviousPlans();
+    }
+
+    function loadPreviousPlan(index) {
+        const plans = readPlans();
+        const plan = plans[index];
+        if (!plan || !plan.data || typeof applyPlannerDebugData !== 'function') return;
+        const data = cloneJson(plan.data);
+        delete data.theme;
+        delete data.language;
+        if (!applyPlannerDebugData(data, { showAlert: false })) {
+            showAlert(window.t ? window.t('MSG_PREVIOUS_PLAN_LOAD_FAILED') : 'Failed to load previous plan.');
+            return;
+        }
+        if (typeof showScreen === 'function') showScreen('main');
+        if (typeof updateResetTissuesButton === 'function') updateResetTissuesButton();
+        showAlert(window.t ? window.t('MSG_PREVIOUS_PLAN_LOADED') : 'Previous plan loaded.');
+    }
+
+    function clearPreviousPlans() {
+        writePlans([]);
+        renderPreviousPlans();
+        showAlert(window.t ? window.t('MSG_PREVIOUS_PLANS_CLEARED') : 'Previous plans cleared.');
+    }
+
+    window.renderPreviousPlans = renderPreviousPlans;
+    window.onPreviousPlanCalculated = saveCurrentPlanToHistory;
+    window.loadPreviousPlan = loadPreviousPlan;
+    window.clearPreviousPlans = clearPreviousPlans;
+
+    document.addEventListener('DOMContentLoaded', renderPreviousPlans);
+    document.addEventListener('languagechange', renderPreviousPlans);
+})();
 
 </script>
 <script data-bundled-src="app-result.js">
@@ -14188,6 +14683,9 @@ function calculateDeco() {
     appState.lastResult = result;
     renderResult(result);
     logPlanToConsole(result, s);
+    if (typeof onPreviousPlanCalculated === 'function') {
+        onPreviousPlanCalculated(result, levels, s);
+    }
     showScreen('result');
     saveStateToStorage();
 }
@@ -15499,6 +15997,7 @@ function updateDepthUnits() {
     updateGasVolumeInputs();
     updateExtendedStopsLabels();
     updateStopSelectLabels();
+    if (typeof renderPreviousPlans === 'function') renderPreviousPlans();
 }
 function updateStopSelectLabels() {
     const metric = appState.settings.metric;
@@ -18218,7 +18717,7 @@ c)):this.currentResponsive=void 0)};y.prototype.matchResponsiveRule=function(a,c
  * Change CACHE_VERSION to force an immediate update on next deployment.
  */
 'use strict';
-const CACHE_VERSION = 'apexdeco-v8';
+const CACHE_VERSION = 'apexdeco-v20';
 const CACHE_TS_KEY  = '/_sw_cache_ts';
 const MAX_AGE_MS    = 90 * 24 * 60 * 60 * 1000; // 90 days
 const STATIC_ASSETS = [
@@ -18235,6 +18734,7 @@ const STATIC_ASSETS = [
     './app-levels.js',
     './app-modal.js',
     './app-navigation.js',
+    './app-previous-plans.js',
     './app-result.js',
     './app-state.js',
     './app-tools-ui.js',

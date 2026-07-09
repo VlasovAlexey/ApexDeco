@@ -101,6 +101,10 @@ body {
     margin-bottom: 12px;
     overflow: hidden;
 }
+/* Bailout Settings is hidden intentionally. Remove this rule and the bailout-settings-hidden class to show it again. */
+.bailout-settings-hidden {
+    display: none !important;
+}
 .card-header {
     background: var(--primary);
     color: white;
@@ -287,6 +291,7 @@ table.data-table tr.warn-row:hover { background: var(--warn-row-bg) !important; 
     width: 34px;
     min-width: 34px;
     height: 26px;
+    margin-left: auto;
     padding: 2px;
     border: 1px solid var(--border);
     border-radius: 4px;
@@ -602,7 +607,8 @@ table.data-table tr.warn-row:hover { background: var(--warn-row-bg) !important; 
     }
 
     #levels-list .item-row,
-    #decos-list .item-row {
+    #decos-list .item-row,
+    #previous-plans-list .item-row {
         font-size: 14px;
         min-height: 36px;
         padding: 7px 8px;
@@ -622,7 +628,8 @@ table.data-table tr.warn-row:hover { background: var(--warn-row-bg) !important; 
     }
 
     #levels-list .item-row .drag-handle,
-    #decos-list .item-row .drag-handle {
+    #decos-list .item-row .drag-handle,
+    #previous-plans-list .item-row .drag-handle {
         font-size: 13px;
     }
 }
@@ -804,3 +811,43 @@ table.data-table tr.warn-row:hover { background: var(--warn-row-bg) !important; 
 }
 .item-row.drop-above { box-shadow: inset 0 2px 0 0 var(--primary); }
 .item-row.drop-below { box-shadow: inset 0 -2px 0 0 var(--primary); }
+
+.previous-plans-card {
+    margin-top: 4px;
+}
+.previous-plan-row {
+    cursor: default;
+}
+.previous-plan-button {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    text-align: left;
+    font: inherit;
+    cursor: pointer;
+    padding: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.previous-plan-button:hover {
+    color: var(--primary);
+}
+.previous-plan-max-depth,
+.previous-plan-depth {
+    font-weight: 600;
+}
+.previous-plan-gas {
+    color: var(--primary);
+}
+.previous-plans-empty {
+    color: var(--text-secondary);
+    font-size: 12px;
+    padding: 8px;
+    text-align: center;
+}
+.previous-plans-actions {
+    margin-top: 10px;
+}
