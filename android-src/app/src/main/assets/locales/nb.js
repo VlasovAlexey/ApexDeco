@@ -23,6 +23,7 @@ window.registerTranslations("nb", {
     "BTN_ADD_DECO": "+ Legg til Deco",
     "BTN_DELETE": "Slett",
     "BTN_CALCULATE": "Beregn",
+    "BTN_BAILOUT": "Bailout",
     "BTN_RESET_TISSUES": "Tilbakestill overflatevev",
     "MSG_NO_BOTTOM_LEVELS": "Ingen bunnnivåer. Klikk + Legg til nivå.",
     "MSG_NO_DECO_MIXES": "Ingen deco-mikser. Klikk + Legg til Deco.",

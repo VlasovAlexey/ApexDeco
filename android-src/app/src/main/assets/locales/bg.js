@@ -23,6 +23,7 @@ window.registerTranslations("bg", {
     "BTN_ADD_DECO": "+ Добавяне Deco",
     "BTN_DELETE": "Изтриване",
     "BTN_CALCULATE": "Изчисляване",
+    "BTN_BAILOUT": "Bailout",
     "BTN_RESET_TISSUES": "Нулирайте повърхностните тъкани",
     "MSG_NO_BOTTOM_LEVELS": "Без долни нива. Щракнете върху + Добавяне на ниво.",
     "MSG_NO_DECO_MIXES": "Без миксове deco. Щракнете върху + Добавяне Deco.",

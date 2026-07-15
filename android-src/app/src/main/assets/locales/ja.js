@@ -23,6 +23,7 @@ window.registerTranslations("ja", {
     "BTN_ADD_DECO": "+ Deco",
     "BTN_DELETE": "を追加__削除",
     "BTN_CALCULATE": "計算",
+    "BTN_BAILOUT": "Bailout",
     "BTN_RESET_TISSUES": "表面組織をリセット",
     "MSG_NO_BOTTOM_LEVELS": "最下位レベルはありません。 [+ レベルの追加] をクリックします。",
     "MSG_NO_DECO_MIXES": "deco ミックスはありません。 [+ Deco を追加] をクリックします。",

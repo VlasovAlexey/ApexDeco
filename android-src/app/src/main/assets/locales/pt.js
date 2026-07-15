@@ -23,6 +23,7 @@ window.registerTranslations("pt", {
     "BTN_ADD_DECO": "+ Adicionar Deco",
     "BTN_DELETE": "Apagar",
     "BTN_CALCULATE": "Calcular",
+    "BTN_BAILOUT": "Bailout",
     "BTN_RESET_TISSUES": "Repor tecidos de superfície",
     "MSG_NO_BOTTOM_LEVELS": "Sem níveis inferiores. Clique em + Adicionar nível.",
     "MSG_NO_DECO_MIXES": "Não existem misturas deco. Clique em + Adicionar Deco.",

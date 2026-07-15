@@ -35,7 +35,12 @@ function drawProfileChart(containerId, result) {
     let currentTime = 0;
     let colorTick = 0;
     const zoneColors = ['#40c0ca', '#1d99ff'];
+    const profileGasColors = (result && result.profileGasColors) || {};
+    function getProfileGasColor(gas, fallbackIndex) {
+        return profileGasColors[gas] || zoneColors[fallbackIndex];
+    }
     let lastGas = null;
+    let activeGasColor = zoneColors[colorTick];
     let prevDepth = 0;
     let currentCeiling = 0;
     let maxDepth = 0;
@@ -105,11 +110,12 @@ function drawProfileChart(containerId, result) {
             if (lastGas !== null) {
                 chartZoneArr.push({
                     value: currentTime,
-                    color: zoneColors[colorTick]
+                    color: activeGasColor
                 });
                 colorTick = colorTick === 0 ? 1 : 0;
             }
             lastGas = gas;
+            activeGasColor = getProfileGasColor(gas, colorTick);
         }
         chartLineArr.push({
             x: parseFloat(currentTime.toFixed(4)),
@@ -140,7 +146,7 @@ function drawProfileChart(containerId, result) {
     }
     chartZoneArr.push({
         value: 100000,
-        color: zoneColors[colorTick]
+        color: activeGasColor
     });
     const colorsCustom = ['#f45b5b', '#8085e9'];
     Highcharts.chart(containerId, {

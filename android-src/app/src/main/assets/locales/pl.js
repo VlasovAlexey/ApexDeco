@@ -23,6 +23,7 @@ window.registerTranslations("pl", {
     "BTN_ADD_DECO": "+ Dodaj Deco",
     "BTN_DELETE": "Usuń",
     "BTN_CALCULATE": "Oblicz",
+    "BTN_BAILOUT": "Bailout",
     "BTN_RESET_TISSUES": "Zresetuj tkanki powierzchniowe",
     "MSG_NO_BOTTOM_LEVELS": "Brak dolnych poziomów. Kliknij + Dodaj poziom.",
     "MSG_NO_DECO_MIXES": "Brak miksów deco. Kliknij + Dodaj Deco.",

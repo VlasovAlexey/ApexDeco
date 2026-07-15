@@ -23,6 +23,7 @@ window.registerTranslations("tr", {
     "BTN_ADD_DECO": "+ Ekle Deco",
     "BTN_DELETE": "Sil",
     "BTN_CALCULATE": "Hesapla",
+    "BTN_BAILOUT": "Bailout",
     "BTN_RESET_TISSUES": "Yüzey dokularını sıfırlayın",
     "MSG_NO_BOTTOM_LEVELS": "Alt seviye yok. + Seviye Ekle'ye tıklayın.",
     "MSG_NO_DECO_MIXES": "deco karışımı yok. + Ekle'ye tıklayın Deco.",

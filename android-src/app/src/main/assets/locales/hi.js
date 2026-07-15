@@ -23,6 +23,7 @@ window.registerTranslations("hi", {
     "BTN_ADD_DECO": "+ डिको जोड़ें",
     "BTN_DELETE": "हटाएँ",
     "BTN_CALCULATE": "गणना करें",
+    "BTN_BAILOUT": "बेलआउट",
     "BTN_RESET_TISSUES": "सतह ऊतक रीसेट करें",
     "MSG_NO_BOTTOM_LEVELS": "कोई तल स्तर नहीं। + स्तर जोड़ें पर क्लिक करें।",
     "MSG_NO_DECO_MIXES": "कोई डिको गैस नहीं। + डिको जोड़ें पर क्लिक करें।",

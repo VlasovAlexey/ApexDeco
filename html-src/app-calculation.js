@@ -1,9 +1,42 @@
-function calculateDeco() {
+const CCR_PROFILE_DILUENT_COLORS = ['#ff9800', '#f57c00'];
+const CCR_PROFILE_MIX_COLORS = ['#b39ddb', '#9575cd'];
+
+function gasKeyFromMix(mix) {
+    return `${parseInt(mix && mix.o2, 10) || 21}/${parseInt(mix && mix.he, 10) || 0}`;
+}
+
+function assignProfileGasColors(colors, mixes, palette) {
+    let index = 0;
+    (mixes || []).forEach(mix => {
+        const key = gasKeyFromMix(mix);
+        if (!colors[key]) {
+            colors[key] = palette[index % palette.length];
+            index += 1;
+        }
+    });
+}
+
+function buildProfileGasColors(levels, decos, settings, isCcrBailoutPlan) {
+    if (!settings || settings.circuit !== 'CCR') return null;
+    const colors = {};
+    if (isCcrBailoutPlan) {
+        assignProfileGasColors(colors, decos, CCR_PROFILE_MIX_COLORS);
+        assignProfileGasColors(colors, (levels || []).filter(level => level && !level.oc && !level.scr), CCR_PROFILE_DILUENT_COLORS);
+    } else {
+        assignProfileGasColors(colors, levels, CCR_PROFILE_MIX_COLORS);
+    }
+    return Object.keys(colors).length ? colors : null;
+}
+
+function calculateDeco(options) {
+    const opts = options || {};
     saveConfig();
     const s = appState.settings;
+    const isCcrBailoutPlan = s.circuit === 'CCR' && opts.bailout === true;
     logSettingsToConsole(s);
     const levels = appState.levels.filter(l => l.selected !== false);
-    const decos = appState.decos.filter(d => d.selected !== false);
+    const selectedDecos = appState.decos.filter(d => d.selected !== false);
+    const decos = (s.circuit === 'CCR' && !isCcrBailoutPlan) ? [] : selectedDecos;
     if (levels.length === 0) {
         showAlert(window.t ? window.t('ERR_NO_LEVELS') : 'Add at least one bottom level before calculating.');
         return;
@@ -32,6 +65,9 @@ function calculateDeco() {
     if (s.circuit === 'CCR' && s.bailoutActive) {
         result.bailoutPlan = calculateBailout(levels, decos, s);
     }
+    result.isCcrBailoutPlan = isCcrBailoutPlan;
+    result.calculationMode = isCcrBailoutPlan ? 'CCR_BAILOUT' : (s.circuit || 'OC');
+    result.profileGasColors = buildProfileGasColors(levels, decos, s, isCcrBailoutPlan);
     result.model = model;
     result.modelName = getModelName(model);
     appState.lastResult = result;

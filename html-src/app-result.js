@@ -259,11 +259,23 @@ function renderPPChart(result) {
     const slp = s.metric ? (s.waterType === 0 ? 10.078 : 10.337) : (s.waterType === 0 ? 33.066 : 33.914);
     const isCCR = s.circuit === 'CCR';
     const pO2 = [], pN2 = [], pHe = [], pAmb = [];
+    const gasLabels = [];
+    let lastGas = null;
     pO2.push([0, 0.21]); pN2.push([0, 0.79]); pHe.push([0, 0]); pAmb.push([0, 1]);
     for (const seg of result.plan) {
         const rt = seg.runtime || 0;
+        const startRt = Math.max(0, rt - (seg.time || 0));
+        const gas = seg.gas || '--';
+        if (gas !== '--' && gas !== lastGas) {
+            gasLabels.push({
+                x: parseFloat(startRt.toFixed(4)),
+                title: gas,
+                text: gas
+            });
+            lastGas = gas;
+        }
         const depth = (seg.depth !== undefined) ? seg.depth : (seg.endDepth !== undefined ? seg.endDepth : 0);
-        const { o2, he } = parseGas(seg.gas || '21/0');
+        const { o2, he } = parseGas(gas === '--' ? '21/0' : gas);
         const fO2 = o2 / 100, fHe = he / 100, fN2 = Math.max(0, 1 - fO2 - fHe);
         const pa = depth / slp + 1;
         let ppO2;
@@ -301,10 +313,20 @@ function renderPPChart(result) {
         tooltip: { shared: true, valueDecimals: 2, valueSuffix: ' ' + _tr('UNIT_BAR','bar') },
         credits: { enabled: false },
         series: [
-            { name: 'pO2', data: pO2, color: '#e53935' },
+            { id: 'pp_o2_series', name: 'pO2', data: pO2, color: '#e53935' },
             { name: 'pN2', data: pN2, color: '#1565c0' },
             { name: 'pHe', data: pHe, color: '#43a047' },
-            { name: 'pAmb', data: pAmb, color: '#757575', dashStyle: 'ShortDot' }
+            { id: 'pp_amb_series', name: 'pAmb', data: pAmb, color: '#757575', dashStyle: 'ShortDot' },
+            {
+                type: 'flags',
+                name: _tr('CHART_SERIES_GAS', 'Gas'),
+                data: gasLabels,
+                shape: 'squarepin',
+                lineColor: '#8a8a8a',
+                lineWidth: 1,
+                fillColor: '#ffffff',
+                y: -28
+            }
         ]
     });
 }

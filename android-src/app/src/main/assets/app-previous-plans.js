@@ -2,7 +2,7 @@
     'use strict';
 
     const STORAGE_KEY = 'apexdeco_previous_plans';
-    const MAX_PLANS = 10;
+    const MAX_PLANS = 20;
     const M_TO_FT = 3.28084;
 
     function cloneJson(value) {
@@ -88,7 +88,7 @@
         const gas = `${parseInt(maxLevel.o2, 10) || 21}/${parseInt(maxLevel.he, 10) || 0}`;
         return {
             sourceMetric: isMetric(s),
-            circuit: s.circuit === 'CCR' ? 'CCR' : 'OC',
+            circuit: result && result.isCcrBailoutPlan ? 'CCR BAILOUT' : (s.circuit === 'CCR' ? 'CCR' : 'OC'),
             maxDepth: Number(maxLevel.depth) || 0,
             gas,
             runtime: Math.round(Number(result && result.totalRuntime) || 0)
@@ -97,7 +97,8 @@
 
     function getPlanLevels(data, circuit) {
         if (!data || typeof data !== 'object') return [];
-        if (circuit === 'CCR' && Array.isArray(data.levelsCCR)) return data.levelsCCR;
+        const isCcrPlan = String(circuit || '').indexOf('CCR') === 0;
+        if (isCcrPlan && Array.isArray(data.levelsCCR)) return data.levelsCCR;
         if (Array.isArray(data.levelsOC)) return data.levelsOC;
         if (Array.isArray(data.levelsCCR)) return data.levelsCCR;
         return [];
@@ -192,7 +193,8 @@
     function saveCurrentPlanToHistory(result, levels, settings) {
         if (typeof collectPlannerDebugData !== 'function') return;
         const data = cloneJson(collectPlannerDebugData());
-        const signature = stableStringify(data);
+        const calculationMode = result && result.calculationMode ? result.calculationMode : ((settings && settings.circuit) || 'OC');
+        const signature = stableStringify({ calculationMode, data });
         const plans = readPlans();
         if (plans[0] && plans[0].signature === signature) return;
 
@@ -202,6 +204,7 @@
             createdAt: new Date().toISOString(),
             diveNumber,
             summary: buildPlanSummaryData(result, levels, settings),
+            calculationMode,
             signature,
             data
         };

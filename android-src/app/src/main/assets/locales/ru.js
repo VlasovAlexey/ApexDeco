@@ -23,6 +23,7 @@ window.registerTranslations("ru", {
     "BTN_ADD_DECO": "+ Добавить деко",
     "BTN_DELETE": "Удалить",
     "BTN_CALCULATE": "Рассчитать",
+    "BTN_BAILOUT": "Бейлаут",
     "BTN_RESET_TISSUES": "Сбросить ткани на поверхности",
     "MSG_NO_BOTTOM_LEVELS": "Нет донных уровней. Нажмите + Добавить уровень.",
     "MSG_NO_DECO_MIXES": "Нет декогазов. Нажмите + Добавить деко.",

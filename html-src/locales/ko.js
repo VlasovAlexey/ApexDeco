@@ -23,6 +23,7 @@ window.registerTranslations("ko", {
     "BTN_ADD_DECO": "+ 추가 Deco",
     "BTN_DELETE": "삭제",
     "BTN_CALCULATE": "계산",
+    "BTN_BAILOUT": "Bailout",
     "BTN_RESET_TISSUES": "표면 조직 재설정",
     "MSG_NO_BOTTOM_LEVELS": "하단 레벨 없음. + 레벨 추가를 클릭하세요.",
     "MSG_NO_DECO_MIXES": "No deco 믹스입니다. + 추가 Deco를 클릭하세요.",

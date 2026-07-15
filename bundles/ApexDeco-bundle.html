@@ -1851,6 +1851,7 @@ table.data-table tr.warn-row:hover { background: var(--warn-row-bg) !important; 
     
     <div class="footer-bar">
         <button class="btn btn-accent" onclick="calculateDeco()" style="font-size:15px; padding:10px 32px;" data-i18n="BTN_CALCULATE">Calculate</button>
+        <button class="btn btn-accent ccr-calc-button" onclick="calculateDeco({ bailout: true })" style="display:none; font-size:15px; padding:10px 32px;" data-i18n="BTN_BAILOUT">Bailout</button>
         <button id="btn-reset-tissues" class="btn btn-outline" style="display:none; margin-left:12px;" onclick="resetSurfaceTissues()" data-i18n="BTN_RESET_TISSUES">Reset surface tissues</button>
     </div>
 
@@ -3100,6 +3101,7 @@ window.registerTranslations("en", {
     "BTN_ADD_DECO": "+ Add Deco",
     "BTN_DELETE": "Delete",
     "BTN_CALCULATE": "Calculate",
+    "BTN_BAILOUT": "Bailout",
     "BTN_RESET_TISSUES": "Reset surface tissues",
     "MSG_NO_BOTTOM_LEVELS": "No bottom levels. Click + Add Level.",
     "MSG_NO_DECO_MIXES": "No deco mixes. Click + Add Deco.",
@@ -3494,6 +3496,7 @@ window.registerTranslations("ru", {
     "BTN_ADD_DECO": "+ Добавить деко",
     "BTN_DELETE": "Удалить",
     "BTN_CALCULATE": "Рассчитать",
+    "BTN_BAILOUT": "Бейлаут",
     "BTN_RESET_TISSUES": "Сбросить ткани на поверхности",
     "MSG_NO_BOTTOM_LEVELS": "Нет донных уровней. Нажмите + Добавить уровень.",
     "MSG_NO_DECO_MIXES": "Нет декогазов. Нажмите + Добавить деко.",
@@ -3888,6 +3891,7 @@ window.registerTranslations("es", {
     "BTN_ADD_DECO": "+ Añadir deco",
     "BTN_DELETE": "Eliminar",
     "BTN_CALCULATE": "Calcular",
+    "BTN_BAILOUT": "Bailout",
     "BTN_RESET_TISSUES": "Reiniciar tejidos en superficie",
     "MSG_NO_BOTTOM_LEVELS": "Sin niveles de fondo. Pulse + Añadir nivel.",
     "MSG_NO_DECO_MIXES": "Sin mezclas de deco. Pulse + Añadir deco.",
@@ -4282,6 +4286,7 @@ window.registerTranslations("zh", {
     "BTN_ADD_DECO": "+ 添加减压气",
     "BTN_DELETE": "删除",
     "BTN_CALCULATE": "计算",
+    "BTN_BAILOUT": "Bailout",
     "BTN_RESET_TISSUES": "重置水面组织",
     "MSG_NO_BOTTOM_LEVELS": "没有底部层级。点击 + 添加层级。",
     "MSG_NO_DECO_MIXES": "没有减压气。点击 + 添加减压气。",
@@ -4676,6 +4681,7 @@ window.registerTranslations("hi", {
     "BTN_ADD_DECO": "+ डिको जोड़ें",
     "BTN_DELETE": "हटाएँ",
     "BTN_CALCULATE": "गणना करें",
+    "BTN_BAILOUT": "बेलआउट",
     "BTN_RESET_TISSUES": "सतह ऊतक रीसेट करें",
     "MSG_NO_BOTTOM_LEVELS": "कोई तल स्तर नहीं। + स्तर जोड़ें पर क्लिक करें।",
     "MSG_NO_DECO_MIXES": "कोई डिको गैस नहीं। + डिको जोड़ें पर क्लिक करें।",
@@ -5070,6 +5076,7 @@ window.registerTranslations("fr", {
     "BTN_ADD_DECO": "+ Ajouter Deco",
     "BTN_DELETE": "Supprimer",
     "BTN_CALCULATE": "Calculer",
+    "BTN_BAILOUT": "Bailout",
     "BTN_RESET_TISSUES": "Réinitialiser les tissus de surface",
     "MSG_NO_BOTTOM_LEVELS": "Pas de niveaux inférieurs. Cliquez sur + Ajouter un niveau.",
     "MSG_NO_DECO_MIXES": "Pas de mixage deco. Cliquez sur + Ajouter Deco.",
@@ -5464,6 +5471,7 @@ window.registerTranslations("pt", {
     "BTN_ADD_DECO": "+ Adicionar Deco",
     "BTN_DELETE": "Apagar",
     "BTN_CALCULATE": "Calcular",
+    "BTN_BAILOUT": "Bailout",
     "BTN_RESET_TISSUES": "Repor tecidos de superfície",
     "MSG_NO_BOTTOM_LEVELS": "Sem níveis inferiores. Clique em + Adicionar nível.",
     "MSG_NO_DECO_MIXES": "Não existem misturas deco. Clique em + Adicionar Deco.",
@@ -5858,6 +5866,7 @@ window.registerTranslations("de", {
     "BTN_ADD_DECO": "+ Hinzufügen Deco",
     "BTN_DELETE": "Löschen",
     "BTN_CALCULATE": "Berechnen",
+    "BTN_BAILOUT": "Bailout",
     "BTN_RESET_TISSUES": "Oberflächengewebe zurücksetzen",
     "MSG_NO_BOTTOM_LEVELS": "Keine unteren Ebenen. Klicken Sie auf + Ebene hinzufügen.",
     "MSG_NO_DECO_MIXES": "Keine deco-Mischungen. Klicken Sie auf + Deco hinzufügen.",
@@ -6252,6 +6261,7 @@ window.registerTranslations("it", {
     "BTN_ADD_DECO": "+ Aggiungi Deco",
     "BTN_DELETE": "Elimina",
     "BTN_CALCULATE": "Calcola",
+    "BTN_BAILOUT": "Bailout",
     "BTN_RESET_TISSUES": "Ripristina i tessuti superficiali",
     "MSG_NO_BOTTOM_LEVELS": "Nessun livello inferiore. Fai clic su + Aggiungi livello. ",
     "MSG_NO_DECO_MIXES": "Nessun mix deco. Fai clic su + Aggiungi Deco.",
@@ -6646,6 +6656,7 @@ window.registerTranslations("ko", {
     "BTN_ADD_DECO": "+ 추가 Deco",
     "BTN_DELETE": "삭제",
     "BTN_CALCULATE": "계산",
+    "BTN_BAILOUT": "Bailout",
     "BTN_RESET_TISSUES": "표면 조직 재설정",
     "MSG_NO_BOTTOM_LEVELS": "하단 레벨 없음. + 레벨 추가를 클릭하세요.",
     "MSG_NO_DECO_MIXES": "No deco 믹스입니다. + 추가 Deco를 클릭하세요.",
@@ -7040,6 +7051,7 @@ window.registerTranslations("bg", {
     "BTN_ADD_DECO": "+ Добавяне Deco",
     "BTN_DELETE": "Изтриване",
     "BTN_CALCULATE": "Изчисляване",
+    "BTN_BAILOUT": "Bailout",
     "BTN_RESET_TISSUES": "Нулирайте повърхностните тъкани",
     "MSG_NO_BOTTOM_LEVELS": "Без долни нива. Щракнете върху + Добавяне на ниво.",
     "MSG_NO_DECO_MIXES": "Без миксове deco. Щракнете върху + Добавяне Deco.",
@@ -7434,6 +7446,7 @@ window.registerTranslations("nb", {
     "BTN_ADD_DECO": "+ Legg til Deco",
     "BTN_DELETE": "Slett",
     "BTN_CALCULATE": "Beregn",
+    "BTN_BAILOUT": "Bailout",
     "BTN_RESET_TISSUES": "Tilbakestill overflatevev",
     "MSG_NO_BOTTOM_LEVELS": "Ingen bunnnivåer. Klikk + Legg til nivå.",
     "MSG_NO_DECO_MIXES": "Ingen deco-mikser. Klikk + Legg til Deco.",
@@ -7828,6 +7841,7 @@ window.registerTranslations("ja", {
     "BTN_ADD_DECO": "+ Deco",
     "BTN_DELETE": "を追加__削除",
     "BTN_CALCULATE": "計算",
+    "BTN_BAILOUT": "Bailout",
     "BTN_RESET_TISSUES": "表面組織をリセット",
     "MSG_NO_BOTTOM_LEVELS": "最下位レベルはありません。 [+ レベルの追加] をクリックします。",
     "MSG_NO_DECO_MIXES": "deco ミックスはありません。 [+ Deco を追加] をクリックします。",
@@ -8222,6 +8236,7 @@ window.registerTranslations("pl", {
     "BTN_ADD_DECO": "+ Dodaj Deco",
     "BTN_DELETE": "Usuń",
     "BTN_CALCULATE": "Oblicz",
+    "BTN_BAILOUT": "Bailout",
     "BTN_RESET_TISSUES": "Zresetuj tkanki powierzchniowe",
     "MSG_NO_BOTTOM_LEVELS": "Brak dolnych poziomów. Kliknij + Dodaj poziom.",
     "MSG_NO_DECO_MIXES": "Brak miksów deco. Kliknij + Dodaj Deco.",
@@ -8616,6 +8631,7 @@ window.registerTranslations("tr", {
     "BTN_ADD_DECO": "+ Ekle Deco",
     "BTN_DELETE": "Sil",
     "BTN_CALCULATE": "Hesapla",
+    "BTN_BAILOUT": "Bailout",
     "BTN_RESET_TISSUES": "Yüzey dokularını sıfırlayın",
     "MSG_NO_BOTTOM_LEVELS": "Alt seviye yok. + Seviye Ekle'ye tıklayın.",
     "MSG_NO_DECO_MIXES": "deco karışımı yok. + Ekle'ye tıklayın Deco.",
@@ -9749,7 +9765,12 @@ function drawProfileChart(containerId, result) {
     let currentTime = 0;
     let colorTick = 0;
     const zoneColors = ['#40c0ca', '#1d99ff'];
+    const profileGasColors = (result && result.profileGasColors) || {};
+    function getProfileGasColor(gas, fallbackIndex) {
+        return profileGasColors[gas] || zoneColors[fallbackIndex];
+    }
     let lastGas = null;
+    let activeGasColor = zoneColors[colorTick];
     let prevDepth = 0;
     let currentCeiling = 0;
     let maxDepth = 0;
@@ -9819,11 +9840,12 @@ function drawProfileChart(containerId, result) {
             if (lastGas !== null) {
                 chartZoneArr.push({
                     value: currentTime,
-                    color: zoneColors[colorTick]
+                    color: activeGasColor
                 });
                 colorTick = colorTick === 0 ? 1 : 0;
             }
             lastGas = gas;
+            activeGasColor = getProfileGasColor(gas, colorTick);
         }
         chartLineArr.push({
             x: parseFloat(currentTime.toFixed(4)),
@@ -9854,7 +9876,7 @@ function drawProfileChart(containerId, result) {
     }
     chartZoneArr.push({
         value: 100000,
-        color: zoneColors[colorTick]
+        color: activeGasColor
     });
     const colorsCustom = ['#f45b5b', '#8085e9'];
     Highcharts.chart(containerId, {
@@ -13837,7 +13859,7 @@ function copyToolsDebugToClipboard() {
     'use strict';
 
     const STORAGE_KEY = 'apexdeco_previous_plans';
-    const MAX_PLANS = 10;
+    const MAX_PLANS = 20;
     const M_TO_FT = 3.28084;
 
     function cloneJson(value) {
@@ -13923,7 +13945,7 @@ function copyToolsDebugToClipboard() {
         const gas = `${parseInt(maxLevel.o2, 10) || 21}/${parseInt(maxLevel.he, 10) || 0}`;
         return {
             sourceMetric: isMetric(s),
-            circuit: s.circuit === 'CCR' ? 'CCR' : 'OC',
+            circuit: result && result.isCcrBailoutPlan ? 'CCR BAILOUT' : (s.circuit === 'CCR' ? 'CCR' : 'OC'),
             maxDepth: Number(maxLevel.depth) || 0,
             gas,
             runtime: Math.round(Number(result && result.totalRuntime) || 0)
@@ -13932,7 +13954,8 @@ function copyToolsDebugToClipboard() {
 
     function getPlanLevels(data, circuit) {
         if (!data || typeof data !== 'object') return [];
-        if (circuit === 'CCR' && Array.isArray(data.levelsCCR)) return data.levelsCCR;
+        const isCcrPlan = String(circuit || '').indexOf('CCR') === 0;
+        if (isCcrPlan && Array.isArray(data.levelsCCR)) return data.levelsCCR;
         if (Array.isArray(data.levelsOC)) return data.levelsOC;
         if (Array.isArray(data.levelsCCR)) return data.levelsCCR;
         return [];
@@ -14027,7 +14050,8 @@ function copyToolsDebugToClipboard() {
     function saveCurrentPlanToHistory(result, levels, settings) {
         if (typeof collectPlannerDebugData !== 'function') return;
         const data = cloneJson(collectPlannerDebugData());
-        const signature = stableStringify(data);
+        const calculationMode = result && result.calculationMode ? result.calculationMode : ((settings && settings.circuit) || 'OC');
+        const signature = stableStringify({ calculationMode, data });
         const plans = readPlans();
         if (plans[0] && plans[0].signature === signature) return;
 
@@ -14037,6 +14061,7 @@ function copyToolsDebugToClipboard() {
             createdAt: new Date().toISOString(),
             diveNumber,
             summary: buildPlanSummaryData(result, levels, settings),
+            calculationMode,
             signature,
             data
         };
@@ -14339,11 +14364,23 @@ function renderPPChart(result) {
     const slp = s.metric ? (s.waterType === 0 ? 10.078 : 10.337) : (s.waterType === 0 ? 33.066 : 33.914);
     const isCCR = s.circuit === 'CCR';
     const pO2 = [], pN2 = [], pHe = [], pAmb = [];
+    const gasLabels = [];
+    let lastGas = null;
     pO2.push([0, 0.21]); pN2.push([0, 0.79]); pHe.push([0, 0]); pAmb.push([0, 1]);
     for (const seg of result.plan) {
         const rt = seg.runtime || 0;
+        const startRt = Math.max(0, rt - (seg.time || 0));
+        const gas = seg.gas || '--';
+        if (gas !== '--' && gas !== lastGas) {
+            gasLabels.push({
+                x: parseFloat(startRt.toFixed(4)),
+                title: gas,
+                text: gas
+            });
+            lastGas = gas;
+        }
         const depth = (seg.depth !== undefined) ? seg.depth : (seg.endDepth !== undefined ? seg.endDepth : 0);
-        const { o2, he } = parseGas(seg.gas || '21/0');
+        const { o2, he } = parseGas(gas === '--' ? '21/0' : gas);
         const fO2 = o2 / 100, fHe = he / 100, fN2 = Math.max(0, 1 - fO2 - fHe);
         const pa = depth / slp + 1;
         let ppO2;
@@ -14381,10 +14418,20 @@ function renderPPChart(result) {
         tooltip: { shared: true, valueDecimals: 2, valueSuffix: ' ' + _tr('UNIT_BAR','bar') },
         credits: { enabled: false },
         series: [
-            { name: 'pO2', data: pO2, color: '#e53935' },
+            { id: 'pp_o2_series', name: 'pO2', data: pO2, color: '#e53935' },
             { name: 'pN2', data: pN2, color: '#1565c0' },
             { name: 'pHe', data: pHe, color: '#43a047' },
-            { name: 'pAmb', data: pAmb, color: '#757575', dashStyle: 'ShortDot' }
+            { id: 'pp_amb_series', name: 'pAmb', data: pAmb, color: '#757575', dashStyle: 'ShortDot' },
+            {
+                type: 'flags',
+                name: _tr('CHART_SERIES_GAS', 'Gas'),
+                data: gasLabels,
+                shape: 'squarepin',
+                lineColor: '#8a8a8a',
+                lineWidth: 1,
+                fillColor: '#ffffff',
+                y: -28
+            }
         ]
     });
 }
@@ -14644,12 +14691,45 @@ function padRight(str, len) {
 
 </script>
 <script data-bundled-src="app-calculation.js">
-function calculateDeco() {
+const CCR_PROFILE_DILUENT_COLORS = ['#ff9800', '#f57c00'];
+const CCR_PROFILE_MIX_COLORS = ['#b39ddb', '#9575cd'];
+
+function gasKeyFromMix(mix) {
+    return `${parseInt(mix && mix.o2, 10) || 21}/${parseInt(mix && mix.he, 10) || 0}`;
+}
+
+function assignProfileGasColors(colors, mixes, palette) {
+    let index = 0;
+    (mixes || []).forEach(mix => {
+        const key = gasKeyFromMix(mix);
+        if (!colors[key]) {
+            colors[key] = palette[index % palette.length];
+            index += 1;
+        }
+    });
+}
+
+function buildProfileGasColors(levels, decos, settings, isCcrBailoutPlan) {
+    if (!settings || settings.circuit !== 'CCR') return null;
+    const colors = {};
+    if (isCcrBailoutPlan) {
+        assignProfileGasColors(colors, decos, CCR_PROFILE_MIX_COLORS);
+        assignProfileGasColors(colors, (levels || []).filter(level => level && !level.oc && !level.scr), CCR_PROFILE_DILUENT_COLORS);
+    } else {
+        assignProfileGasColors(colors, levels, CCR_PROFILE_MIX_COLORS);
+    }
+    return Object.keys(colors).length ? colors : null;
+}
+
+function calculateDeco(options) {
+    const opts = options || {};
     saveConfig();
     const s = appState.settings;
+    const isCcrBailoutPlan = s.circuit === 'CCR' && opts.bailout === true;
     logSettingsToConsole(s);
     const levels = appState.levels.filter(l => l.selected !== false);
-    const decos = appState.decos.filter(d => d.selected !== false);
+    const selectedDecos = appState.decos.filter(d => d.selected !== false);
+    const decos = (s.circuit === 'CCR' && !isCcrBailoutPlan) ? [] : selectedDecos;
     if (levels.length === 0) {
         showAlert(window.t ? window.t('ERR_NO_LEVELS') : 'Add at least one bottom level before calculating.');
         return;
@@ -14678,6 +14758,9 @@ function calculateDeco() {
     if (s.circuit === 'CCR' && s.bailoutActive) {
         result.bailoutPlan = calculateBailout(levels, decos, s);
     }
+    result.isCcrBailoutPlan = isCcrBailoutPlan;
+    result.calculationMode = isCcrBailoutPlan ? 'CCR_BAILOUT' : (s.circuit || 'OC');
+    result.profileGasColors = buildProfileGasColors(levels, decos, s, isCcrBailoutPlan);
     result.model = model;
     result.modelName = getModelName(model);
     appState.lastResult = result;
@@ -15307,6 +15390,9 @@ function onCircuitChange() {
     appState.settings.circuit = isCCR ? 'CCR' : 'OC';
     document.querySelectorAll('.ccr-field').forEach(el => {
         el.style.display = isCCR ? 'flex' : 'none';
+    });
+    document.querySelectorAll('.ccr-calc-button').forEach(el => {
+        el.style.display = isCCR ? '' : 'none';
     });
     applyLevelsForCircuit();
     renderLevels();
@@ -18717,7 +18803,7 @@ c)):this.currentResponsive=void 0)};y.prototype.matchResponsiveRule=function(a,c
  * Change CACHE_VERSION to force an immediate update on next deployment.
  */
 'use strict';
-const CACHE_VERSION = 'apexdeco-v20';
+const CACHE_VERSION = 'apexdeco-v25';
 const CACHE_TS_KEY  = '/_sw_cache_ts';
 const MAX_AGE_MS    = 90 * 24 * 60 * 60 * 1000; // 90 days
 const STATIC_ASSETS = [

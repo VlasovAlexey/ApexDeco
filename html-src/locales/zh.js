@@ -23,6 +23,7 @@ window.registerTranslations("zh", {
     "BTN_ADD_DECO": "+ 添加减压气",
     "BTN_DELETE": "删除",
     "BTN_CALCULATE": "计算",
+    "BTN_BAILOUT": "Bailout",
     "BTN_RESET_TISSUES": "重置水面组织",
     "MSG_NO_BOTTOM_LEVELS": "没有底部层级。点击 + 添加层级。",
     "MSG_NO_DECO_MIXES": "没有减压气。点击 + 添加减压气。",

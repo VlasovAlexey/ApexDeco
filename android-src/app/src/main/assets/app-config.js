@@ -24,6 +24,9 @@ function onCircuitChange() {
     document.querySelectorAll('.ccr-field').forEach(el => {
         el.style.display = isCCR ? 'flex' : 'none';
     });
+    document.querySelectorAll('.ccr-calc-button').forEach(el => {
+        el.style.display = isCCR ? '' : 'none';
+    });
     applyLevelsForCircuit();
     renderLevels();
 }
