@@ -1,6 +1,17 @@
 const CCR_PROFILE_DILUENT_COLORS = ['#ff9800', '#f57c00'];
 const CCR_PROFILE_MIX_COLORS = ['#b39ddb', '#9575cd'];
 
+function buildCaveModeLevels(levels, enabled) {
+    const outward = (levels || []).map(level => Object.assign({}, level));
+    if (!enabled) return outward;
+
+    const returnPath = [];
+    for (let i = outward.length - 1; i >= 0; i--) {
+        returnPath.push(Object.assign({}, outward[i], { selected: true }));
+    }
+    return outward.concat(returnPath);
+}
+
 function gasKeyFromMix(mix) {
     return `${parseInt(mix && mix.o2, 10) || 21}/${parseInt(mix && mix.he, 10) || 0}`;
 }
@@ -34,7 +45,8 @@ function calculateDeco(options) {
     const s = appState.settings;
     const isCcrBailoutPlan = s.circuit === 'CCR' && opts.bailout === true;
     logSettingsToConsole(s);
-    const levels = appState.levels.filter(l => l.selected !== false);
+    const selectedLevels = appState.levels.filter(l => l.selected !== false);
+    const levels = buildCaveModeLevels(selectedLevels, s.caveMode === true);
     const selectedDecos = appState.decos.filter(d => d.selected !== false);
     const decos = (s.circuit === 'CCR' && !isCcrBailoutPlan) ? [] : selectedDecos;
     if (levels.length === 0) {

@@ -68,6 +68,7 @@ window.registerTranslations("fr", {
     "LABEL_GF_LO": "GF Lo",
     "LABEL_GF_HI": "GF Hi",
     "LABEL_O2_NARCOTIC": "O2 Stupéfiant",
+    "LABEL_CAVE_MODE": "Mode grotte",
     "OPT_YES": "Oui",
     "OPT_NO": "Non",
     "CARD_UNIT_SETTINGS": "Paramètres de l'unité",

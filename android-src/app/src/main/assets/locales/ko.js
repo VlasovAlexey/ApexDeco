@@ -68,6 +68,7 @@ window.registerTranslations("ko", {
     "LABEL_GF_LO": "GF Lo",
     "LABEL_GF_HI": "GF Hi",
     "LABEL_O2_NARCOTIC": "O2 마약",
+    "LABEL_CAVE_MODE": "동굴 모드",
     "OPT_YES": "예",
     "OPT_NO": "아니요",
     "CARD_UNIT_SETTINGS": "단위 설정",

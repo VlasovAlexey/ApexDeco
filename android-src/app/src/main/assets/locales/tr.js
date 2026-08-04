@@ -68,6 +68,7 @@ window.registerTranslations("tr", {
     "LABEL_GF_LO": "GF Lo",
     "LABEL_GF_HI": "GF Hi",
     "LABEL_O2_NARCOTIC": "O2 Narkotik",
+    "LABEL_CAVE_MODE": "Mağara Modu",
     "OPT_YES": "Evet",
     "OPT_NO": "Hayır",
     "CARD_UNIT_SETTINGS": "Birim Ayarları",

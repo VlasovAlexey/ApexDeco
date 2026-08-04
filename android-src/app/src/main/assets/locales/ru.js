@@ -68,6 +68,7 @@ window.registerTranslations("ru", {
     "LABEL_GF_LO": "GF Lo",
     "LABEL_GF_HI": "GF Hi",
     "LABEL_O2_NARCOTIC": "O2 наркотичен",
+    "LABEL_CAVE_MODE": "Режим пещеры",
     "OPT_YES": "Да",
     "OPT_NO": "Нет",
     "CARD_UNIT_SETTINGS": "Единицы измерения",

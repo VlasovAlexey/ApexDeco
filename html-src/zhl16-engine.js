@@ -91,6 +91,7 @@ const DecoEngine = (() => {
             gfs: 85,
             conservatism: 0,
             oxyNarc: false,
+            caveMode: false,
             metric: true,
             waterType: 0, 
             altitude: 0,
@@ -334,36 +335,32 @@ const DecoEngine = (() => {
         const ceilingDepth = (minPAmb - surfP) * slp;
         return Math.max(0, ceilingDepth);
     }
-    function getDisplayCeiling(tissues, settings, gfRefDepth, currentDepth, fallbackMaxDepth) {
-        const depthNow = Math.max(0, currentDepth || 0);
-        if (depthNow <= 0) return 0;
-        if (!gfRefDepth || gfRefDepth <= 0) {
-            return Math.max(0, getCeiling(
-                tissues,
-                settings,
-                settings.gfLo || 30,
-                settings.gfHi || 85,
-                fallbackMaxDepth || depthNow
-            ));
-        }
-        const coarseStep = settings.metric ? 0.25 : 1;
-        const fineStep = settings.metric ? 0.05 : 0.25;
-        let coarseCeiling = depthNow;
-        for (let d = 0; d <= depthNow + 1e-9; d += coarseStep) {
-            if (isClearToAscend(tissues, d, gfRefDepth, settings)) {
-                coarseCeiling = d;
-                break;
+    function getDisplayCeiling(tissues, settings, ceilingReference) {
+        const gfLo = (settings.gfLo || 30) / 100;
+        const gfHi = (settings.gfHi || 85) / 100;
+        const rawCeiling = Math.max(0, getCeiling(
+            tissues,
+            settings,
+            settings.gfLo || 30,
+            settings.gfHi || 85
+        ));
+        const reference = Math.max(0, ceilingReference || 0);
+        if (rawCeiling <= 0 || reference <= 0) return 0;
+
+        // Anchor the displayed GF gradient at the deepest raw GF-low ceiling.
+        let low = 0;
+        let high = rawCeiling;
+        for (let i = 0; i < 24; i++) {
+            const depth = (low + high) / 2;
+            const gf = Math.max(gfLo, gfHi + (gfLo - gfHi) * (depth / reference));
+            const toleratedDepth = getCeiling(tissues, settings, gf * 100, gf * 100);
+            if (toleratedDepth > depth) {
+                low = depth;
+            } else {
+                high = depth;
             }
         }
-        const fineStart = Math.max(0, coarseCeiling - coarseStep);
-        let refinedCeiling = coarseCeiling;
-        for (let d = fineStart; d <= Math.min(depthNow, coarseCeiling) + 1e-9; d += fineStep) {
-            if (isClearToAscend(tissues, d, gfRefDepth, settings)) {
-                refinedCeiling = d;
-                break;
-            }
-        }
-        return Math.max(0, Math.round(refinedCeiling * 10) / 10);
+        return Math.max(0, (low + high) / 2);
     }
     function getGFAtDepth(stopDepth, firstStopDepth, settings) {
         const gfLo = settings.gfLo / 100;
@@ -470,27 +467,76 @@ const DecoEngine = (() => {
         const plannedMaxDepth = Math.max(...levels.map(l => l.depth));
         const plan = [];
         let globalGFRefDepth = 0;
+        let displayCeilingReference = 0;
+        let previousTissues = tissues.map(t => ({ pN2: t.pN2, pHe: t.pHe }));
+
+        function buildCeilingSamples(seg, startTissues, initialReference) {
+            const duration = Number(seg._durationExact != null ? seg._durationExact : seg.time) || 0;
+            if (duration <= 0) return [];
+
+            const startDepth = Math.max(0, seg.startDepth != null ? seg.startDepth : seg.depth || 0);
+            const endDepth = Math.max(0, seg.endDepth != null ? seg.endDepth : seg.depth || 0);
+            const o2 = Number(seg.o2 || 0) / 100;
+            const he = Number(seg.he || 0) / 100;
+            const setpoint = seg.setpoint || 0;
+            const sampleCount = Math.max(1, Math.ceil(duration * 2));
+            const sampleDuration = duration / sampleCount;
+            const sampleTissues = startTissues.map(t => ({ pN2: t.pN2, pHe: t.pHe }));
+            const samples = [];
+            let reference = initialReference;
+            let priorDepth = startDepth;
+
+            for (let i = 1; i <= sampleCount; i++) {
+                const progress = i / sampleCount;
+                const depth = startDepth + (endDepth - startDepth) * progress;
+                if (Math.abs(depth - priorDepth) > 1e-9) {
+                    const rate = Math.abs(depth - priorDepth) / sampleDuration;
+                    loadTissuesLinearDepthChange(
+                        sampleTissues, priorDepth, depth, rate, o2, he, settings, setpoint
+                    );
+                } else {
+                    loadTissuesConstantDepth(
+                        sampleTissues, depth, sampleDuration, o2, he, settings, setpoint
+                    );
+                }
+                const rawCeiling = getCeiling(
+                    sampleTissues, settings, settings.gfLo || 30, settings.gfHi || 85
+                );
+                reference = Math.max(reference, rawCeiling);
+                samples.push({
+                    progress: progress,
+                    depth: getDisplayCeiling(sampleTissues, settings, reference)
+                });
+                priorDepth = depth;
+            }
+            return samples;
+        }
+
         const _origPush = plan.push;
         plan.push = function(seg) {
             try {
                 if (seg.setpoint == null) {
                     seg.setpoint = currentSP > 0 ? currentSP : 0;
                 }
-                const segDepth = Math.max(0,
-                    seg.depth !== undefined ? seg.depth :
-                    (seg.endDepth !== undefined ? seg.endDepth :
-                    (seg.startDepth !== undefined ? seg.startDepth : 0))
+                seg._ceilingSamples = buildCeilingSamples(
+                    seg, previousTissues, displayCeilingReference
                 );
                 seg._tissues = tissues.map(t => ({ pN2: t.pN2, pHe: t.pHe }));
                 seg._cumOTU = totalOTU;
                 seg._cumCNS = totalCNS;
+                const rawCeiling = getCeiling(
+                    tissues, settings, settings.gfLo || 30, settings.gfHi || 85
+                );
+                displayCeilingReference = Math.max(displayCeilingReference, rawCeiling);
                 seg._ceilingDepth = getDisplayCeiling(
                     tissues,
                     settings,
-                    globalGFRefDepth,
-                    segDepth,
-                    plannedMaxDepth
+                    displayCeilingReference
                 );
+                if (seg._ceilingSamples.length > 0) {
+                    seg._ceilingSamples[seg._ceilingSamples.length - 1].depth = seg._ceilingDepth;
+                }
+                previousTissues = seg._tissues.map(t => ({ pN2: t.pN2, pHe: t.pHe }));
             } catch (e) {  }
             return _origPush.call(this, seg);
         };
@@ -594,6 +640,7 @@ const DecoEngine = (() => {
                     startDepth: fromDepth,
                     endDepth: toDepth,
                     time: Math.round(ascTime * 10) / 10,
+                    _durationExact: ascTime,
                     runtime: Math.round(runtime * 10) / 10,
                     gas: currentGasLabel,
                     o2: Math.round(currentO2 * 100),
@@ -610,12 +657,13 @@ const DecoEngine = (() => {
             runtime += ascTime1;
             totalOTU += calculateOTUDepthChange(fromDepth, firstStopDepth, ascentRate, currentO2, settings);
             totalCNS += calculateCNSDepthChange(fromDepth, firstStopDepth, ascentRate, currentO2, settings);
-            plan.push({
-                type: 'ascent',
-                startDepth: fromDepth,
-                endDepth: firstStopDepth,
-                time: Math.round(ascTime1 * 10) / 10,
-                runtime: Math.round(runtime * 10) / 10,
+                plan.push({
+                    type: 'ascent',
+                    startDepth: fromDepth,
+                    endDepth: firstStopDepth,
+                    time: Math.round(ascTime1 * 10) / 10,
+                    _durationExact: ascTime1,
+                    runtime: Math.round(runtime * 10) / 10,
                 gas: currentGasLabel,
                 o2: Math.round(currentO2 * 100),
                 he: Math.round(currentHe * 100)
@@ -716,6 +764,7 @@ const DecoEngine = (() => {
                     type: 'stop',
                     depth: stopDepth,
                     time: actualStopTime,
+                    _durationExact: actualStopTime,
                     runtime: Math.round(runtime * 10) / 10,
                     gas: currentGasLabel,
                     o2: Math.round(currentO2 * 100),
@@ -759,6 +808,7 @@ const DecoEngine = (() => {
                     startDepth: currentDepth,
                     endDepth: depth,
                     time: Math.round(descTime * 10) / 10,
+                    _durationExact: descTime,
                     runtime: Math.round(runtime * 10) / 10,
                     gas: currentGasLabel,
                     o2: level.o2,
@@ -787,6 +837,7 @@ const DecoEngine = (() => {
                     type: 'bottom',
                     depth: depth,
                     time: bottomTimeDisplay,
+                    _durationExact: bottomTime,
                     runtime: Math.round(runtime * 10) / 10,
                     gas: currentGasLabel,
                     o2: level.o2,

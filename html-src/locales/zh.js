@@ -68,6 +68,7 @@ window.registerTranslations("zh", {
     "LABEL_GF_LO": "GF Lo",
     "LABEL_GF_HI": "GF Hi",
     "LABEL_O2_NARCOTIC": "O2 具麻醉性",
+    "LABEL_CAVE_MODE": "洞穴模式",
     "OPT_YES": "是",
     "OPT_NO": "否",
     "CARD_UNIT_SETTINGS": "单位设置",

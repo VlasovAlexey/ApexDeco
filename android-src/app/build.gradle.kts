@@ -5,14 +5,14 @@ plugins {
 
 android {
     namespace = "com.avlasov.apexdeco"
-    compileSdk = 34
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.avlasov.apexdeco"
         minSdk = 26
-        targetSdk = 35
-        versionCode = 6
-        versionName = "1.5"
+        targetSdk = 36
+        versionCode = 7
+        versionName = "1.6"
     }
 
     buildTypes {
@@ -26,14 +26,20 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 
     kotlin {
         compilerOptions {
-            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_1_8)
+            jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
         }
+    }
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 

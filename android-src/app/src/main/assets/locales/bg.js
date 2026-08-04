@@ -68,6 +68,7 @@ window.registerTranslations("bg", {
     "LABEL_GF_LO": "GF Lo",
     "LABEL_GF_HI": "GF Hi",
     "LABEL_O2_NARCOTIC": "O2 Наркотично",
+    "LABEL_CAVE_MODE": "Пещерен режим",
     "OPT_YES": "Да",
     "OPT_NO": "No",
     "CARD_UNIT_SETTINGS": "Настройки на модула",

@@ -68,6 +68,7 @@ window.registerTranslations("hi", {
     "LABEL_GF_LO": "GF Lo",
     "LABEL_GF_HI": "GF Hi",
     "LABEL_O2_NARCOTIC": "O2 नारकोटिक",
+    "LABEL_CAVE_MODE": "गुफा मोड",
     "OPT_YES": "हाँ",
     "OPT_NO": "नहीं",
     "CARD_UNIT_SETTINGS": "इकाई सेटिंग्स",

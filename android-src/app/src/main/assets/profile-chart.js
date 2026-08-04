@@ -11,23 +11,6 @@ function drawProfileChart(containerId, result) {
     const s = (typeof appState !== 'undefined' && appState.settings) ? appState.settings : { metric: true };
     const unit = _pt(s.metric ? 'UNIT_M' : 'UNIT_FT', result.depthUnit || 'm');
     const minU = _pt('UNIT_MIN', 'min');
-    const isVPMModel = !!(s.decoModel && String(s.decoModel).startsWith('VPM'));
-    function addInterpolatedCeilingPoints(target, startTime, endTime, startCeiling, endCeiling) {
-        const start = Math.max(0, startCeiling || 0);
-        const end = Math.max(0, endCeiling || 0);
-        const span = Math.max(0, endTime - startTime);
-        const samples = span <= 0.01 ? 1 : Math.min(12, Math.max(3, Math.ceil(span / 1.5)));
-        for (let j = 1; j <= samples; j++) {
-            const t = j / samples;
-            const eased = t * t * (3 - 2 * t);
-            const x = startTime + span * t;
-            const y = start + (end - start) * eased;
-            target.push({
-                x: parseFloat(x.toFixed(4)),
-                y: parseFloat((-1 * y).toFixed(4))
-            });
-        }
-    }
     const chartLineArr = [];
     const chartCeilingArr = [{ x: 0, y: 0 }];
     const chartZoneArr = [];
@@ -134,13 +117,22 @@ function drawProfileChart(containerId, result) {
         const nextCeiling = (typeof seg._ceilingDepth === 'number' && !Number.isNaN(seg._ceilingDepth))
             ? seg._ceilingDepth
             : currentCeiling;
-        addInterpolatedCeilingPoints(
-            chartCeilingArr,
-            parseFloat(segStartTime.toFixed(4)),
-            parseFloat(currentTime.toFixed(4)),
-            currentCeiling,
-            nextCeiling
-        );
+        const ceilingSamples = Array.isArray(seg._ceilingSamples) ? seg._ceilingSamples : [];
+        if (ceilingSamples.length > 0) {
+            for (const sample of ceilingSamples) {
+                const progress = Math.max(0, Math.min(1, Number(sample.progress)));
+                const depth = Math.max(0, Number(sample.depth) || 0);
+                chartCeilingArr.push({
+                    x: parseFloat((segStartTime + (currentTime - segStartTime) * progress).toFixed(4)),
+                    y: parseFloat((-1 * depth).toFixed(4))
+                });
+            }
+        } else {
+            chartCeilingArr.push({
+                x: parseFloat(currentTime.toFixed(4)),
+                y: Math.max(0, nextCeiling) * -1
+            });
+        }
         currentCeiling = nextCeiling;
         prevDepth = endDepth;
     }
@@ -256,12 +248,14 @@ function drawProfileChart(containerId, result) {
             zoneAxis: 'x',
             zones: chartZoneArr
         }, {
-            type: isVPMModel ? 'spline' : 'line',
+            type: 'line',
             name: _pt('CHART_SERIES_CEILING', 'Deco Ceiling'),
             data: chartCeilingArr,
             color: '#b85a5a',
             lineWidth: 2,
             marker: { enabled: false },
+            // Preserve object-form ceiling samples on long decompression profiles.
+            turboThreshold: 0,
             linecap: 'round',
             zIndex: 4
         }, {

@@ -68,6 +68,7 @@ window.registerTranslations("ja", {
     "LABEL_GF_LO": "GF Lo",
     "LABEL_GF_HI": "GF Hi",
     "LABEL_O2_NARCOTIC": "O2 麻薬",
+    "LABEL_CAVE_MODE": "洞窟モード",
     "OPT_YES": "はい",
     "OPT_NO": "No",
     "CARD_UNIT_SETTINGS": "単位設定",

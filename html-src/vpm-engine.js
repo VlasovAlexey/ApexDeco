@@ -741,6 +741,41 @@ const VPMEngine = (() => {
             }
         }
         const plan = [];
+        let previousPlanState = cloneVPMState(state);
+
+        function buildCeilingSamples(seg, startState) {
+            const duration = Number(seg._durationExact != null ? seg._durationExact : seg.time) || 0;
+            if (duration <= 0) return [];
+
+            const startDepth = Math.max(0, seg.startDepth != null ? seg.startDepth : seg.depth || 0);
+            const endDepth = Math.max(0, seg.endDepth != null ? seg.endDepth : seg.depth || 0);
+            const o2 = Number(seg.o2 || 0) / 100;
+            const he = Number(seg.he || 0) / 100;
+            const setpoint = seg.setpoint || 0;
+            const sampleCount = Math.max(1, Math.ceil(duration * 2));
+            const sampleDuration = duration / sampleCount;
+            const sampleState = cloneVPMState(startState);
+            const samples = [];
+            let priorDepth = startDepth;
+
+            for (let i = 1; i <= sampleCount; i++) {
+                const progress = i / sampleCount;
+                const depth = startDepth + (endDepth - startDepth) * progress;
+                if (Math.abs(depth - priorDepth) > 1e-9) {
+                    const rate = Math.abs(depth - priorDepth) / sampleDuration;
+                    loadTissuesLinear(sampleState, priorDepth, depth, rate, o2, he, settings, setpoint);
+                } else {
+                    loadTissuesConstant(sampleState, depth, sampleDuration, o2, he, settings, setpoint);
+                }
+                samples.push({
+                    progress: progress,
+                    depth: Math.max(0, getVPMCeiling(sampleState, settings))
+                });
+                priorDepth = depth;
+            }
+            return samples;
+        }
+
         const _origPush = plan.push;
         plan.push = function(seg) {
             try {
@@ -752,6 +787,13 @@ const VPMEngine = (() => {
                 if (seg._ceilingDepth == null) {
                     seg._ceilingDepth = Math.max(0, getVPMCeiling(state, settings));
                 }
+                if (!Array.isArray(seg._ceilingSamples)) {
+                    seg._ceilingSamples = buildCeilingSamples(seg, previousPlanState);
+                }
+                if (seg._ceilingSamples.length > 0) {
+                    seg._ceilingSamples[seg._ceilingSamples.length - 1].depth = seg._ceilingDepth;
+                }
+                previousPlanState = cloneVPMState(state);
             } catch (e) {  }
             return _origPush.call(this, seg);
         };
@@ -792,6 +834,7 @@ const VPMEngine = (() => {
                 currentSP: sp,
                 firstStopDepth: 0,
                 plan: outPlan || null,
+                previousPlanState: cloneVPMState(baseState),
                 continuationFinalPhase: false
             };
         }
@@ -805,6 +848,11 @@ const VPMEngine = (() => {
                 segment._cumOTU = ctx.totalOTU;
                 segment._cumCNS = ctx.totalCNS;
                 segment._ceilingDepth = Math.max(0, getVPMCeiling(ctx.state, settings));
+                segment._ceilingSamples = buildCeilingSamples(segment, ctx.previousPlanState);
+                if (segment._ceilingSamples.length > 0) {
+                    segment._ceilingSamples[segment._ceilingSamples.length - 1].depth = segment._ceilingDepth;
+                }
+                ctx.previousPlanState = cloneVPMState(ctx.state);
             } catch (e) {  }
             ctx.plan.push(segment);
         }

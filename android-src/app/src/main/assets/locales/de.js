@@ -68,6 +68,7 @@ window.registerTranslations("de", {
     "LABEL_GF_LO": "GF Lo",
     "LABEL_GF_HI": "GF Hi",
     "LABEL_O2_NARCOTIC": "O2 Narkotisch",
+    "LABEL_CAVE_MODE": "Höhlenmodus",
     "OPT_YES": "Ja",
     "OPT_NO": "Nein",
     "CARD_UNIT_SETTINGS": "Einheiteneinstellungen",

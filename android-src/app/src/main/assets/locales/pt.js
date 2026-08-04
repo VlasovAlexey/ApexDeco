@@ -68,6 +68,7 @@ window.registerTranslations("pt", {
     "LABEL_GF_LO": "GF Lo",
     "LABEL_GF_HI": "GF Hi",
     "LABEL_O2_NARCOTIC": "O2 Narcótico",
+    "LABEL_CAVE_MODE": "Modo caverna",
     "OPT_YES": "Sim",
     "OPT_NO": "Não",
     "CARD_UNIT_SETTINGS": "Configurações da unidade",

@@ -520,6 +520,7 @@ function loadConfigToUI() {
     document.getElementById('cfg-temperature').value = s.temperature != null ? s.temperature : 20;
     setRadio('press-units', s.pressureUnit || 'bar');
     setRadio('oxynarc', s.oxyNarc ? '1' : '0');
+    setRadio('cavemode', s.caveMode ? '1' : '0');
     setRadio('circuit', s.circuit || 'OC');
     onModelChange();
     onCircuitChange();
@@ -590,6 +591,7 @@ function saveConfig() {
     s.temperature = Math.max(0, Math.min(35, isNaN(_tempVal) ? 20 : _tempVal));
     s.pressureUnit = getRadio('press-units') || 'bar';
     s.oxyNarc = getRadio('oxynarc') === '1';
+    s.caveMode = getRadio('cavemode') === '1';
     s.circuit = getRadio('circuit') || 'OC';
     s.gaugeType = parseInt(getRadio('gaugetype')) || 0;
     s.ccrDefaultSP = parseFloat(document.getElementById('cfg-ccr-default-sp').value) || 1.3;

@@ -297,6 +297,13 @@
                         <label><input type="radio" name="oxynarc" value="1"> <span data-i18n="OPT_YES">Yes</span></label>
                     </div>
                 </div>
+                <div class="form-row">
+                    <label data-i18n="LABEL_CAVE_MODE">Cave Mode</label>
+                    <div class="radio-group">
+                        <label><input type="radio" name="cavemode" value="0" checked> <span data-i18n="OPT_NO">No</span></label>
+                        <label><input type="radio" name="cavemode" value="1"> <span data-i18n="OPT_YES">Yes</span></label>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1327,21 +1334,21 @@
 
 
 <script src="locales/index.js?v=4"></script>
-<script src="locales/en.js?v=9"></script>
-<script src="locales/ru.js?v=9"></script>
-<script src="locales/es.js?v=9"></script>
-<script src="locales/zh.js?v=9"></script>
-<script src="locales/hi.js?v=9"></script>
-<script src="locales/fr.js?v=9"></script>
-<script src="locales/pt.js?v=9"></script>
-<script src="locales/de.js?v=9"></script>
-<script src="locales/it.js?v=9"></script>
-<script src="locales/ko.js?v=9"></script>
-<script src="locales/bg.js?v=9"></script>
-<script src="locales/nb.js?v=9"></script>
-<script src="locales/ja.js?v=9"></script>
-<script src="locales/pl.js?v=9"></script>
-<script src="locales/tr.js?v=9"></script>
+<script src="locales/en.js?v=10"></script>
+<script src="locales/ru.js?v=10"></script>
+<script src="locales/es.js?v=10"></script>
+<script src="locales/zh.js?v=10"></script>
+<script src="locales/hi.js?v=10"></script>
+<script src="locales/fr.js?v=10"></script>
+<script src="locales/pt.js?v=10"></script>
+<script src="locales/de.js?v=10"></script>
+<script src="locales/it.js?v=10"></script>
+<script src="locales/ko.js?v=10"></script>
+<script src="locales/bg.js?v=10"></script>
+<script src="locales/nb.js?v=10"></script>
+<script src="locales/ja.js?v=10"></script>
+<script src="locales/pl.js?v=10"></script>
+<script src="locales/tr.js?v=10"></script>
 <script src="i18n.js?v=3"></script>
 
 <script>
@@ -1365,10 +1372,10 @@
 </script>
 <script src="highstock.js?v=1"></script>
 <script src="chart-theme.js?v=36"></script>
-<script src="profile-chart.js?v=55"></script>
+<script src="profile-chart.js?v=59"></script>
 <script src="supersat-chart.js?v=8"></script>
-<script src="zhl16-engine.js?v=69"></script>
-<script src="vpm-engine.js?v=66"></script>
+<script src="zhl16-engine.js?v=71"></script>
+<script src="vpm-engine.js?v=67"></script>
 
 <script src="tool-utils.js?v=36"></script>
 <script src="tool-bestmix.js?v=44"></script>
@@ -1386,8 +1393,8 @@
 <script src="app-debug.js?v=56"></script>
 <script src="app-previous-plans.js?v=9"></script>
 <script src="app-result.js?v=64"></script>
-<script src="app-calculation.js?v=60"></script>
-<script src="app-config.js?v=53"></script>
+<script src="app-calculation.js?v=61"></script>
+<script src="app-config.js?v=54"></script>
 <script src="app-tools-ui.js?v=37"></script>
 <script src="locales/help/index.js?v=4"></script>
 <script src="locales/help/en.js?v=4"></script>
@@ -1411,7 +1418,7 @@
 <script>
     if ('serviceWorker' in navigator) {
         window.addEventListener('load', function () {
-            navigator.serviceWorker.register('./sw.js?v=25', { scope: './' })
+            navigator.serviceWorker.register('./sw.js?v=30', { scope: './' })
                 .then(function (reg) {
                     reg.addEventListener('updatefound', function () {
                         var nw = reg.installing;

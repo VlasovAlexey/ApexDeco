@@ -68,6 +68,7 @@ window.registerTranslations("pl", {
     "LABEL_GF_LO": "GF Lo",
     "LABEL_GF_HI": "GF Hi",
     "LABEL_O2_NARCOTIC": "O2 Narkotyczny",
+    "LABEL_CAVE_MODE": "Tryb jaskiniowy",
     "OPT_YES": "Tak",
     "OPT_NO": "Nie",
     "CARD_UNIT_SETTINGS": "Ustawienia jednostek",

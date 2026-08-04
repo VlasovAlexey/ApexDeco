@@ -312,7 +312,7 @@ function main() {
 
     html = inlineScripts(html, imageDataUrls);
 
-    const serviceWorkerBlock = /<script>\s*if \('serviceWorker' in navigator\) \{[\s\S]*?<\/script>\s*<\/body>/;
+    const serviceWorkerBlock = /<script\b[^>]*>(?:(?!<\/script>)[\s\S])*?navigator\.serviceWorker\.register\(\s*(["'])\.\/sw\.js(?:\?[^"']*)?\1[\s\S]*?<\/script>\s*<\/body>/i;
     html = html.replace(
         serviceWorkerBlock,
         '<!-- Service worker registration omitted in single-file bundle -->\n</body>'
